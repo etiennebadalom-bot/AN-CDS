@@ -1,0 +1,1912 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<title>2A-CDS</title>
+
+<style>
+:root{
+  --vr:#006B3F;--vr2:#004d2d;--vr3:#00A858;
+  --or:#FCD116;--or2:#b89b00;
+  --rr:#EF2B2D;
+  --nk:#0F1C2E;--nk2:#162235;
+  --sl:#111827;--sl2:#1F2937;
+  --g50:#F8FAFC;--g100:#F1F5F9;--g200:#E2E8F0;
+  --g300:#CBD5E1;--g400:#94A3B8;--g500:#64748B;--g600:#475569;
+  --wh:#fff;--pu:#7C3AED;--pu2:#A78BFA;
+  --sw:270px;--r:14px;--rs:8px;
+  --s1:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.06);
+  --s2:0 4px 8px rgba(0,0,0,.07),0 12px 40px rgba(0,0,0,.10);
+  --s3:0 8px 20px rgba(0,0,0,.10),0 28px 64px rgba(0,0,0,.14);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{font-family:system-ui,-apple-system,sans-serif;background:var(--g50);color:var(--sl);-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:hidden;overflow:hidden;position:fixed;width:100%;height:100%}
+.sc{display:none;position:fixed;top:0;left:0;width:100%;height:100%;overflow-y:scroll;-webkit-overflow-scrolling:touch;background:var(--g50)}
+.sc.on{display:block}
+#scAdmin.on{display:flex;overflow:hidden;height:100vh}
+input,select,textarea,button{font-family:inherit}
+
+/* LOGIN */
+#scLogin{background:var(--nk);display:flex;align-items:center;justify-content:center;padding:20px;overflow:hidden}
+.lgbg1{position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:700px;height:700px;background:radial-gradient(circle,rgba(0,107,63,.18),transparent 70%);pointer-events:none}
+.lgbg2{position:absolute;bottom:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(252,209,22,.06),transparent 70%);pointer-events:none}
+.lgbox{position:relative;z-index:2;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:22px;padding:38px 34px;width:100%;max-width:420px;backdrop-filter:blur(24px);box-shadow:0 32px 80px rgba(0,0,0,.5)}
+.lgflag{display:flex;gap:4px;height:7px;border-radius:3px;overflow:hidden;width:60px;margin:0 auto 16px}
+.lgflag span{flex:1}
+.lgbrand{font-family:system-ui,sans-serif;font-size:28px;font-weight:800;color:var(--wh);text-align:center;letter-spacing:-.5px}
+.lgmeta{font-size:11px;color:rgba(255,255,255,.38);text-align:center;margin:5px 0 28px;line-height:1.7;letter-spacing:.3px}
+.lglbl{display:block;font-size:10px;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:1px;text-transform:uppercase;margin-bottom:7px}
+.lginp{width:100%;padding:12px 15px;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;font-size:14px;color:var(--wh);outline:none;transition:all .2s;margin-bottom:14px}
+.lginp::placeholder{color:rgba(255,255,255,.2)}
+.lginp:focus{border-color:rgba(0,107,63,.7);background:rgba(255,255,255,.09);box-shadow:0 0 0 3px rgba(0,107,63,.18)}
+.lgbtn{width:100%;padding:13px;background:linear-gradient(135deg,var(--vr),var(--vr3));color:var(--wh);font-size:15px;font-weight:700;border:none;border-radius:10px;cursor:pointer;transition:all .25s;box-shadow:0 4px 20px rgba(0,107,63,.35);margin-top:4px}
+.lgbtn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,107,63,.5)}
+.lgerr{color:#f87171;font-size:12px;margin-top:10px;text-align:center;display:none;font-weight:500}
+.lgsep{display:flex;align-items:center;gap:12px;margin:18px 0;color:rgba(255,255,255,.18);font-size:11px}
+.lgsep::before,.lgsep::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.1)}
+.lgpub{width:100%;padding:11px;background:transparent;border:1.5px solid rgba(252,209,22,.3);color:var(--or);font-size:13px;font-weight:600;border-radius:10px;cursor:pointer;transition:all .2s;margin-bottom:10px}
+.lgpub:hover{background:rgba(252,209,22,.08);border-color:var(--or)}
+.lgpub2{width:100%;padding:11px;background:transparent;border:1.5px solid rgba(59,130,246,.3);color:#60a5fa;font-size:13px;font-weight:600;border-radius:10px;cursor:pointer;transition:all .2s}
+.lgpub2:hover{background:rgba(59,130,246,.08);border-color:#60a5fa}
+
+/* PUBLIC */
+#scPublic{background:linear-gradient(155deg,#091420 0%,#0c2a16 45%,#091420 100%)}
+.ph{text-align:center;padding:36px 20px 20px;border-bottom:1px solid rgba(255,255,255,.05);background:linear-gradient(180deg,rgba(0,107,63,.13),transparent)}
+.phflag{display:flex;gap:4px;height:8px;border-radius:3px;overflow:hidden;width:56px;margin:0 auto 14px}
+.phflag span{flex:1}
+.phbrand{font-family:system-ui,sans-serif;font-size:30px;font-weight:800;color:var(--wh);letter-spacing:-.5px}
+.phtag{font-size:11px;color:rgba(255,255,255,.4);letter-spacing:1px;text-transform:uppercase;margin-top:5px}
+.phpill{display:inline-block;margin-top:10px;background:rgba(252,209,22,.1);border:1px solid rgba(252,209,22,.28);border-radius:20px;padding:4px 15px;font-size:11px;font-weight:700;color:var(--or);letter-spacing:.4px}
+.ptabs{display:flex;gap:5px;padding:14px 16px 0;max-width:860px;margin:0 auto;flex-wrap:wrap}
+.ptab{padding:8px 16px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid rgba(255,255,255,.14);background:transparent;color:rgba(255,255,255,.55);transition:all .22s;white-space:nowrap}
+.ptab.on{background:var(--or);color:var(--nk);border-color:var(--or);box-shadow:0 4px 16px rgba(252,209,22,.28)}
+
+/* FORM CARD */
+.pcon{max-width:740px;margin:0 auto;padding:16px 16px 100px}
+.pcard{background:var(--wh);border-radius:20px;padding:28px;box-shadow:var(--s3)}
+.pcttl{font-family:system-ui,sans-serif;font-size:16px;font-weight:700;color:var(--sl);margin-bottom:3px}
+.pcsub{font-size:12px;color:var(--g400);margin-bottom:20px}
+
+/* STEPS */
+.strow{display:flex;align-items:flex-start;margin-bottom:24px}
+.stw{display:flex;flex-direction:column;align-items:center;min-width:52px}
+.std{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;transition:all .3s}
+.std.dn{background:var(--vr);color:var(--wh)}
+.std.nw{background:var(--vr);color:var(--wh);box-shadow:0 0 0 5px rgba(0,107,63,.14)}
+.std.wt{background:var(--g200);color:var(--g400)}
+.stl{flex:1;height:2px;background:var(--g200);margin-top:16px;transition:background .3s}
+.stl.dn{background:var(--vr)}
+.stlb{font-size:9px;font-weight:600;color:var(--g400);margin-top:4px;text-align:center}
+
+/* BUREAU */
+.bcon{max-width:820px;margin:0 auto;padding:10px 16px 100px}
+.bhtl{font-family:system-ui,sans-serif;font-size:21px;font-weight:800;color:var(--wh);text-align:center;margin-bottom:3px}
+.bhsub{font-size:11px;color:rgba(255,255,255,.4);text-align:center;letter-spacing:.5px}
+.bdiv{width:44px;height:3px;background:var(--or);border-radius:2px;margin:10px auto 0}
+.bsec{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--or);text-align:center;display:flex;align-items:center;gap:10px;margin:22px 0 10px}
+.bsec::before,.bsec::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.09)}
+.bg2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.bc{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:18px 14px;text-align:center;transition:all .25s}
+.bc:hover{background:rgba(255,255,255,.1);border-color:rgba(252,209,22,.28);transform:translateY(-3px)}
+.bc.pres{background:linear-gradient(135deg,rgba(0,107,63,.32),rgba(252,209,22,.1));border-color:rgba(252,209,22,.38)}
+.bcav{width:50px;height:50px;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-family:system-ui,sans-serif;font-weight:800;font-size:19px;color:var(--wh);border:2px solid rgba(255,255,255,.12)}
+.bcrole{font-size:9px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--or);margin-bottom:6px;line-height:1.4}
+.bcname{font-size:13px;font-weight:700;color:var(--wh);margin-bottom:10px}
+.bcwa{display:inline-flex;align-items:center;gap:5px;background:#25D366;color:var(--wh);border:none;border-radius:20px;padding:6px 13px;font-size:11px;font-weight:700;cursor:pointer;text-decoration:none;transition:all .2s;box-shadow:0 2px 8px rgba(37,211,102,.28)}
+.bcwa:hover{background:#1ea352;transform:scale(1.05)}
+
+/* PRESENTATION */
+.prbox{max-width:760px;margin:0 auto;padding:10px 16px 100px}
+.prsection{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:20px;margin-bottom:14px}
+.prttl{font-family:system-ui,sans-serif;font-size:16px;font-weight:700;color:var(--wh);margin-bottom:10px}
+.prval{font-size:14px;color:rgba(255,255,255,.8);line-height:1.7}
+.prrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.pritem label{font-size:10px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.8px}
+.pritem p{font-size:13px;color:rgba(255,255,255,.85);margin-top:2px;font-weight:500}
+.doc-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:10px 16px;text-decoration:none;color:var(--wh);font-size:13px;font-weight:600;transition:all .2s;cursor:pointer;margin:4px}
+.doc-pill:hover{background:rgba(0,107,63,.25);border-color:rgba(0,107,63,.5)}
+
+/* NOTIFS PUBLIC */
+.ncon{max-width:720px;margin:0 auto;padding:16px 16px 100px}
+.npcard{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-left:3px solid var(--pu);border-radius:14px;padding:16px;margin-bottom:12px;transition:all .2s}
+
+/* ADMIN */
+#sidebar{width:var(--sw);height:100vh;background:var(--nk);display:flex;flex-direction:column;position:fixed;left:0;top:0;z-index:100;transition:transform .3s;border-right:1px solid rgba(255,255,255,.05);overflow-y:auto}
+.sbhd{padding:18px 16px 12px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sbfl{display:flex;gap:3px;height:6px;border-radius:2px;overflow:hidden;width:48px;margin-bottom:9px}
+.sbfl span{flex:1}
+.sbbr{font-family:system-ui,sans-serif;font-size:14px;font-weight:800;color:var(--wh);letter-spacing:.3px}
+.sbvr{font-size:9px;color:rgba(255,255,255,.25);margin-top:1px}
+.sbusr{margin:10px 12px 5px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:10px;display:flex;align-items:center;gap:9px}
+.sbav{width:35px;height:35px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,var(--vr),var(--or));display:flex;align-items:center;justify-content:center;font-family:system-ui,sans-serif;font-weight:800;color:var(--wh);font-size:14px}
+.sbnm{font-size:12px;font-weight:600;color:var(--wh);line-height:1.3}
+.sbrl{font-size:9px;font-weight:700;color:var(--or);background:rgba(252,209,22,.1);border-radius:10px;padding:2px 7px;margin-top:3px;display:inline-block}
+.sbnav{flex:1;padding:6px 8px;overflow-y:auto}
+.sbsec{font-size:9px;font-weight:700;color:rgba(255,255,255,.2);letter-spacing:2px;text-transform:uppercase;padding:12px 8px 4px}
+.ni{display:flex;align-items:center;gap:9px;padding:8px 11px;border-radius:10px;cursor:pointer;transition:all .2s;margin-bottom:1px;color:rgba(255,255,255,.4);font-size:13px;font-weight:500}
+.ni:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.88)}
+.ni.on{background:linear-gradient(135deg,var(--vr),#008f50);color:var(--wh);box-shadow:0 4px 14px rgba(0,107,63,.32)}
+.ni .ico{width:17px;text-align:center;flex-shrink:0;font-size:15px}
+.nibg{margin-left:auto;background:var(--or);color:var(--nk);font-size:10px;font-weight:800;border-radius:10px;padding:2px 7px;min-width:20px;text-align:center}
+.nibg.pu{background:var(--pu);color:var(--wh)}
+.nibg.rd{background:var(--rr);color:var(--wh)}
+.sbft{padding:12px;border-top:1px solid rgba(255,255,255,.06);font-size:10px;color:rgba(255,255,255,.2);text-align:center;line-height:2}
+.sbft a{color:rgba(255,255,255,.3);cursor:pointer;transition:color .2s}
+.sbft a:hover{color:rgba(255,255,255,.65)}
+.ovbg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:90}
+.ovbg.on{display:block}
+
+/* MAIN */
+#main{margin-left:var(--sw);flex:1;display:flex;flex-direction:column;height:100vh;min-width:0;overflow:hidden}
+.topb{background:var(--wh);border-bottom:1px solid var(--g200);padding:0 22px;height:56px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;z-index:50;box-shadow:0 1px 0 var(--g200)}
+.topbl{display:flex;align-items:center;gap:12px}
+.topbttl{font-family:system-ui,sans-serif;font-size:15px;font-weight:700;color:var(--sl)}
+.topbr{display:flex;align-items:center;gap:8px}
+#menbtn{display:none;background:none;border:none;cursor:pointer;padding:6px;font-size:22px;color:var(--g500)}
+.pgc{padding:22px;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;min-height:0}
+.page{display:none}
+.page.on{display:block}
+
+/* BUTTONS */
+.btn{padding:9px 18px;border-radius:var(--rs);font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .2s;display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.bp{background:linear-gradient(135deg,var(--vr),var(--vr3));color:var(--wh);box-shadow:0 2px 10px rgba(0,107,63,.22)}
+.bp:hover{transform:translateY(-1px);box-shadow:0 4px 18px rgba(0,107,63,.32)}
+.bo{background:transparent;color:var(--vr);border:1.5px solid var(--vr)}
+.bo:hover{background:var(--vr);color:var(--wh)}
+.bgo{background:linear-gradient(135deg,var(--or2),var(--or));color:var(--nk);font-weight:700}
+.bgo:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(252,209,22,.35)}
+.bdn{background:#fee2e2;color:var(--rr)}
+.bdn:hover{background:var(--rr);color:var(--wh)}
+.bsl{background:var(--g100);color:var(--g600);border:1.5px solid var(--g200)}
+.bsl:hover{background:var(--g200)}
+.bpu{background:linear-gradient(135deg,var(--pu),var(--pu2));color:var(--wh);box-shadow:0 4px 16px rgba(124,58,237,.3)}
+.bwa{background:#25D366;color:var(--wh);box-shadow:0 2px 8px rgba(37,211,102,.3)}
+.bwa:hover{background:#1ea352;transform:translateY(-1px)}
+.bsm{padding:6px 13px;font-size:12px}
+.blg{padding:12px 26px;font-size:15px;border-radius:10px}
+.bfw{width:100%;justify-content:center}
+.brefresh{background:linear-gradient(135deg,#0ea5e9,#38bdf8);color:var(--wh);padding:8px 16px;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .2s;box-shadow:0 2px 10px rgba(14,165,233,.3)}
+.brefresh:hover{transform:translateY(-1px);box-shadow:0 4px 18px rgba(14,165,233,.4)}
+.brefresh.spinning .spin{animation:spin 1s linear infinite}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+/* CARDS */
+.card{background:var(--wh);border-radius:var(--r);box-shadow:var(--s1);padding:20px;margin-bottom:16px}
+.chd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px}
+.cttl{font-family:system-ui,sans-serif;font-size:14px;font-weight:700;color:var(--sl)}
+.csub{font-size:12px;color:var(--g400);margin-top:2px}
+
+/* STATS */
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+.scard{background:var(--wh);border-radius:var(--r);padding:16px 18px;box-shadow:var(--s1);border-top:3px solid var(--vr);transition:all .2s;position:relative;overflow:hidden}
+.scard:hover{transform:translateY(-2px);box-shadow:var(--s2)}
+.scard.go{border-top-color:var(--or)}
+.scard.rd{border-top-color:var(--rr)}
+.scard.bl{border-top-color:#3B82F6}
+.scico{position:absolute;top:12px;right:12px;width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;background:rgba(0,107,63,.08)}
+.scard.go .scico{background:rgba(252,209,22,.12)}
+.scard.rd .scico{background:rgba(239,43,45,.08)}
+.scard.bl .scico{background:rgba(59,130,246,.08)}
+.scval{font-family:system-ui,sans-serif;font-size:28px;font-weight:800;color:var(--sl);line-height:1;margin-top:8px}
+.sclbl{font-size:12px;color:var(--g400);margin-top:4px;font-weight:500}
+.scdt{font-size:11px;font-weight:600;margin-top:4px;color:var(--vr)}
+
+/* TABLE */
+.tw{overflow-x:auto;border-radius:var(--rs)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{text-align:left;padding:9px 13px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--g500);background:var(--g50);border-bottom:2px solid var(--g200);white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--g100);transition:background .15s}
+tbody tr:hover{background:#f0fff8}
+tbody td{padding:11px 13px;color:var(--sl);vertical-align:middle}
+.tid{font-family:monospace;font-size:11px;color:var(--vr);font-weight:700;background:rgba(0,107,63,.07);padding:2px 7px;border-radius:5px;white-space:nowrap}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:3px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
+.ba{background:#dcfce7;color:#16a34a}
+.bw{background:#fef3c7;color:#d97706}
+.bi{background:#fee2e2;color:var(--rr)}
+.bsu{background:#f3e8ff;color:var(--pu)}
+.bgr{background:rgba(0,107,63,.1);color:var(--vr)}
+
+/* FORM */
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fg.full{grid-column:1/-1}
+.fg label{font-size:11px;font-weight:700;color:var(--g600);text-transform:uppercase;letter-spacing:.5px}
+.fg input,.fg select,.fg textarea{padding:10px 13px;border:1.5px solid var(--g200);border-radius:var(--rs);font-size:13px;color:var(--sl);outline:none;transition:all .2s;background:var(--wh)}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--vr);box-shadow:0 0 0 3px rgba(0,107,63,.1)}
+.fg textarea{resize:vertical;min-height:75px}
+.rstar{color:var(--rr)}
+.fa{display:flex;gap:10px;margin-top:18px;justify-content:flex-end;flex-wrap:wrap}
+
+/* SEARCH */
+.sbar{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.sinp{flex:1;min-width:160px;padding:9px 13px 9px 34px;border:1.5px solid var(--g200);border-radius:var(--rs);font-size:13px;color:var(--sl);outline:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='%2394A3B8' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398l3.85 3.85a1 1 0 0 0 1.415-1.415l-3.868-3.833zm-5.242 1.156a5 5 0 1 1 0-10 5 5 0 0 1 0 10z'/%3E%3C/svg%3E") no-repeat 11px center var(--wh);transition:border-color .2s}
+.sinp:focus{border-color:var(--vr)}
+.ssel{padding:9px 13px;border:1.5px solid var(--g200);border-radius:var(--rs);font-size:13px;color:var(--sl);outline:none;background:var(--wh);cursor:pointer}
+.ssel:focus{border-color:var(--vr)}
+
+/* MODAL */
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(6px)}
+.mo.on{display:flex}
+.mbox{background:var(--wh);border-radius:18px;width:100%;max-width:680px;max-height:90vh;overflow-y:auto;box-shadow:var(--s3);animation:mIn .25s cubic-bezier(.34,1.56,.64,1)}
+@keyframes mIn{from{transform:scale(.92) translateY(16px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.mhd{padding:18px 22px;border-bottom:1px solid var(--g200);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--wh);z-index:1}
+.mttl{font-family:system-ui,sans-serif;font-size:15px;font-weight:700}
+.mcl{background:none;border:none;font-size:22px;cursor:pointer;color:var(--g400);padding:4px;line-height:1}
+.mcl:hover{color:var(--sl)}
+.mbody{padding:22px}
+.mft{padding:14px 22px;border-top:1px solid var(--g200);display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+
+/* TABS */
+.tabs{display:flex;gap:4px;border-bottom:2px solid var(--g200);margin-bottom:16px;flex-wrap:wrap}
+.tab{padding:8px 15px;font-size:13px;font-weight:600;cursor:pointer;color:var(--g400);border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s}
+.tab.on{color:var(--vr);border-bottom-color:var(--vr)}
+.tbc{display:none}.tbc.on{display:block}
+
+/* PROGRESS */
+.prog{height:7px;background:var(--g200);border-radius:4px;overflow:hidden}
+.prgf{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--vr),var(--vr3));transition:width .6s}
+
+/* TIMELINE */
+.tlwrap{position:relative;padding-left:22px}
+.tlwrap::before{content:'';position:absolute;left:6px;top:0;bottom:0;width:2px;background:var(--g200)}
+.tli{position:relative;margin-bottom:14px}
+.tld{position:absolute;left:-22px;top:2px;width:13px;height:13px;border-radius:50%;border:2px solid var(--wh);box-shadow:0 0 0 2px var(--vr);background:var(--vr)}
+.tldt{font-size:10px;color:var(--g400);font-weight:600;margin-bottom:2px}
+.tltxt{font-size:13px;color:var(--sl)}
+.tltag{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;background:rgba(0,107,63,.1);color:var(--vr);margin-top:3px}
+
+/* BARCHART */
+.barchart{height:100px;display:flex;align-items:flex-end;gap:6px;padding:0 2px}
+.barcol{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.barfill{width:100%;border-radius:4px 4px 0 0;background:linear-gradient(180deg,var(--vr3),var(--vr));transition:height .6s;min-height:3px}
+.barlbl{font-size:9px;color:var(--g400);text-align:center}
+
+/* NOTIF COMPOSE */
+.ncmp{background:linear-gradient(135deg,#180530,#0d1f3d);border-radius:var(--r);padding:22px;margin-bottom:16px;border:1px solid rgba(124,58,237,.2)}
+.ncttl{font-family:system-ui,sans-serif;font-size:15px;font-weight:700;color:var(--wh);margin-bottom:3px}
+.ncsub{font-size:12px;color:rgba(255,255,255,.42);margin-bottom:16px}
+.ncinp{width:100%;padding:10px 13px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:var(--rs);font-size:13px;color:var(--wh);outline:none;transition:all .2s;margin-bottom:10px}
+.ncinp::placeholder{color:rgba(255,255,255,.22)}
+.ncinp:focus{border-color:rgba(124,58,237,.6);box-shadow:0 0 0 3px rgba(124,58,237,.15)}
+.ncta{width:100%;padding:10px 13px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:var(--rs);font-size:13px;color:var(--wh);outline:none;resize:vertical;min-height:88px;margin-bottom:10px;transition:all .2s}
+.ncta::placeholder{color:rgba(255,255,255,.22)}
+.ncta:focus{border-color:rgba(124,58,237,.6);box-shadow:0 0 0 3px rgba(124,58,237,.15)}
+.ntbtns{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}
+.ntb{padding:6px 13px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.55);transition:all .2s}
+.ntb.on{background:rgba(124,58,237,.3);border-color:rgba(124,58,237,.55);color:var(--wh)}
+.ncsel{padding:9px 13px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:var(--rs);font-size:13px;color:var(--wh);outline:none}
+.ncsel option{color:var(--sl)}
+.nhcard{background:var(--wh);border-radius:var(--rs);padding:14px;border-left:3px solid var(--pu);margin-bottom:10px;display:flex;align-items:flex-start;gap:12px;box-shadow:var(--s1)}
+.nhico{width:36px;height:36px;border-radius:10px;background:rgba(124,58,237,.1);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.nhttl{font-size:13px;font-weight:700;color:var(--sl);margin-bottom:3px}
+.nhmsg{font-size:12px;color:var(--g500);margin-bottom:5px;line-height:1.5}
+.nhmeta{font-size:10px;color:var(--g400);display:flex;gap:10px;flex-wrap:wrap}
+
+/* REGION */
+.rg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.rcard{border:1.5px solid var(--g200);border-radius:10px;padding:12px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;background:var(--wh)}
+.rcard:hover{border-color:var(--vr);background:#f0fff8;transform:translateY(-1px)}
+.rcc{font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--vr)}
+.rcn{font-size:13px;font-weight:700;margin:3px 0 2px}
+.rch{font-size:11px;color:var(--g400)}
+.rcnt{position:absolute;top:8px;right:8px;background:var(--vr);color:var(--wh);font-size:10px;font-weight:700;border-radius:20px;padding:2px 7px}
+
+/* ADMIN MGMT */
+.adcard{background:var(--wh);border:1.5px solid var(--g200);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:10px;transition:all .2s}
+.adcard:hover{border-color:var(--vr);box-shadow:var(--s1)}
+.adav{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--vr),var(--or));display:flex;align-items:center;justify-content:center;font-family:system-ui,sans-serif;font-weight:800;color:var(--wh);font-size:16px;flex-shrink:0}
+.avt{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--vr),var(--or));display:flex;align-items:center;justify-content:center;font-family:system-ui,sans-serif;font-size:20px;font-weight:800;color:var(--wh);flex-shrink:0}
+.detg{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.deti label{font-size:10px;font-weight:700;color:var(--g400);text-transform:uppercase;letter-spacing:.5px}
+.deti p{font-size:13px;color:var(--sl);font-weight:500;margin-top:2px}
+.ag{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.acard{border:1.5px solid var(--g200);border-radius:10px;padding:16px;cursor:pointer;transition:all .2s;text-align:center;background:var(--wh)}
+.acard:hover{border-color:var(--vr);background:#f0fff8;transform:translateY(-2px)}
+.lbox{background:linear-gradient(135deg,var(--nk2),#0d3320);border-radius:var(--r);padding:18px;color:var(--wh);margin-bottom:16px;border:1px solid rgba(255,255,255,.06)}
+.lbttl{font-family:system-ui,sans-serif;font-size:14px;font-weight:700;margin-bottom:5px}
+.lbsub{font-size:12px;opacity:.55;margin-bottom:12px}
+.lburl{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:10px 13px;font-family:monospace;font-size:12px;word-break:break-all;color:var(--or)}
+.lbacts{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+
+/* FICHE ENGAGEMENT */
+.fiche-box{background:var(--wh);border:2px solid var(--vr);border-radius:12px;padding:20px;margin-top:20px;text-align:center}
+.fiche-ttl{font-family:system-ui,sans-serif;font-size:15px;font-weight:700;color:var(--vr);margin-bottom:8px}
+.fiche-sub{font-size:12px;color:var(--g500);margin-bottom:14px;line-height:1.6}
+
+/* TOAST */
+#toast{position:fixed;bottom:24px;right:24px;background:var(--sl);color:var(--wh);padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:999;transform:translateY(80px);opacity:0;transition:all .32s cubic-bezier(.34,1.56,.64,1);box-shadow:var(--s3);max-width:320px}
+#toast.on{transform:translateY(0);opacity:1}
+
+.ndot{width:9px;height:9px;border-radius:50%;background:var(--rr);position:absolute;top:8px;right:8px;border:2px solid var(--wh);animation:pd 2s infinite;display:none}
+@keyframes pd{0%,100%{opacity:1}50%{opacity:.4}}
+.ovbg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:90}
+.ovbg.on{display:block}
+.cbar{background:var(--g50);border:1px solid var(--g200);border-radius:var(--rs);padding:10px 13px;margin-bottom:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cfmt{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--g200);background:var(--wh);color:var(--g600);transition:all .2s}
+.cfmt.on,.cfmt:hover{border-color:var(--vr);color:var(--vr);background:rgba(0,107,63,.06)}
+.edit-inline{background:rgba(255,255,255,.08);border:1.5px dashed rgba(255,255,255,.25);border-radius:8px;padding:10px 13px;font-size:14px;color:var(--wh);outline:none;width:100%;margin-top:6px;line-height:1.6;resize:vertical;min-height:60px}
+.edit-inline:focus{border-color:rgba(252,209,22,.5);background:rgba(255,255,255,.12)}
+
+@media(max-width:960px){.sg{grid-template-columns:1fr 1fr}.rg{grid-template-columns:1fr 1fr}}
+@media(max-width:720px){
+  #sidebar{transform:translateX(-100%)}
+  #sidebar.open{transform:translateX(0);box-shadow:6px 0 30px rgba(0,0,0,.5)}
+  #main{margin-left:0;height:100vh;overflow:hidden}
+  #menbtn{display:block}
+  .sg{grid-template-columns:1fr}
+  .fg2{grid-template-columns:1fr}
+  .detg{grid-template-columns:1fr}
+  .rg{grid-template-columns:1fr 1fr}
+  .ag{grid-template-columns:1fr}
+  .pgc{padding:14px}
+  .pcard{padding:18px}
+  .bg2{grid-template-columns:1fr}
+  .topb{padding:0 12px}
+  .ptabs{gap:4px}
+  .ptab{padding:7px 12px;font-size:11px}
+}
+@media(max-width:460px){.ptabs{gap:3px}.ptab{padding:6px 10px;font-size:11px}}
+</style>
+</head>
+<body>
+
+<!-- ═══ LOGIN ═══ -->
+<div class="sc on" id="scLogin">
+<div style="min-height:100vh;background:var(--nk);display:flex;align-items:center;justify-content:center;padding:20px;position:relative;overflow:hidden">
+<div class="lgbg1"></div><div class="lgbg2"></div>
+<div class="lgbox">
+  <div class="lgflag"><span style="background:var(--rr)"></span><span style="background:var(--vr)"></span><span style="background:var(--or)"></span></div>
+  <div class="lgbrand">2A-CDS</div>
+  <div class="lgmeta">Association des Agents Collecteurs<br>de Données Statistiques</div>
+  <span class="lglbl">Adresse e-mail</span>
+  <input class="lginp" type="email" id="lgEmail" placeholder="votre@email.com"/>
+  <span class="lglbl">Mot de passe</span>
+  <input class="lginp" type="password" id="lgPwd" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/>
+  <button class="lgbtn" onclick="doLogin()">Accéder au système →</button>
+  <div class="lgerr" id="lgErr">E-mail ou mot de passe incorrect.</div>
+  <div class="lgsep">ou</div>
+  <button class="lgpub" onclick="showPublic()">🌐 Espace public — Inscription &amp; Bureau</button>
+  <button class="lgpub2" style="margin-top:8px" onclick="showFormateur()">🎓 Inscription Formateur</button>
+</div>
+</div>
+</div>
+
+<!-- ═══ PUBLIC ═══ -->
+<div class="sc" id="scPublic" style="background:linear-gradient(155deg,#091420 0%,#0c2a16 45%,#091420 100%);overflow-y:scroll;-webkit-overflow-scrolling:touch">
+  <div class="ph">
+    <div class="phflag"><span style="background:var(--rr)"></span><span style="background:var(--vr)"></span><span style="background:var(--or)"></span></div>
+    <div class="phbrand">2A-CDS</div>
+    <div class="phtag">Association des Agents Collecteurs de Données Statistiques</div>
+    <div class="phpill">🇧🇫 Burkina Faso · Mandat 2024 – 2027</div>
+  </div>
+  <div class="ptabs">
+    <button class="ptab on" id="ptA" onclick="ptab('A')">🏠 Présentation</button>
+    <button class="ptab" id="ptI" onclick="ptab('I')">📋 S'inscrire</button>
+    <button class="ptab" id="ptB" onclick="ptab('B')">🏛️ Bureau</button>
+    <button class="ptab" id="ptN" onclick="ptab('N')">🔔 Notifications</button>
+    <button class="ptab" id="ptD" onclick="ptab('D')">📄 Documents</button>
+  </div>
+
+  <!-- TAB: PRÉSENTATION -->
+  <div id="ptA-c" class="prbox">
+    <div class="prsection">
+      <div class="prttl">📋 Présentation de l'association</div>
+      <div class="prval" id="pubPres">L'Association des Agents Collecteurs de Données Statistiques (2A-CDS) est une organisation à but non lucratif regroupant des professionnels spécialisés dans la collecte, le traitement et l'analyse de données statistiques. Elle œuvre pour le renforcement des capacités nationales en matière de statistiques au service du développement du Burkina Faso.</div>
+    </div>
+    <div class="prsection">
+      <div class="prttl">ℹ️ Informations officielles</div>
+      <div class="prrow" id="pubInfos">
+        <div class="pritem"><label>Sigle</label><p id="piSigle">2A-CDS</p></div>
+        <div class="pritem"><label>Date de création</label><p id="piDate">2024</p></div>
+        <div class="pritem"><label>Siège social</label><p id="piSiege">Ouagadougou, Burkina Faso</p></div>
+        <div class="pritem"><label>Récépissé N°</label><p id="piRecep">2024-BF-001234</p></div>
+        <div class="pritem"><label>Frais d'adhésion</label><p id="piFrais" style="color:var(--or);font-weight:700">5 000 F CFA</p></div>
+        <div class="pritem"><label>Statut</label><p id="piStatut">Association nationale</p></div>
+      </div>
+    </div>
+    <div class="prsection">
+      <div class="prttl">🎯 Mission &amp; Objectifs</div>
+      <div class="prval" id="pubMission">Promouvoir la collecte de données statistiques de qualité · Former et professionnaliser les collecteurs · Contribuer aux politiques de développement basées sur des données fiables · Créer un réseau national de collecteurs qualifiés.</div>
+    </div>
+    <div style="text-align:center;margin-top:20px">
+      <button class="btn bp blg" onclick="ptab('I')" style="margin-right:10px">📋 S'inscrire comme agent</button>
+      <a onclick="showLogin()" style="font-size:12px;color:rgba(255,255,255,.3);cursor:pointer;display:block;margin-top:14px">← Connexion administrateur</a>
+    </div>
+  </div>
+
+  <!-- TAB: INSCRIPTION -->
+  <div id="ptI-c" class="pcon" style="display:none">
+    <!-- Frais notice -->
+    <div style="background:rgba(252,209,22,.1);border:1px solid rgba(252,209,22,.3);border-radius:12px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;gap:12px">
+      <div style="font-size:24px">💳</div>
+      <div><div style="font-family:system-ui,sans-serif;font-size:14px;font-weight:700;color:var(--or)">Frais d'adhésion : 5 000 F CFA</div><div style="font-size:12px;color:rgba(255,255,255,.6);margin-top:2px">À régler après validation de votre dossier. Vous recevrez les instructions de paiement par WhatsApp.</div></div>
+    </div>
+    <div class="pcard" id="pubOk" style="display:none">
+      <!-- SUCCESS + FICHE ENGAGEMENT -->
+      <div style="text-align:center;padding:30px 20px">
+        <div style="font-size:56px;margin-bottom:12px">✅</div>
+        <h2 style="font-family:system-ui,sans-serif;font-size:20px;font-weight:800;color:var(--sl);margin-bottom:8px">Inscription envoyée !</h2>
+        <p style="font-size:14px;color:var(--g500);line-height:1.7;margin-bottom:8px">Votre dossier a été transmis à 2A-CDS.<br>Vous allez recevoir un message WhatsApp de confirmation sur <strong id="okTel"></strong>.</p>
+        <div style="background:#fef3c7;border-radius:10px;padding:12px 16px;margin:14px 0;font-size:13px;color:#d97706;font-weight:600">💳 Frais d'adhésion : 5 000 F CFA — À régler sur instructions WhatsApp</div>
+        <div class="fiche-box">
+          <div class="fiche-ttl">📄 Fiche d'Engagement</div>
+          <div class="fiche-sub">Téléchargez et conservez votre fiche d'engagement.<br>Elle atteste de votre inscription à 2A-CDS.</div>
+          <button class="btn bp bfw" onclick="dlFiche()" style="margin-bottom:10px">⬇ Télécharger ma fiche d'engagement (PDF)</button>
+        </div>
+        <button class="btn bsl bfw" style="margin-top:14px" onclick="resetPub()">Nouvelle inscription</button>
+        <div style="margin-top:12px"><a onclick="showLogin()" style="font-size:12px;color:var(--vr);cursor:pointer;font-weight:600">← Connexion administrateur</a></div>
+      </div>
+    </div>
+    <div id="pubFrm">
+      <div class="pcard">
+        <div class="pcttl">📋 Formulaire d'inscription — Agent Enquêteur</div>
+        <div class="pcsub">Champs obligatoires <span class="rstar">*</span> — Votre dossier sera validé par l'équipe 2A-CDS.</div>
+        <div class="strow" id="strow">
+          <div class="stw"><div class="std nw" id="sd1">1</div><div class="stlb">Identité</div></div>
+          <div class="stl" id="sl1"></div>
+          <div class="stw"><div class="std wt" id="sd2">2</div><div class="stlb">Localisation</div></div>
+          <div class="stl" id="sl2"></div>
+          <div class="stw"><div class="std wt" id="sd3">3</div><div class="stlb">Qualification</div></div>
+          <div class="stl" id="sl3"></div>
+          <div class="stw"><div class="std wt" id="sd4">4</div><div class="stlb">Adhésion</div></div><div class="stl" id="sl4"></div><div class="stw"><div class="std wt" id="sd5">5</div><div class="stlb">Vérifier</div></div>
+        </div>
+        <div id="ps1">
+          <div class="fg2">
+            <div class="fg"><label>Nom <span class="rstar">*</span></label><input id="pNom" placeholder="OUEDRAOGO"/></div>
+            <div class="fg"><label>Prénom(s) <span class="rstar">*</span></label><input id="pPre" placeholder="Seydou"/></div>
+            <div class="fg full"><label>Téléphone WhatsApp <span class="rstar">*</span></label><div class="phone-wrap"><select id="pTelCode" class="phone-select"><option value="+226">🇧🇫 +226</option><option value="+223">🇲🇱 +223</option><option value="+225">🇨🇮 +225</option><option value="+221">🇸🇳 +221</option><option value="+229">🇧🇯 +229</option><option value="+228">🇹🇬 +228</option><option value="+227">🇳🇪 +227</option><option value="+224">🇬🇳 +224</option><option value="+33">🇫🇷 +33</option><option value="+1">🇺🇸 +1</option></select><input id="pTel" class="phone-inp" placeholder="XX XX XX XX" type="tel" maxlength="12"/></div></div>
+            <div class="fg"><label>E-mail</label><input id="pEml" type="email" placeholder="exemple@mail.com"/></div>
+            <div class="fg"><label>Date de naissance <span class="rstar">*</span></label><input id="pDob" type="date" onchange="valAge(this)"/><small id="ageErr" style="color:#EF2B2D;font-size:11px;display:none">Âge requis : 18 à 45 ans</small></div>
+            <div class="fg"><label>Sexe <span class="rstar">*</span></label><select id="pSex"><option value="">— Choisir —</option><option>Masculin</option><option>Féminin</option></select></div>
+            <div class="fg full"><label>Adresse / Localité</label><input id="pAdr" placeholder="Quartier, ville..."/></div>
+            <div class="fg"><label>N° CNI / Pièce d'identité</label><input id="pCni" placeholder="CNI-XXXXXXXX"/></div>
+          </div>
+          <div class="fa"><button class="btn bp" onclick="ps(2)">Suivant →</button></div>
+        </div>
+        <div id="ps2" style="display:none">
+          <div class="fg2">
+            <div class="fg"><label>Région <span class="rstar">*</span></label>
+              <select id="pReg" onchange="updPrv('pPrv','pReg')">
+                <option value="">— Choisir —</option>
+                <option value="BKU">Bankui (Dédougou)</option><option value="TAN">Tannounyan (Banfora)</option>
+                <option value="KDG">Kadiogo (Ouagadougou)</option><option value="NAK">Nakambé (Tenkodogo)</option>
+                <option value="KLS">Kuilsé (Kaya)</option><option value="NAN">Nando (Koudougou)</option>
+                <option value="NZN">Nazinon (Manga)</option><option value="GLM">Goulmou (Fada N'Gourma)</option>
+                <option value="GRK">Guiriko (Bobo-Dioulasso)</option><option value="YDG">Yaadga (Ouahigouya)</option>
+                <option value="OBR">Oubri (Ziniaré)</option><option value="LPT">Liptako (Dori)</option>
+                <option value="SOM">Soum (Djibo)</option><option value="SRB">Sirba (Bogandé)</option>
+                <option value="TPO">Tapoa (Diapaga)</option><option value="DJR">Djôrô (Gaoua)</option>
+                <option value="SOU">Sourou (Tougan)</option>
+              </select>
+            </div>
+            <div class="fg"><label>Province <span class="rstar">*</span></label><select id="pPrv" onchange="updCom('pPrv','pReg')"><option value="">-- Province --</option></select></div>
+            <div class="fg"><label>Commune <span class="rstar">*</span></label><select id="pCom" style="padding:10px 13px;border:1.5px solid var(--g200);border-radius:8px;font-size:13px;color:var(--sl);outline:none;background:var(--wh);width:100%"><option value="">— Choisir province d'abord —</option></select></div>
+            <div class="fg"><label>Code commune (3 lettres)</label><input id="pCC" maxlength="3" placeholder="BAG"/></div>
+          </div>
+          <div class="fa"><button class="btn bsl" onclick="ps(1)">← Retour</button><button class="btn bp" onclick="ps(3)">Suivant →</button></div>
+        </div>
+        <div id="ps3" style="display:none">
+          <div class="fg2">
+            <div class="fg"><label>Niveau d'étude <span class="rstar">*</span></label>
+              <select id="pNiv"><option value="">— Choisir —</option><option>BEPC / Brevet</option><option>BAC</option><option>BTS / DUT</option><option>Licence</option><option>Master</option><option>Doctorat</option><option>Autre</option></select>
+            </div>
+            <div class="fg"><label>Spécialité / Filière</label><input id="pSpc" placeholder="Statistique, Économie..."/></div>
+            <div class="fg"><label>Expérience collecte <span class="rstar">*</span></label>
+              <select id="pExp"><option value="">— Choisir —</option><option>Aucune expérience</option><option>Moins d'1 an</option><option>1 à 3 ans</option><option>3 à 5 ans</option><option>Plus de 5 ans</option></select>
+            </div>
+            <div class="fg"><label>Disponibilité</label><select id="pDsp"><option>Temps plein</option><option>Temps partiel</option><option>Selon les missions</option></select></div>
+            <div class="fg full"><label>Motivations</label><textarea id="pMot" placeholder="Vos motivations pour rejoindre 2A-CDS..."></textarea></div>
+          </div>
+          <div class="fa"><button class="btn bsl" onclick="ps(2)">← Retour</button><button class="btn bp" onclick="ps(4)">Suivant →</button></div>
+        </div>
+        <div id="ps4" style="display:none">
+          <div style="background:#f0fff8;border:1.5px solid rgba(0,107,63,.2);border-radius:12px;padding:18px;margin-bottom:16px">
+            <div style="font-family:system-ui,sans-serif;font-size:14px;font-weight:700;color:var(--vr);margin-bottom:8px">💳 Frais d'adhésion</div>
+            <div style="font-size:13px;color:var(--g600);line-height:1.7;margin-bottom:10px">Les frais d'adhésion à 2A-CDS s'élèvent à <strong style="color:var(--sl)">5 000 F CFA</strong>. Ils sont à régler après validation de votre dossier par un administrateur. Vous recevrez les instructions de paiement via WhatsApp.</div>
+            <div class="fg" style="max-width:280px">
+              <label>Mode de paiement préféré</label>
+              <select id="pPay"><option>Mobile Money (Orange/Moov)</option><option>En espèces au bureau</option><option>Virement bancaire</option></select>
+            </div>
+          </div>
+          <div style="background:#f0f9ff;border:1.5px solid rgba(59,130,246,.2);border-radius:12px;padding:18px;margin-bottom:16px">
+            <div style="font-family:system-ui,sans-serif;font-size:14px;font-weight:700;color:#1d4ed8;margin-bottom:8px">📄 Documents à lire</div>
+            <div style="font-size:13px;color:var(--g600);margin-bottom:12px">Avant de finaliser, nous vous invitons à consulter les documents de l'association :</div>
+            <button class="btn bsl bsm" style="margin-right:8px;margin-bottom:6px" onclick="ptab('D')">📖 Règlement intérieur</button>
+            <button class="btn bsl bsm" onclick="ptab('D')">📝 Conditions d'adhésion</button>
+          </div>
+          <div class="fg full" style="margin-bottom:14px">
+            <label style="display:flex;align-items:flex-start;gap:8px;text-transform:none;letter-spacing:0;font-weight:400;cursor:pointer">
+              <input type="checkbox" id="pOk1" style="margin-top:2px;width:auto;flex-shrink:0"/>
+              <span style="font-size:13px;color:var(--g600)">J'ai lu et j'accepte le règlement intérieur et les conditions d'adhésion d'2A-CDS. <span class="rstar">*</span></span>
+            </label>
+          </div>
+          <div class="fg full" style="margin-bottom:14px">
+            <label style="display:flex;align-items:flex-start;gap:8px;text-transform:none;letter-spacing:0;font-weight:400;cursor:pointer">
+              <input type="checkbox" id="pOk2" style="margin-top:2px;width:auto;flex-shrink:0"/>
+              <span style="font-size:13px;color:var(--g600)">Je m'engage à respecter les valeurs et la charte de l'association et à m'acquitter des frais d'adhésion de <strong>5 000 F CFA</strong>. <span class="rstar">*</span></span>
+            </label>
+          </div>
+          <div class="fa"><button class="btn bsl" onclick="ps(3)">← Retour</button><button class="btn bp blg" onclick="showRecap()">👁 Vérifier mon dossier →</button></div>
+        </div>
+      </div>
+      <div id="ps5" style="display:none">
+        <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:20px;margin-bottom:16px">
+          <div style="font-size:15px;font-weight:700;color:var(--or);margin-bottom:14px;text-align:center">👁 Vérification de votre dossier</div>
+          <div id="recapDiv" style="font-size:13px;color:rgba(255,255,255,.85);line-height:2.2"></div>
+        </div>
+        <div style="background:rgba(252,209,22,.08);border:1px solid rgba(252,209,22,.2);border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:12px;color:rgba(255,255,255,.6)">Vérifiez bien vos informations avant de soumettre définitivement.</div>
+        <div class="fa"><button class="btn bsl" onclick="ps(4)">← Modifier</button><button class="btn bp blg" onclick="subPub()">✓ Confirmer et soumettre</button></div>
+      </div>
+      <div style="text-align:center;padding:12px 0 30px"><a onclick="showLogin()" style="font-size:12px;color:rgba(255,255,255,.3);cursor:pointer">← Connexion administrateur</a></div>
+    </div>
+  </div>
+
+  <!-- TAB: BUREAU -->
+  <div id="ptB-c" class="bcon" style="display:none">
+    <div style="text-align:center;padding:16px 0 14px">
+      <div class="bhtl">Bureau Exécutif</div>
+      <div class="bhsub">2A-CDS · Mandat 2024 – 2027 · Burkina Faso</div>
+      <div class="bdiv"></div>
+    </div>
+    <div class="bsec">Présidence</div>
+    <div class="bg2" style="max-width:560px;margin:0 auto 4px">
+      <div class="bc pres"><div class="bcav" style="background:linear-gradient(135deg,#8a6200,var(--or))">B</div><div class="bcrole">Président</div><div class="bcname">BADALOM Etienne</div><a class="bcwa" href="https://wa.me/22670959752" target="_blank">💬 +226 70 95 97 52</a></div>
+      <div class="bc"><div class="bcav" style="background:linear-gradient(135deg,#5b21b6,#a78bfa)">N</div><div class="bcrole">Vice-Présidente</div><div class="bcname">NEYA Balguissa</div><a class="bcwa" href="https://wa.me/22660681816" target="_blank">💬 +226 60 68 18 16</a></div>
+    </div>
+    <div class="bsec">Secrétariat Général</div>
+    <div class="bg2" style="max-width:560px;margin:0 auto 4px">
+      <div class="bc"><div class="bcav" style="background:linear-gradient(135deg,#1e40af,#60a5fa)">K</div><div class="bcrole">Secrétaire Général</div><div class="bcname">KOUDOUGOU Marcel</div><a class="bcwa" href="https://wa.me/22675854056" target="_blank">💬 +226 75 85 40 56</a></div>
+      <div class="bc"><div class="bcav" style="background:linear-gradient(135deg,#1e40af,#60a5fa)">C</div><div class="bcrole">Secrétaire Générale Adjointe</div><div class="bcname">CONVOLBO Djamilatou</div><a class="bcwa" href="https://wa.me/22664413259" target="_blank">💬 +226 64 41 32 59</a></div>
+    </div>
+    <div class="bsec">Trésorerie Générale</div>
+    <div class="bg2" style="max-width:560px;margin:0 auto 4px">
+      <div class="bc"><div class="bcav" style="background:linear-gradient(135deg,#92400e,#fbbf24)">K</div><div class="bcrole">Trésorière Générale</div><div class="bcname">KI Valerice</div><a class="bcwa" href="https://wa.me/22672132412" target="_blank">💬 +226 72 13 24 12</a></div>
+      <div class="bc"><div class="bcav" style="background:linear-gradient(135deg,#92400e,#fbbf24)">L</div><div class="bcrole">Trésorier Général Adjoint</div><div class="bcname">LANKOANDE Romulus</div><a class="bcwa" href="https://wa.me/22671907046" target="_blank">💬 +226 71 90 70 46</a></div>
+    </div>
+    <div class="bsec">Responsables de Département</div>
+    <div class="bg2">
+      <div class="bc"><div class="bcav" style="background:linear-gradient(135deg,#0e7490,#22d3ee)">T</div><div class="bcrole">Formation &amp; Renforcement</div><div class="bcname">TAGNABOU Atoguidui Augustin</div><a class="bcwa" href="https://wa.me/22665253581" target="_blank">💬 +226 65 25 35 81</a></div>
+      <div class="bc"><div class="bcav" style="background:linear-gradient(135deg,#0e7490,#22d3ee)">Z</div><div class="bcrole">Partenariats &amp; Relations</div><div class="bcname">ZENI Tourbatoura</div><a class="bcwa" href="https://wa.me/22676553586" target="_blank">💬 +226 76 55 35 86</a></div>
+      <div class="bc"><div class="bcav" style="background:linear-gradient(135deg,var(--vr),var(--vr3))">S</div><div class="bcrole">Technique &amp; Statistique</div><div class="bcname">SAWADOGO Ibrahim</div><a class="bcwa" href="https://wa.me/22678491078" target="_blank">💬 +226 78 49 10 78</a></div>
+      <div class="bc"><div class="bcav" style="background:linear-gradient(135deg,var(--vr),var(--vr3))">G</div><div class="bcrole">Adjointe Technique</div><div class="bcname">GUILOGO Nafisatou</div><a class="bcwa" href="https://wa.me/22601800836" target="_blank">💬 +226 01 80 08 36</a></div>
+      <div class="bc"><div class="bcav" style="background:linear-gradient(135deg,#991b1b,#f87171)">B</div><div class="bcrole">Communication &amp; Médias</div><div class="bcname">BADINI Rafiatou</div><a class="bcwa" href="https://wa.me/22662023895" target="_blank">💬 +226 62 02 38 95</a></div>
+      <div class="bc"><div class="bcav" style="background:linear-gradient(135deg,#991b1b,#f87171)">S</div><div class="bcrole">Mobilisation des Membres</div><div class="bcname">SANA Moctard</div><a class="bcwa" href="https://wa.me/22671284886" target="_blank">💬 +226 71 28 48 86</a></div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn bp" onclick="ptab('I')">📋 S'inscrire comme agent</button><br><a onclick="showLogin()" style="font-size:12px;color:rgba(255,255,255,.25);cursor:pointer;display:block;margin-top:12px">← Connexion administrateur</a></div>
+  </div>
+
+  <!-- TAB: NOTIFICATIONS -->
+  <div id="ptN-c" class="ncon" style="display:none">
+    <div style="text-align:center;padding:14px 0 22px">
+      <div style="font-size:48px;margin-bottom:10px">🔔</div>
+      <div style="font-family:system-ui,sans-serif;font-size:20px;font-weight:700;color:var(--wh);margin-bottom:5px">Notifications</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.38)">Messages officiels d'2A-CDS</div>
+      <button class="brefresh" style="margin-top:12px" onclick="refreshNotifs(this)"><span class="spin">🔄</span>Actualiser</button>
+    </div>
+    <div id="pubNotifWall">
+      <div style="text-align:center;padding:40px 20px"><div style="font-size:40px;opacity:.3;margin-bottom:10px">📭</div><p style="font-size:14px;color:rgba(255,255,255,.3)">Aucune notification</p></div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><a onclick="showLogin()" style="font-size:12px;color:rgba(255,255,255,.25);cursor:pointer">← Connexion administrateur</a></div>
+  </div>
+
+  <!-- TAB: DOCUMENTS -->
+  <div id="ptD-c" class="prbox" style="display:none">
+    <div class="prsection">
+      <div class="prttl">📄 Documents officiels 2A-CDS</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.6);margin-bottom:16px;line-height:1.7">Lisez attentivement les documents ci-dessous avant de vous inscrire. Ils définissent vos droits et obligations en tant que membre.</div>
+      <div id="pubDocs">
+        <div style="text-align:center;padding:30px;color:rgba(255,255,255,.3)">
+          <div style="font-size:32px;margin-bottom:10px">📂</div>
+          <p style="font-size:13px">Aucun document disponible pour le moment.<br>L'administrateur publiera les documents prochainement.</p>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:20px"><button class="btn bp" onclick="ptab('I')">📋 S'inscrire</button><br><a onclick="showLogin()" style="font-size:12px;color:rgba(255,255,255,.25);cursor:pointer;display:block;margin-top:12px">← Connexion administrateur</a></div>
+  </div>
+</div>
+
+<!-- ═══ FORMATEUR ═══ -->
+<div class="sc" id="scFormateur" style="background:linear-gradient(155deg,#0a1628 0%,#1a0535 50%,#0a1628 100%)">
+  <div style="min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:20px">
+    <div style="width:100%;max-width:700px;margin:20px auto">
+      <div style="text-align:center;margin-bottom:24px">
+        <div style="font-size:48px;margin-bottom:10px">🎓</div>
+        <div style="font-family:system-ui,sans-serif;font-size:24px;font-weight:800;color:var(--wh);margin-bottom:5px">Inscription Formateur</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.4)">2A-CDS · Rejoignez notre équipe de formateurs</div>
+      </div>
+      <div style="background:var(--wh);border-radius:20px;padding:28px;box-shadow:var(--s3)">
+        <div class="fg2">
+          <div class="fg"><label>Nom <span class="rstar">*</span></label><input id="fmNom" placeholder="OUEDRAOGO"/></div>
+          <div class="fg"><label>Prénom(s) <span class="rstar">*</span></label><input id="fmPre" placeholder="Seydou"/></div>
+          <div class="fg"><label>Téléphone WhatsApp <span class="rstar">*</span></label><input id="fmTel" type="tel" placeholder="+226 XX XX XX XX"/></div>
+          <div class="fg"><label>E-mail <span class="rstar">*</span></label><input id="fmEml" type="email" placeholder="exemple@mail.com"/></div>
+          <div class="fg"><label>Spécialité / Domaine <span class="rstar">*</span></label><input id="fmSpc" placeholder="Statistiques, Collecte CAPI, Démographie..."/></div>
+          <div class="fg"><label>Niveau académique</label><select id="fmNiv"><option>Licence</option><option>Master</option><option>Doctorat</option><option>Ingénieur</option><option>Autre</option></select></div>
+          <div class="fg"><label>Expérience en formation (années)</label><input id="fmExp" type="number" min="0" placeholder="5"/></div>
+          <div class="fg"><label>Disponibilité</label><select id="fmDsp"><option>Temps plein</option><option>Temps partiel</option><option>Vacataire</option></select></div>
+          <div class="fg full"><label>Modules pouvant être enseignés</label><textarea id="fmMod" placeholder="Techniques de collecte, Analyse de données, CAPI/CAWI, ODK, Statistiques descriptives..."></textarea></div>
+          <div class="fg full"><label>Expériences &amp; références</label><textarea id="fmRef" placeholder="Projets réalisés, organisations avec lesquelles vous avez travaillé..."></textarea></div>
+          <div class="fg full"><label>Prétentions salariales (FCFA / jour)</label><input id="fmSal" type="number" placeholder="25000"/></div>
+          <div class="fg full">
+            <label style="display:flex;align-items:flex-start;gap:8px;text-transform:none;letter-spacing:0;font-weight:400;cursor:pointer">
+              <input type="checkbox" id="fmOk" style="margin-top:2px;width:auto;flex-shrink:0"/>
+              <span style="font-size:13px;color:var(--g600)">J'accepte que mes informations soient traitées par 2A-CDS dans le cadre de ma candidature comme formateur. <span class="rstar">*</span></span>
+            </label>
+          </div>
+        </div>
+        <div class="fa">
+          <button class="btn bsl" onclick="showLogin()">← Retour</button>
+          <button class="btn bpu blg" onclick="subFormateur()">✓ Soumettre ma candidature formateur</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ADMIN ═══ -->
+<div class="sc" id="scAdmin">
+<div class="ovbg" id="ovbg" onclick="closeSb()"></div>
+<nav id="sidebar">
+  <div class="sbhd">
+    <div class="sbfl"><span style="background:var(--rr)"></span><span style="background:var(--vr)"></span><span style="background:var(--or)"></span></div>
+    <div class="sbbr">2A-CDS</div><div class="sbvr">SYSTÈME DE GESTION · v5.0</div>
+  </div>
+  <div class="sbusr">
+    <div class="sbav" id="sbAv">E</div>
+    <div><div class="sbnm" id="sbNm">Etienne Badalom</div><span class="sbrl" id="sbRl">👑 Admin Principal</span></div>
+  </div>
+  <div class="sbnav">
+    <div class="sbsec">Tableau de bord</div>
+    <div class="ni on" onclick="nav('dash',this)"><span class="ico">📊</span>Vue d'ensemble</div>
+    <div class="sbsec">Gestion</div>
+    <div class="ni" onclick="nav('agents',this)"><span class="ico">👥</span>Agents<span class="nibg" id="nbA">0</span></div>
+    <div class="ni" onclick="nav('formateurs',this)"><span class="ico">🎓</span>Formateurs<span class="nibg" id="nbF" style="background:#8B5CF6;color:white">0</span></div>
+    <div class="ni" onclick="nav('regions',this)"><span class="ico">🗺️</span>Régions</div>
+    <div class="ni" onclick="nav('formations',this)"><span class="ico">📚</span>Formations</div>
+    <div class="sbsec">Organisation</div>
+    <div class="ni" onclick="nav('planning',this)"><span class="ico">📅</span>Planification</div>
+    <div class="ni" onclick="nav('archives',this)"><span class="ico">🗄️</span>Archives</div>
+    <div class="ni" onclick="nav('notifs',this)"><span class="ico">🔔</span>Notifications<span class="nibg pu" id="nbN">0</span></div>
+    <div class="ni" onclick="nav('rapports',this)"><span class="ico">📄</span>Rapports</div>
+    <div class="sbsec">Administration</div>
+    <div class="ni" onclick="nav('bureau',this)"><span class="ico">🏛️</span>Bureau</div>
+    <div class="ni" onclick="nav('docs',this)"><span class="ico">📁</span>Documents publics</div>
+    <div class="ni" id="niAdm" style="display:none" onclick="nav('admins',this)"><span class="ico">🔑</span>Administrateurs</div>
+    <div class="ni" id="niContenu" style="display:none" onclick="nav('contenu',this)"><span class="ico">✏️</span>Contenu public</div>
+    <div class="ni" onclick="nav('settings',this)"><span class="ico">⚙️</span>Paramètres</div>
+  </div>
+  <div class="sbft">Burkina Faso · 17 Régions · 47 Provinces<br><span style="color:var(--or);font-weight:700">2A-CDS © 2025</span><br><a onclick="doLogout()">↪ Déconnexion</a></div>
+</nav>
+
+<div id="main">
+  <div class="topb">
+    <div class="topbl">
+      <button id="menbtn" onclick="toggleSb()">☰</button>
+      <div class="topbttl" id="topTtl">Tableau de bord</div>
+    </div>
+    <div class="topbr">
+      <button class="brefresh bsm" onclick="appRefresh(this)" title="Actualiser les données"><span class="spin">🔄</span>Actualiser</button>
+      <button class="btn bp bsm" onclick="openM('mAgent')">＋ Agent</button>
+      <div style="position:relative;cursor:pointer" onclick="nav('notifs',document.querySelector('.ni[onclick*=notifs]'))">
+        <div style="width:34px;height:34px;background:var(--g100);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;border:1.5px solid var(--g200)">🔔</div>
+        <div class="ndot" id="ndot"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pgc">
+
+    <!-- DASHBOARD -->
+    <div class="page on" id="page-dash">
+      <div class="sg">
+        <div class="scard"><div class="scico">👥</div><div class="scval" id="stT">0</div><div class="sclbl">Agents enregistrés</div><div class="scdt" id="stD1">—</div></div>
+        <div class="scard go"><div class="scico">✅</div><div class="scval" id="stA">0</div><div class="sclbl">Agents actifs</div><div class="scdt" id="stD2">—</div></div>
+        <div class="scard rd"><div class="scico">⏳</div><div class="scval" id="stW">0</div><div class="sclbl">En attente</div><div class="scdt">À valider</div></div>
+        <div class="scard bl"><div class="scico">🎓</div><div class="scval" id="stF">0</div><div class="sclbl">Formateurs</div><div class="scdt" id="stD4">—</div></div>
+      </div>
+      <div class="lbox">
+        <div class="lbttl">🔗 Lien d'inscription agents</div>
+        <div class="lbsub">Envoyez ce lien aux candidats agents enquêteurs.</div>
+        <div class="lburl" id="lnk">—</div>
+        <div class="lbacts">
+          <button class="btn bgo bsm" onclick="copyLink()">📋 Copier</button>
+          <button class="btn bsm" style="background:rgba(255,255,255,.1);color:var(--wh);border:none" onclick="shareLink()">📤 Partager</button>
+          <button class="btn bsm" style="background:rgba(255,255,255,.1);color:var(--wh);border:none" onclick="showPublic()">👁 Prévisualiser</button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:14px">
+        <div class="card"><div class="chd"><div><div class="cttl">Inscriptions 2025</div><div class="csub">Agents par mois</div></div></div><div class="barchart"><div class="barcol"><div class="barfill" style="height:28%"></div><div class="barlbl">Jan</div></div><div class="barcol"><div class="barfill" style="height:48%"></div><div class="barlbl">Fév</div></div><div class="barcol"><div class="barfill" style="height:38%"></div><div class="barlbl">Mar</div></div><div class="barcol"><div class="barfill" style="height:72%"></div><div class="barlbl">Avr</div></div><div class="barcol"><div class="barfill" style="height:55%"></div><div class="barlbl">Mai</div></div><div class="barcol"><div class="barfill" style="height:95%;background:linear-gradient(180deg,var(--or),var(--or2))"></div><div class="barlbl">Jun</div></div></div></div>
+        <div class="card"><div class="cttl" style="margin-bottom:12px">Activités récentes</div><div class="tlwrap" id="dashTL"></div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div class="card"><div class="chd"><div class="cttl">Prochaines activités</div></div><div id="dashActs"></div></div>
+        <div class="card"><div class="chd"><div class="cttl">Agents en attente</div><span class="badge bw" id="dashW">0</span></div><div id="dashPend"></div></div>
+      </div>
+    </div>
+
+    <!-- AGENTS -->
+    <div class="page" id="page-agents">
+      <div class="sbar">
+        <input class="sinp" id="agSQ" placeholder="Nom, ID, région..." oninput="filterAg()"/>
+        <select class="ssel" id="agSS" onchange="filterAg()"><option value="">Tous statuts</option><option value="actif">Actif</option><option value="en_attente">En attente</option><option value="inactif">Inactif</option><option value="suspendu">Suspendu</option></select>
+        <select class="ssel" id="agSR" onchange="filterAg()"><option value="">Toutes régions</option></select>
+        <button class="btn bp" onclick="openM('mAgent')">＋ Ajouter</button>
+      </div>
+      <div class="cbar">
+        <button class="cfmt on" onclick="setCF('text',this)">Texte</button>
+        <button class="cfmt" onclick="setCF('csv',this)">CSV</button>
+        <button class="cfmt" onclick="setCF('html',this)">HTML</button>
+        <button class="btn bgo bsm" onclick="copyAg()">📋 Copier</button>
+        <button class="btn bsl bsm" onclick="expCSV()">⬇ CSV</button>
+        <button class="btn bsl bsm" onclick="printAg()">🖨 Imprimer</button>
+        <span class="csub" style="margin-left:auto" id="agCnt">—</span>
+      </div>
+      <div class="card"><div class="tw"><table><thead><tr><th>ID</th><th>Nom &amp; Prénom</th><th>Téléphone</th><th>Région</th><th>Niveau</th><th>Frais</th><th>Statut</th><th>Actions</th></tr></thead><tbody id="agBody"></tbody></table></div></div>
+    </div>
+
+    <!-- FORMATEURS -->
+    <div class="page" id="page-formateurs">
+      <div class="sbar"><input class="sinp" id="fmSQ" placeholder="Nom, spécialité..." oninput="filterFm()"/><select class="ssel" id="fmSS" onchange="filterFm()"><option value="">Tous statuts</option><option value="actif">Actif</option><option value="en_attente">En attente</option></select><button class="btn bp" onclick="openM('mFmt')">＋ Ajouter</button></div>
+      <div class="card"><div class="tw"><table><thead><tr><th>Nom &amp; Prénom</th><th>Téléphone</th><th>Spécialité</th><th>Expérience</th><th>Disponibilité</th><th>Statut</th><th>Actions</th></tr></thead><tbody id="fmBody"></tbody></table></div></div>
+    </div>
+
+    <!-- RÉGIONS -->
+    <div class="page" id="page-regions">
+      <div class="card" style="margin-bottom:12px"><div class="chd"><div><div class="cttl">Référentiel territorial — 17 régions · 47 provinces</div><div class="csub">Décret juillet 2025</div></div><input class="sinp" style="max-width:200px;flex:none" placeholder="Rechercher..." oninput="filterReg(this.value)"/></div><div class="rg" id="regGrid"></div></div>
+      <div class="card" id="provCard" style="display:none"><div class="chd"><div class="cttl" id="provTtl">Provinces</div><button class="btn bsl bsm" onclick="this.closest('.card').style.display='none'">✕</button></div><div class="tw"><table><thead><tr><th>Code</th><th>Province</th><th>Agents</th></tr></thead><tbody id="provBody"></tbody></table></div></div>
+    </div>
+
+    <!-- FORMATIONS -->
+    <div class="page" id="page-formations">
+      <div class="card"><div class="chd"><div><div class="cttl">Catalogue des formations</div><div class="csub">Renforcement des capacités</div></div><button class="btn bp" onclick="openM('mForm')">＋ Nouvelle</button></div><div id="formList" style="display:flex;flex-direction:column;gap:10px"></div></div>
+    </div>
+
+    <!-- PLANNING -->
+    <div class="page" id="page-planning">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:10px"><div class="csub">Agenda 2A-CDS — <strong style="color:var(--sl)">2025</strong></div><button class="btn bp" onclick="openM('mAct')">＋ Planifier</button></div>
+      <div class="tabs"><div class="tab on" onclick="swTab(this,'tcal')">📅 Calendrier</div><div class="tab" onclick="swTab(this,'tlist')">☰ Liste</div></div>
+      <div class="tbc on" id="tcal"><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px" id="planGrid"></div></div>
+      <div class="tbc" id="tlist"><div class="card"><div class="tw"><table><thead><tr><th>Type</th><th>Intitulé</th><th>Date</th><th>Lieu</th><th>Responsable</th><th>Statut</th></tr></thead><tbody id="planTbl"></tbody></table></div></div></div>
+    </div>
+
+    <!-- ARCHIVES -->
+    <div class="page" id="page-archives">
+      <div style="background:linear-gradient(135deg,var(--nk2),#0d3320);border-radius:var(--r);padding:18px;color:var(--wh);margin-bottom:14px;border:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:12px"><div style="font-size:32px">🔐</div><div><div style="font-family:system-ui,sans-serif;font-size:15px;font-weight:700">Espace Archivage Sécurisé</div><div style="font-size:12px;opacity:.55;margin-top:2px">Accès réservé aux administrateurs et membres autorisés</div></div></div>
+      <div class="card"><div class="chd"><div class="cttl">Dossiers</div></div><div class="ag"><div class="acard" onclick="toast('📁 Ouverture...')"><div style="font-size:32px;margin-bottom:8px">📁</div><div style="font-weight:700;font-size:13px">Statuts &amp; Règlements</div><div style="font-size:11px;color:var(--g400)">3 documents</div></div><div class="acard" onclick="toast('📋 Ouverture...')"><div style="font-size:32px;margin-bottom:8px">📋</div><div style="font-weight:700;font-size:13px">Procès-verbaux AG</div><div style="font-size:11px;color:var(--g400)">2 documents</div></div><div class="acard" onclick="toast('💰 Ouverture...')"><div style="font-size:32px;margin-bottom:8px">💰</div><div style="font-weight:700;font-size:13px">Rapports financiers</div><div style="font-size:11px;color:var(--g400)">Admins uniquement</div></div><div class="acard" onclick="toast('📊 Ouverture...')"><div style="font-size:32px;margin-bottom:8px">📊</div><div style="font-weight:700;font-size:13px">Rapports d'activités</div><div style="font-size:11px;color:var(--g400)">2 documents</div></div><div class="acard" onclick="toast('📝 Ouverture...')"><div style="font-size:32px;margin-bottom:8px">📝</div><div style="font-weight:700;font-size:13px">Contrats</div><div style="font-size:11px;color:var(--g400)">0 document</div></div><div class="acard" style="border-style:dashed" onclick="toast('✚ Création...')"><div style="font-size:32px;margin-bottom:8px;opacity:.3">➕</div><div style="font-weight:700;font-size:13px;color:var(--g400)">Nouveau dossier</div></div></div></div>
+      <div class="card"><div class="chd"><div class="cttl">Membres autorisés</div><button class="btn bp bsm" onclick="openM('mAcc')">＋ Autoriser</button></div><div class="tw"><table><thead><tr><th>Membre</th><th>Rôle</th><th>E-mail</th><th>Accès</th><th>Action</th></tr></thead><tbody id="accBody"></tbody></table></div></div>
+    </div>
+
+    <!-- NOTIFICATIONS ADMIN -->
+    <div class="page" id="page-notifs">
+      <div class="ncmp">
+        <div class="ncttl">📣 Envoyer une notification</div>
+        <div class="ncsub">Message visible instantanément dans l'onglet Notifications de l'application.</div>
+        <input class="ncinp" id="nTit" placeholder="Titre de la notification *"/>
+        <textarea class="ncta" id="nMsg" placeholder="Contenu du message..."></textarea>
+        <div style="margin-bottom:10px">
+          <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Destinataires</div>
+          <div class="ntbtns">
+            <button class="ntb on" id="ntAll" onclick="setNT('all',this)">👥 Tous</button>
+            <button class="ntb" id="ntAct" onclick="setNT('actif',this)">✅ Agents actifs</button>
+            <button class="ntb" id="ntFmt" onclick="setNT('formateur',this)">🎓 Formateurs</button>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <select class="ncsel" id="nType"><option value="info">ℹ️ Information</option><option value="urgent">🚨 Urgent</option><option value="formation">🎓 Formation</option><option value="collecte">📊 Collecte</option><option value="reunion">📅 Réunion</option></select>
+          <button class="btn bpu" onclick="sendNotif()" style="padding:10px 22px">📤 Envoyer</button>
+        </div>
+      </div>
+      <div class="card"><div class="chd"><div><div class="cttl">Historique</div><div class="csub" id="notifCnt">0 notification</div></div><button class="btn bsl bsm" onclick="clearNotifs()">Tout effacer</button></div><div id="notifHist"></div></div>
+    </div>
+
+    <!-- RAPPORTS -->
+    <div class="page" id="page-rapports">
+      <div class="card"><div class="chd"><div class="cttl">Générateur de rapports</div></div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+          <div class="acard" onclick="printAg()"><div style="font-size:32px;margin-bottom:8px">📊</div><div style="font-weight:700;margin-bottom:4px">Rapport Agents</div><div style="font-size:12px;color:var(--g400)">Liste complète</div></div>
+          <div class="acard" onclick="toast('🗺️ Génération...')"><div style="font-size:32px;margin-bottom:8px">🗺️</div><div style="font-weight:700;margin-bottom:4px">Rapport Géographique</div><div style="font-size:12px;color:var(--g400)">Couverture régionale</div></div>
+          <div class="acard" onclick="toast('📅 Génération...')"><div style="font-size:32px;margin-bottom:8px">📅</div><div style="font-weight:700;margin-bottom:4px">Rapport Activités</div><div style="font-size:12px;color:var(--g400)">Formations &amp; collectes</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BUREAU -->
+    <div class="page" id="page-bureau">
+      <div class="card"><div class="chd"><div><div class="cttl">Bureau Exécutif</div><div class="csub">Membres du bureau national</div></div><button class="btn bp" onclick="openM('mBur')">＋ Ajouter</button></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px" id="burGrid"></div></div>
+    </div>
+
+    <!-- DOCUMENTS PUBLICS -->
+    <div class="page" id="page-docs">
+      <div class="card">
+        <div class="chd"><div><div class="cttl">📁 Documents publics</div><div class="csub">Règlement intérieur, conditions d'adhésion — téléchargeables par les agents</div></div><button class="btn bp" onclick="openM('mDoc')">＋ Ajouter un document</button></div>
+        <div style="background:#f0f9ff;border:1.5px solid rgba(59,130,246,.2);border-radius:10px;padding:14px;margin-bottom:14px;font-size:13px;color:#1d4ed8"><strong>ℹ️ Information :</strong> Les documents ajoutés ici seront visibles et téléchargeables par les agents dans l'onglet "Documents" de l'interface publique.</div>
+        <div id="docsList"><div style="text-align:center;padding:30px;color:var(--g400)"><div style="font-size:32px;margin-bottom:10px">📂</div><p>Aucun document publié. Cliquez sur "＋ Ajouter" pour publier un document.</p></div></div>
+      </div>
+    </div>
+
+    <!-- ADMINS -->
+    <div class="page" id="page-admins">
+      <div class="card"><div class="chd"><div><div class="cttl">🔑 Gestion des Administrateurs</div><div class="csub">Zone réservée à l'administrateur principal</div></div><button class="btn bp" id="btnAddAdm" onclick="openM('mAdm')" style="display:none">＋ Ajouter un admin</button></div><div id="admList"></div></div>
+      <div style="background:#fff5f5;border:2px solid rgba(239,43,45,.15);border-radius:12px;padding:16px;display:flex;align-items:flex-start;gap:12px"><div style="font-size:20px">⚠️</div><div><div style="font-weight:700;color:var(--rr);margin-bottom:3px">Zone réservée</div><div style="font-size:13px;color:var(--g600);line-height:1.6">Seul <strong>etiennebadalom@gmail.com</strong> peut ajouter ou supprimer des administrateurs.</div></div></div>
+    </div>
+
+    <!-- CONTENU PUBLIC -->
+    <div class="page" id="page-contenu">
+      <div class="card">
+        <div class="chd"><div class="cttl">✏️ Modifier le contenu public</div><div class="csub">Textes visibles sur l'interface publique de l'application</div></div>
+        <div class="fg" style="margin-bottom:16px"><label>Texte de présentation de l'association</label><textarea id="editPres" rows="5" style="width:100%;padding:10px;border:1.5px solid var(--g200);border-radius:8px;font-size:13px;outline:none;resize:vertical">L'Association des Agents Collecteurs de Données Statistiques (2A-CDS) est une organisation à but non lucratif regroupant des professionnels spécialisés dans la collecte, le traitement et l'analyse de données statistiques.</textarea></div>
+        <div class="fg" style="margin-bottom:16px"><label>Mission &amp; Objectifs</label><textarea id="editMission" rows="4" style="width:100%;padding:10px;border:1.5px solid var(--g200);border-radius:8px;font-size:13px;outline:none;resize:vertical">Promouvoir la collecte de données statistiques de qualité · Former et professionnaliser les collecteurs · Contribuer aux politiques de développement.</textarea></div>
+        <div class="fg2" style="margin-bottom:16px">
+          <div class="fg"><label>Date de création</label><input id="editDate" value="2024"/></div>
+          <div class="fg"><label>Siège social</label><input id="editSiege" value="Ouagadougou, Burkina Faso"/></div>
+          <div class="fg"><label>Récépissé N°</label><input id="editRecep" value="2024-BF-001234"/></div>
+          <div class="fg"><label>Frais d'adhésion (FCFA)</label><input id="editFrais" value="5 000 F CFA"/></div>
+          <div class="fg"><label>Statut</label><input id="editStatut" value="Association nationale"/></div>
+        </div>
+        <div class="fa"><button class="btn bp" onclick="saveContenu()">✓ Enregistrer les modifications</button></div>
+      </div>
+    </div>
+
+    <!-- PARAMÈTRES -->
+    <div class="page" id="page-settings">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div class="card">
+          <div class="cttl" style="margin-bottom:14px">Informations de l'association</div>
+          <div class="fg2" style="gap:12px">
+            <div class="fg full"><label>Nom officiel</label><input value="Association des Agents Collecteurs de Données Statistiques"/></div>
+            <div class="fg"><label>Sigle</label><input value="2A-CDS"/></div>
+            <div class="fg"><label>Frais d'adhésion</label><input value="5000" type="number"/></div>
+            <div class="fg"><label>Siège social</label><input value="Ouagadougou, Burkina Faso"/></div>
+            <div class="fg"><label>Récépissé N°</label><input value="2024-BF-001234"/></div>
+          </div>
+          <div class="fa"><button class="btn bp" onclick="toast('✓ Paramètres sauvegardés')">Enregistrer</button></div>
+        </div>
+        <div class="card">
+          <div class="cttl" style="margin-bottom:14px">Mon compte</div>
+          <div style="background:var(--g50);border-radius:10px;padding:12px;display:flex;align-items:center;gap:12px;margin-bottom:14px;border:1.5px solid var(--g200)">
+            <div class="avt" id="stAv">E</div>
+            <div><div style="font-weight:700" id="stNm">Etienne Badalom</div><div style="font-size:12px;color:var(--vr)" id="stEm">etiennebadalom@gmail.com</div><span class="badge bgr" id="stRl">Admin Principal</span></div>
+          </div>
+          <div class="fg" style="margin-bottom:12px"><label>Nouveau mot de passe</label><input type="password" placeholder="Laisser vide pour conserver"/></div>
+          <div class="fa"><button class="btn bo" onclick="toast('✓ Mot de passe mis à jour')">Mettre à jour</button></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- MODALS -->
+<div class="mo" id="mAgent"><div class="mbox"><div class="mhd"><div class="mttl">➕ Enregistrer un agent</div><button class="mcl" onclick="closeM('mAgent')">✕</button></div><div class="mbody"><div class="fg2">
+<div class="fg"><label>Nom *</label><input id="fNom"/></div>
+<div class="fg"><label>Prénom(s) *</label><input id="fPre"/></div>
+<div class="fg"><label>Téléphone WhatsApp *</label><input id="fTel" type="tel"/></div>
+<div class="fg"><label>E-mail</label><input id="fEml" type="email"/></div>
+<div class="fg"><label>Date de naissance</label><input id="fDob" type="date"/></div>
+<div class="fg"><label>Sexe</label><select id="fSex"><option>Masculin</option><option>Féminin</option></select></div>
+<div class="fg"><label>Région *</label><select id="fReg" onchange="updPrv('fPrv','fReg')"><option value="">— Choisir —</option><option value="BKU">Bankui</option><option value="TAN">Tannounyan</option><option value="KDG">Kadiogo</option><option value="NAK">Nakambé</option><option value="KLS">Kuilsé</option><option value="NAN">Nando</option><option value="NZN">Nazinon</option><option value="GLM">Goulmou</option><option value="GRK">Guiriko</option><option value="YDG">Yaadga</option><option value="OBR">Oubri</option><option value="LPT">Liptako</option><option value="SOM">Soum</option><option value="SRB">Sirba</option><option value="TPO">Tapoa</option><option value="DJR">Djôrô</option><option value="SOU">Sourou</option></select></div>
+<div class="fg"><label>Province *</label><select id="fPrv" onchange="updCom('fPrv','fReg')"><option value="">-- Province --</option></select></div>
+<div class="fg"><label>Commune *</label><select id="fCom" style="padding:10px 13px;border:1.5px solid var(--g200);border-radius:8px;font-size:13px;background:var(--wh);width:100%"><option value="">-- Commune --</option></select></div>
+<div class="fg"><label>Code commune</label><input id="fCC" maxlength="3" placeholder="BAG"/></div>
+<div class="fg"><label>Niveau d'étude</label><select id="fNiv"><option>BEPC / Brevet</option><option>BAC</option><option>BTS / DUT</option><option>Licence</option><option>Master</option><option>Doctorat</option><option>Autre</option></select></div>
+<div class="fg"><label>Spécialité</label><input id="fSpc"/></div>
+<div class="fg"><label>Expérience collecte</label><select id="fExp"><option>Aucune</option><option>Moins d'1 an</option><option>1 à 3 ans</option><option>3 à 5 ans</option><option>Plus de 5 ans</option></select></div>
+<div class="fg"><label>N° CNI</label><input id="fCni"/></div>
+<div class="fg"><label>Contrat signé</label><select id="fCon"><option value="oui">Oui</option><option value="non">Non</option></select></div>
+<div class="fg"><label>Frais d'adhésion (5 000 FCFA)</label><select id="fFra"><option value="non">Non payé</option><option value="oui">Payé ✓</option><option value="partiel">Partiel</option></select></div>
+<div class="fg full"><label>Notes</label><textarea id="fNot"></textarea></div>
+</div></div><div class="mft"><button class="btn bsl" onclick="closeM('mAgent')">Annuler</button><button class="btn bp" onclick="saveAgent()">✓ Enregistrer</button></div></div></div>
+
+<div class="mo" id="mDetail"><div class="mbox" style="max-width:600px"><div class="mhd"><div class="mttl">👤 Dossier agent</div><button class="mcl" onclick="closeM('mDetail')">✕</button></div><div class="mbody" id="mDetB"></div><div class="mft"><button class="btn bwa bsm" id="btnWA">💬 WhatsApp validation</button><button class="btn bdn bsm" id="btnSusp">⚠ Suspendre</button><button class="btn bsl" onclick="closeM('mDetail')">Fermer</button><button class="btn bp" id="btnAct">✓ Activer</button></div></div></div>
+
+<div class="mo" id="mFmt"><div class="mbox"><div class="mhd"><div class="mttl">🎓 Ajouter un formateur</div><button class="mcl" onclick="closeM('mFmt')">✕</button></div><div class="mbody"><div class="fg2">
+<div class="fg"><label>Nom *</label><input id="ftNom"/></div>
+<div class="fg"><label>Prénom(s) *</label><input id="ftPre"/></div>
+<div class="fg"><label>Téléphone *</label><input id="ftTel" type="tel"/></div>
+<div class="fg"><label>E-mail *</label><input id="ftEml" type="email"/></div>
+<div class="fg"><label>Spécialité *</label><input id="ftSpc"/></div>
+<div class="fg"><label>Expérience (années)</label><input id="ftExp" type="number"/></div>
+<div class="fg"><label>Disponibilité</label><select id="ftDsp"><option>Temps plein</option><option>Temps partiel</option><option>Vacataire</option></select></div>
+<div class="fg"><label>Prétention journalière (FCFA)</label><input id="ftSal" type="number" placeholder="25000"/></div>
+<div class="fg full"><label>Modules</label><textarea id="ftMod" placeholder="Modules pouvant être enseignés..."></textarea></div>
+<div class="fg full"><label>Références</label><textarea id="ftRef"></textarea></div>
+</div></div><div class="mft"><button class="btn bsl" onclick="closeM('mFmt')">Annuler</button><button class="btn bp" onclick="saveFmt()">✓ Enregistrer</button></div></div></div>
+
+<div class="mo" id="mAct"><div class="mbox"><div class="mhd"><div class="mttl">📅 Planifier une activité</div><button class="mcl" onclick="closeM('mAct')">✕</button></div><div class="mbody"><div class="fg2">
+<div class="fg"><label>Type</label><select id="aTyp"><option value="formation">Formation</option><option value="collecte">Collecte</option><option value="reunion">Réunion</option><option value="evaluation">Évaluation</option></select></div>
+<div class="fg"><label>Intitulé *</label><input id="aTit"/></div>
+<div class="fg"><label>Date début *</label><input id="aDt" type="date"/></div>
+<div class="fg"><label>Date fin</label><input id="aFin" type="date"/></div>
+<div class="fg"><label>Lieu</label><input id="aLieu"/></div>
+<div class="fg"><label>Responsable</label><input id="aResp"/></div>
+<div class="fg full"><label>Description</label><textarea id="aDesc"></textarea></div>
+</div></div><div class="mft"><button class="btn bsl" onclick="closeM('mAct')">Annuler</button><button class="btn bp" onclick="saveAct()">✓ Planifier</button></div></div></div>
+
+<div class="mo" id="mForm"><div class="mbox"><div class="mhd"><div class="mttl">📚 Créer une formation</div><button class="mcl" onclick="closeM('mForm')">✕</button></div><div class="mbody"><div class="fg2">
+<div class="fg full"><label>Titre *</label><input id="foT"/></div>
+<div class="fg"><label>Date</label><input type="date" id="foD"/></div>
+<div class="fg"><label>Durée</label><input id="foDr" placeholder="2 jours"/></div>
+<div class="fg"><label>Lieu</label><input id="foL"/></div>
+<div class="fg"><label>Places max</label><input type="number" id="foP" placeholder="20"/></div>
+<div class="fg full"><label>Objectifs</label><textarea id="foO"></textarea></div>
+</div></div><div class="mft"><button class="btn bsl" onclick="closeM('mForm')">Annuler</button><button class="btn bp" onclick="saveFo()">✓ Créer</button></div></div></div>
+
+<div class="mo" id="mBur"><div class="mbox"><div class="mhd"><div class="mttl">🏛️ Ajouter un membre du bureau</div><button class="mcl" onclick="closeM('mBur')">✕</button></div><div class="mbody"><div class="fg2">
+<div class="fg"><label>Nom *</label><input id="bNom"/></div>
+<div class="fg"><label>Prénom(s) *</label><input id="bPre"/></div>
+<div class="fg"><label>Poste *</label><input id="bPst"/></div>
+<div class="fg"><label>E-mail *</label><input id="bEml" type="email"/></div>
+<div class="fg"><label>Téléphone WhatsApp</label><input id="bTel" type="tel"/></div>
+<div class="fg"><label>Accès archives</label><select id="bAcc"><option value="non">Non</option><option value="lecture">Lecture seule</option><option value="total">Complet</option></select></div>
+</div></div><div class="mft"><button class="btn bsl" onclick="closeM('mBur')">Annuler</button><button class="btn bp" onclick="saveBur()">✓ Ajouter</button></div></div></div>
+
+<div class="mo" id="mAcc"><div class="mbox" style="max-width:460px"><div class="mhd"><div class="mttl">🔐 Autoriser un accès</div><button class="mcl" onclick="closeM('mAcc')">✕</button></div><div class="mbody">
+<div class="fg" style="margin-bottom:12px"><label>E-mail *</label><input id="axE"/></div>
+<div class="fg" style="margin-bottom:12px"><label>Rôle</label><input id="axR" placeholder="Secrétaire Général"/></div>
+<div class="fg"><label>Niveau d'accès</label><select id="axN"><option>Lecture seule</option><option>Lecture &amp; Téléchargement</option><option>Accès complet</option></select></div>
+</div><div class="mft"><button class="btn bsl" onclick="closeM('mAcc')">Annuler</button><button class="btn bp" onclick="saveAcc()">✓ Autoriser</button></div></div></div>
+
+<div class="mo" id="mDoc"><div class="mbox" style="max-width:500px"><div class="mhd"><div class="mttl">📄 Ajouter un document public</div><button class="mcl" onclick="closeM('mDoc')">✕</button></div><div class="mbody">
+<div style="background:#f0f9ff;border-radius:8px;padding:12px;margin-bottom:16px;font-size:12px;color:#1d4ed8;border:1px solid rgba(59,130,246,.2)"><strong>ℹ️</strong> Saisissez le titre et l'URL (lien Google Drive, Dropbox, etc.) vers votre document. Les agents pourront le télécharger depuis l'interface publique.</div>
+<div class="fg" style="margin-bottom:12px"><label>Titre du document *</label><input id="dcTit" placeholder="Règlement intérieur 2A-CDS"/></div>
+<div class="fg" style="margin-bottom:12px"><label>Description</label><input id="dcDesc" placeholder="Document officiel de l'association..."/></div>
+<div class="fg" style="margin-bottom:12px"><label>Lien URL (Google Drive, Dropbox, etc.) *</label><input id="dcUrl" placeholder="https://drive.google.com/..." type="url"/></div>
+<div class="fg"><label>Type de document</label><select id="dcType"><option value="reglement">📋 Règlement intérieur</option><option value="adhesion">📝 Conditions d'adhésion</option><option value="charte">🤝 Charte</option><option value="formulaire">📄 Formulaire</option><option value="autre">📁 Autre</option></select></div>
+</div><div class="mft"><button class="btn bsl" onclick="closeM('mDoc')">Annuler</button><button class="btn bp" onclick="saveDoc()">✓ Publier</button></div></div></div>
+
+<div class="mo" id="mAdm"><div class="mbox" style="max-width:480px"><div class="mhd"><div class="mttl">🔑 Ajouter un administrateur</div><button class="mcl" onclick="closeM('mAdm')">✕</button></div><div class="mbody">
+<div style="background:#fff5f5;border-radius:8px;padding:11px;margin-bottom:16px;font-size:12px;color:var(--g600);border:1.5px solid #fecaca"><strong>⚠️</strong> Le nouvel admin aura accès à tout sauf la gestion des administrateurs.</div>
+<div class="fg" style="margin-bottom:12px"><label>Nom complet *</label><input id="adNm" placeholder="Prénom NOM"/></div>
+<div class="fg" style="margin-bottom:12px"><label>E-mail *</label><input id="adEm" type="email"/></div>
+<div class="fg" style="margin-bottom:12px"><label>Mot de passe * (min. 8 car.)</label><input id="adPw" type="password"/></div>
+<div class="fg"><label>Initiale (avatar)</label><input id="adIn" maxlength="1" placeholder="A" style="max-width:70px;text-transform:uppercase"/></div>
+</div><div class="mft"><button class="btn bsl" onclick="closeM('mAdm')">Annuler</button><button class="btn bp" onclick="saveAdm()">✓ Créer</button></div></div></div>
+
+<div id="toast">✓</div>
+<script>
+// ═══════════════════════════════════
+// DATA
+// ═══════════════════════════════════
+let ADMINS={
+  'etiennebadalom@gmail.com':{pwd:'admin2025',name:'Etienne Badalom',init:'E',isPrincipal:true},
+  'koudougoum91@gmail.com':{pwd:'admin2025',name:'Koudougou Marcel',init:'K',isPrincipal:false},
+  'ibrahim01sawadogo@gmail.com':{pwd:'admin2025',name:'Ibrahim Sawadogo',init:'I',isPrincipal:false}
+};
+const PRINCIPAL='etiennebadalom@gmail.com';
+const WA_PRES='22670959752'; // numéro WhatsApp président
+
+let CU=null,cfmt='text',ntgt='all',notifs=[],docs=[];
+
+let agents=[
+  {id:'BKU-BAL-BAG-25-001',nom:'OUEDRAOGO',pre:'Seydou',tel:'+22670123456',eml:'seydou.o@mail.com',dob:'1990-03-15',sex:'Masculin',reg:'BKU',prv:'BAL',com:'Bagassi',cc:'BAG',niv:'Licence',spc:'Statistique',exp:'1 à 3 ans',cni:'CNI-12345678',st:'actif',con:'oui',fra:'oui',pay:'Mobile Money',miss:2,eval:4.5,not:'Bon profil',date:'2025-01-10'},
+  {id:'GRK-HOU-BOB-25-001',nom:'TRAORE',pre:'Aminata',tel:'+22676543210',eml:'aminata.t@mail.com',dob:'1995-07-22',sex:'Féminin',reg:'GRK',prv:'HOU',com:'Bobo-Dioulasso',cc:'BOB',niv:'Master',spc:'Économie',exp:'3 à 5 ans',cni:'CNI-87654321',st:'actif',con:'oui',fra:'oui',pay:'Mobile Money',miss:3,eval:4.8,not:'Très expérimentée',date:'2025-01-12'},
+  {id:'KDG-KAD-OUA-25-001',nom:'SAWADOGO',pre:'Ibrahim',tel:'+22665432109',eml:'ibrahim.s@mail.com',dob:'1988-11-05',sex:'Masculin',reg:'KDG',prv:'KAD',com:'Ouagadougou',cc:'OUA',niv:'BAC',spc:'—',exp:"Moins d'1 an",cni:'CNI-11223344',st:'en_attente',con:'non',fra:'non',pay:'Mobile Money',miss:0,eval:null,not:'En cours de validation',date:'2025-01-15'}
+];
+let formateurs=[];
+const REGS=[
+  {c:'BKU',n:'Bankui',ch:'Dédougou',p:['BAL','BNW','KOS','MOU','NAY','SRU']},
+  {c:'TAN',n:'Tannounyan',ch:'Banfora',p:['COM','LER']},
+  {c:'KDG',n:'Kadiogo',ch:'Ouagadougou',p:['KAD']},
+  {c:'NAK',n:'Nakambé',ch:'Tenkodogo',p:['BOU','KPL','KRT']},
+  {c:'KLS',n:'Kuilsé',ch:'Kaya',p:['BAM','NAM','SBT']},
+  {c:'NAN',n:'Nando',ch:'Koudougou',p:['BLK','SNG','SIS','ZIR']},
+  {c:'NZN',n:'Nazinon',ch:'Manga',p:['BAZ','NAH','ZON']},
+  {c:'GLM',n:'Goulmou',ch:"Fada N'Gourma",p:['GNA','GRM','KMJ','KMP']},
+  {c:'GRK',n:'Guiriko',ch:'Bobo-Dioulasso',p:['HOU','KEN','TUY']},
+  {c:'YDG',n:'Yaadga',ch:'Ouahigouya',p:['LOR','PAS','YAT','ZOD']},
+  {c:'OBR',n:'Oubri',ch:'Ziniaré',p:['GAN','KRW','BST']},
+  {c:'LPT',n:'Liptako',ch:'Dori',p:['OUD','SEN','YAG']},
+  {c:'SOM',n:'Soum',ch:'Djibo',p:['DJL','KRP']},
+  {c:'SRB',n:'Sirba',ch:'Bogandé',p:['GNG','DYM']},
+  {c:'TPO',n:'Tapoa',ch:'Diapaga',p:['TAP']},
+  {c:'DJR',n:'Djôrô',ch:'Gaoua',p:['BGP','IOB','NUM','PON']},
+  {c:'SOU',n:'Sourou',ch:'Tougan',p:['SRU']}
+];
+const PBR={};REGS.forEach(r=>PBR[r.c]=r.p);
+let activities=[
+  {type:'formation',tit:'Techniques de collecte CAPI',dt:'2025-06-20',fin:'2025-06-21',lieu:'Ouagadougou',resp:'TRAORE Aminata',st:'planifie'},
+  {type:'reunion',tit:'Assemblée Générale Ordinaire',dt:'2025-07-05',fin:'',lieu:'Bobo-Dioulasso',resp:'Président',st:'planifie'}
+];
+let formations=[{t:'Introduction aux techniques de collecte',d:'2025-06-20',dr:'2 jours',l:'Ouagadougou',p:20,ins:8}];
+let bureauM=[{n:'Badalom',pr:'Etienne',pst:'Président',eml:'etiennebadalom@gmail.com',tel:'+22670959752',acc:'total'}];
+let archAcc=[{n:'Badalom Etienne',r:'Président',e:'etiennebadalom@gmail.com',a:'Accès complet'}];
+
+// Contenu public éditable
+let pubContenu={
+  pres:"L'Association des Agents Collecteurs de Données Statistiques (2A-CDS) est une organisation à but non lucratif regroupant des professionnels spécialisés dans la collecte, le traitement et l'analyse de données statistiques. Elle œuvre pour le renforcement des capacités nationales en matière de statistiques au service du développement du Burkina Faso.",
+  mission:"Promouvoir la collecte de données statistiques de qualité · Former et professionnaliser les collecteurs · Contribuer aux politiques de développement basées sur des données fiables · Créer un réseau national de collecteurs qualifiés.",
+  date:'2024',siege:'Ouagadougou, Burkina Faso',recep:'2024-BF-001234',frais:'5 000 F CFA',statut:'Association nationale'
+};
+
+// ═══ SCREENS ═══
+function showSc(id){document.querySelectorAll('.sc').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on')}
+function showLogin(){showSc('scLogin')}
+function showPublic(){showSc('scPublic');ptab('A')}
+function showFormateur(){showSc('scFormateur')}
+function showAdmin(){showSc('scAdmin')}
+
+// ═══ LOGIN ═══
+function doLogin(){
+  const em=document.getElementById('lgEmail').value.trim().toLowerCase();
+  const pw=document.getElementById('lgPwd').value;
+  const u=ADMINS[em];
+  if(u&&u.pwd===pw){
+    CU={...u,email:em};
+    document.getElementById('sbAv').textContent=u.init;
+    document.getElementById('sbNm').textContent=u.name;
+    document.getElementById('sbRl').textContent=u.isPrincipal?'👑 Admin Principal':'Administrateur';
+    document.getElementById('stAv').textContent=u.init;
+    document.getElementById('stNm').textContent=u.name;
+    document.getElementById('stEm').textContent=em;
+    document.getElementById('stRl').textContent=u.isPrincipal?'Admin Principal':'Administrateur';
+    document.getElementById('niAdm').style.display=u.isPrincipal?'flex':'none';
+    document.getElementById('niContenu').style.display=u.isPrincipal?'flex':'none';
+    document.getElementById('lgErr').style.display='none';
+    try{document.getElementById('lnk').textContent='https://magnificent-alfajores-7ccbca.netlify.app/?mode=inscription';}catch(e){}
+    showAdmin();renderAll();
+    setTimeout(function(){if(typeof startSync==='function')startSync();},800);
+  }else document.getElementById('lgErr').style.display='block';
+}
+function doLogout(){CU=null;showLogin()}
+
+// ═══ PUBLIC TABS ═══
+function ptab(t){
+  ['A','I','B','N','D'].forEach(x=>{
+    document.getElementById('pt'+x).classList.toggle('on',x===t);
+    document.getElementById('pt'+x+'-c').style.display=x===t?'block':'none';
+  });
+  if(t==='N'){renderPubNotifs();startNotifPoll();}
+  if(t==='D')renderPubDocs();
+  if(t==='A')applyContenu();
+}
+
+// ═══ CONTENU PUBLIC ═══
+function applyContenu(){
+  const el=e=>document.getElementById(e);
+  if(el('pubPres'))el('pubPres').textContent=pubContenu.pres;
+  if(el('pubMission'))el('pubMission').textContent=pubContenu.mission;
+  if(el('piDate'))el('piDate').textContent=pubContenu.date;
+  if(el('piSiege'))el('piSiege').textContent=pubContenu.siege;
+  if(el('piRecep'))el('piRecep').textContent=pubContenu.recep;
+  if(el('piFrais'))el('piFrais').textContent=pubContenu.frais;
+  if(el('piStatut'))el('piStatut').textContent=pubContenu.statut;
+}
+function saveContenu(){
+  pubContenu.pres=document.getElementById('editPres').value;
+  pubContenu.mission=document.getElementById('editMission').value;
+  pubContenu.date=document.getElementById('editDate').value;
+  pubContenu.siege=document.getElementById('editSiege').value;
+  pubContenu.recep=document.getElementById('editRecep').value;
+  pubContenu.frais=document.getElementById('editFrais').value;
+  pubContenu.statut=document.getElementById('editStatut').value;
+  applyContenu();
+  // Sauvegarder dans Firebase
+  if(window.fbPost){
+    window.fbGet('contenu',function(err,docs){
+      if(!err&&docs.length>0&&docs[0]._id){
+        // Mettre à jour le document existant
+        window.fbUpdate('contenu',docs[0]._id,pubContenu,null);
+      } else {
+        // Créer un nouveau document
+        window.fbPost('contenu',pubContenu,null);
+      }
+    });
+  }
+  toast('✓ Contenu public mis à jour pour tous les utilisateurs');
+}
+
+// ═══ DOCUMENTS PUBLICS ═══
+const DOC_ICO={reglement:'📋',adhesion:'📝',charte:'🤝',formulaire:'📄',autre:'📁'};
+function saveDoc(){
+  const tit=document.getElementById('dcTit').value.trim();
+  const url=document.getElementById('dcUrl').value.trim();
+  if(!tit||!url){toast('⚠ Titre et URL obligatoires');return}
+  var newDoc={id:Date.now(),tit,desc:document.getElementById('dcDesc').value,url,type:document.getElementById('dcType').value,date:new Date().toLocaleDateString('fr-FR')};
+  docs.push(newDoc);
+  if(window.fbSaveDoc)window.fbSaveDoc(newDoc);
+  closeM('mDoc');renderDocs();renderPubDocs();toast('✓ Document publié');
+}
+function renderDocs(){
+  const el=document.getElementById('docsList');
+  el.innerHTML=docs.length?docs.map(d=>`
+    <div style="display:flex;align-items:center;gap:12px;padding:14px;border:1.5px solid var(--g200);border-radius:10px;margin-bottom:10px;background:var(--wh)">
+      <div style="font-size:28px;flex-shrink:0">${DOC_ICO[d.type]||'📁'}</div>
+      <div style="flex:1"><div style="font-weight:700;font-size:14px">${d.tit}</div><div style="font-size:12px;color:var(--g400);margin-top:2px">${d.desc||''} · ${d.date}</div></div>
+      <a href="${d.url}" target="_blank" class="btn bp bsm">⬇ Voir</a>
+      <button class="btn bdn bsm" onclick="delDoc(${d.id})">✕</button>
+    </div>`).join(''):`<div style="text-align:center;padding:30px;color:var(--g400)"><div style="font-size:32px;margin-bottom:10px">📂</div><p>Aucun document publié.</p></div>`;
+}
+function delDoc(id){var d=docs.find(function(x){return x.id===id;});if(d&&window.fbDeleteDoc)window.fbDeleteDoc(d);docs=docs.filter(function(x){return x.id!==id;});renderDocs();renderPubDocs();toast('Document supprimé');}
+function renderPubDocs(){
+  const el=document.getElementById('pubDocs');
+  if(!el)return;
+  el.innerHTML=docs.length?docs.map(d=>`
+    <a href="${d.url}" target="_blank" class="doc-pill">
+      <span style="font-size:20px">${DOC_ICO[d.type]||'📁'}</span>
+      <div><div style="font-size:13px;font-weight:700">${d.tit}</div>${d.desc?`<div style="font-size:11px;opacity:.6">${d.desc}</div>`:''}</div>
+      <span style="margin-left:auto;font-size:11px;opacity:.5">⬇ Télécharger</span>
+    </a>`).join(''):`<div style="text-align:center;padding:30px;color:rgba(255,255,255,.3)"><div style="font-size:32px;margin-bottom:10px">📂</div><p style="font-size:13px">Aucun document disponible pour le moment.<br>L'administrateur publiera les documents prochainement.</p></div>`;
+}
+
+// ═══ PUBLIC FORM ═══
+let cps=1,lastRegData=null;
+function ps(n){
+  if(n>cps){
+    if(cps===1){const nm=document.getElementById('pNom').value.trim(),pr=document.getElementById('pPre').value.trim(),tl=document.getElementById('pTel').value.trim(),sx=document.getElementById('pSex').value;if(!nm||!pr||!tl||!sx){toast('⚠ Champs obligatoires manquants');return;}}
+    if(cps===2){const rg=document.getElementById('pReg').value,pv=document.getElementById('pPrv').value,cm=document.getElementById('pCom').value.trim();if(!rg||!pv||pv===''||pv.includes('--')||pv.includes('—')||!cm||cm===''||cm.includes('--')){toast('⚠ Région, province et commune requis');return;}}
+    if(cps===3){const nv=document.getElementById('pNiv').value,ex=document.getElementById('pExp').value;if(!nv||!ex){toast('⚠ Niveau et expérience requis');return;}}
+  }
+  cps=n;
+  [1,2,3,4].forEach(i=>{
+    document.getElementById('ps'+i).style.display=i===n?'block':'none';
+    document.getElementById('sd'+i).className='std '+(i<n?'dn':i===n?'nw':'wt');
+  });
+  [1,2,3].forEach(i=>document.getElementById('sl'+i).className='stl'+(i<n?' dn':''));
+  try{const sc=document.querySelector('.sc.on');if(sc)sc.scrollTo({top:0,behavior:'smooth'});}catch(e){}
+}
+function updPrv(pvId,rgId){
+  var PN={BAL:'Bale',BNW:'Banwa',KOS:'Kossi',MOU:'Mouhoun',NAY:'Nayala',SRU:'Sourou',COM:'Comoe',LER:'Leraba',KAD:'Kadiogo',BOU:'Boulgou',KPL:'Koulpelogo',KRT:'Kouritenga',BAM:'Bam',NAM:'Namentenga',SBT:'Sanmatenga',BLK:'Boulkiemde',SNG:'Sanguie',SIS:'Sissili',ZIR:'Ziro',BAZ:'Bazega',NAH:'Nahouri',ZON:'Zoundweogo',GNA:'Gnagna',GRM:'Gourma',KMJ:'Kompienga',KMP:'Tapoa',HOU:'Houet',KEN:'Kenedougou',TUY:'Tuy',LOR:'Loroum',PAS:'Passore',YAT:'Yatenga',ZOD:'Zondoma',GAN:'Ganzourgou',KRW:'Kourweogo',BST:'Oubritenga',OUD:'Oudalan',SEN:'Seno',YAG:'Yagha',DJL:'Soum',KRP:'Soum-Nord',GNG:'Gnagna-Est',DYM:'Gnagna-Ouest',TAP:'Tapoa',BGP:'Bougouriba',IOB:'Ioba',NUM:'Noumbiel',PON:'Poni'};
+  var r=document.getElementById(rgId).value,p=document.getElementById(pvId),ps=PBR[r]||[];
+  p.innerHTML=ps.length?'<option value="">-- Province --</option>'+ps.map(function(v){return '<option value="'+v+'">'+(PN[v]||v)+'</option>';}).join(''):'<option value="">-- Choisir region --</option>';
+  var cEl=document.getElementById(pvId.replace('Prv','Com').replace('prv','com'));
+  if(cEl)cEl.innerHTML='<option value="">-- Choisir province --</option>';
+}
+function updCom(pvId,rgId){
+  var prv=document.getElementById(pvId).value,reg=document.getElementById(rgId).value;
+  var cEl=document.getElementById(pvId.replace('Prv','Com').replace('prv','com'));
+  if(!cEl||!prv||!reg)return;
+  var cs=(COMMUNES[reg]||{})[prv]||[];
+  cEl.innerHTML=cs.length?'<option value="">-- Commune --</option>'+cs.slice().sort().map(function(c){return '<option value="'+c+'">'+c+'</option>';}).join(''):'<option value="">-- Aucune --</option>';
+}
+function showRecap(){
+  // Valider étape 4
+  if(!document.getElementById('pOk1').checked||!document.getElementById('pOk2').checked){
+    toast('⚠ Veuillez cocher les deux cases d\'acceptation');return;
+  }
+  // Récupérer toutes les données
+  var nom=document.getElementById('pNom').value.trim().toUpperCase();
+  var pre=document.getElementById('pPre').value.trim();
+  var tel=document.getElementById('pTel').value.trim();
+  var eml=document.getElementById('pEml').value.trim();
+  var dob=document.getElementById('pDob').value;
+  var sex=document.getElementById('pSex').value;
+  var reg=document.getElementById('pReg').value;
+  var prv=document.getElementById('pPrv').value;
+  var com=document.getElementById('pCom').value;
+  var niv=document.getElementById('pNiv').value;
+  var exp=document.getElementById('pExp').value;
+  var pay=document.getElementById('pPay')?document.getElementById('pPay').value:'Mobile Money';
+  // Remplir le récapitulatif
+  var d=document.getElementById('recapDiv');
+  if(d){
+    d.innerHTML=
+      '<b>Nom :</b> '+nom+' '+pre+'<br>'+
+      '<b>Téléphone :</b> '+tel+'<br>'+
+      (eml?'<b>Email :</b> '+eml+'<br>':'')+
+      (dob?'<b>Date de naissance :</b> '+dob+'<br>':'')+
+      '<b>Sexe :</b> '+sex+'<br>'+
+      '<b>Région :</b> '+(typeof rn==='function'?rn(reg):reg)+'<br>'+
+      '<b>Province :</b> '+prv+'<br>'+
+      '<b>Commune :</b> '+com+'<br>'+
+      '<b>Niveau :</b> '+niv+'<br>'+
+      '<b>Expérience :</b> '+exp+'<br>'+
+      '<b>Paiement :</b> '+pay;
+  }
+  // Afficher l'étape 5
+  [1,2,3,4].forEach(function(i){
+    document.getElementById('ps'+i).style.display='none';
+  });
+  document.getElementById('ps5').style.display='block';
+  try{var sc=document.querySelector('.sc.on');if(sc)sc.scrollTo({top:0,behavior:'smooth'});}catch(e){}
+}
+
+function subPub(){
+  if(!document.getElementById('pOk1').checked||!document.getElementById('pOk2').checked){toast('⚠ Veuillez cocher les deux cases d\'acceptation');return;}
+  const rg=document.getElementById('pReg').value,pv=document.getElementById('pPrv').value;
+  const cc=(document.getElementById('pCC').value.trim()||'XXX').toUpperCase().slice(0,3);
+  const yr=new Date().getFullYear().toString().slice(-2);
+  const sq=String(agents.filter(a=>a.reg===rg&&a.prv===pv).length+1).padStart(3,'0');
+  const id=`${rg}-${pv}-${cc}-${yr}-${sq}`;
+  const tel=document.getElementById('pTel').value.trim();
+  const ag={id,nom:document.getElementById('pNom').value.trim().toUpperCase(),pre:document.getElementById('pPre').value.trim(),tel,eml:document.getElementById('pEml').value.trim(),dob:document.getElementById('pDob').value,sex:document.getElementById('pSex').value,reg:rg,prv:pv,com:document.getElementById('pCom').value.trim(),cc,niv:document.getElementById('pNiv').value,spc:document.getElementById('pSpc').value,exp:document.getElementById('pExp').value,pay:document.getElementById('pPay').value,st:'en_attente',con:'non',fra:'non',miss:0,eval:null,not:'Inscription formulaire en ligne',date:new Date().toISOString().split('T')[0]};
+  agents.push(ag);lastRegData=ag;
+  if(window.fbSaveAgent)window.fbSaveAgent(ag);
+  renderAg(agents);updStats();
+  document.getElementById('okTel').textContent=tel;
+  document.getElementById('pubFrm').style.display='none';
+  document.getElementById('pubOk').style.display='block';
+  // Simule notif WA du président
+  setTimeout(()=>{toast(`📱 Message WhatsApp de validation envoyé au +${WA_PRES} → ${tel}`)},800);
+}
+function resetPub(){
+  document.getElementById('pubFrm').style.display='block';
+  document.getElementById('pubOk').style.display='none';
+  ['pNom','pPre','pTel','pEml','pAdr','pCni','pCom','pCC','pSpc','pMot'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  ['pSex','pReg','pNiv','pExp'].forEach(id=>{const e=document.getElementById(id);if(e)e.selectedIndex=0;});
+  document.getElementById('pPrv').innerHTML='<option>— Choisir la région —</option>';
+  ['pOk1','pOk2'].forEach(id=>{const e=document.getElementById(id);if(e)e.checked=false;});
+  cps=1;ps(1);
+}
+
+// ═══ FICHE ENGAGEMENT ═══
+function dlFiche(){
+  if(!lastRegData){toast('\u26a0 Aucune donn\u00e9e disponible');return;}
+  var a=lastRegData;
+  var html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Fiche d\'Engagement</title>'+
+    '<style>body{font-family:Arial,sans-serif;max-width:700px;margin:30px auto;padding:20px;color:#111}'+
+    '.hdr{text-align:center;border-bottom:3px solid #006B3F;padding-bottom:16px;margin-bottom:20px}'+
+    '.logo{font-size:28px;font-weight:900;color:#006B3F}'+
+    '.flag{display:flex;height:8px;width:80px;margin:10px auto;border-radius:3px;overflow:hidden}'+
+    'h2{color:#006B3F;font-size:16px;border-bottom:1px solid #e2e8f0;padding-bottom:8px;margin:20px 0 12px}'+
+    '.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}'+
+    '.item label{font-size:10px;font-weight:700;color:#666;text-transform:uppercase}'+
+    '.item p{font-size:13px;margin-top:2px;font-weight:500}'+
+    '.eng{background:#f0fff8;border:2px solid #006B3F;border-radius:8px;padding:16px;margin:16px 0;font-size:13px;line-height:1.8}'+
+    '.sign{margin-top:30px;display:grid;grid-template-columns:1fr 1fr;gap:20px}'+
+    '.sign-box{border-top:2px solid #111;padding-top:10px;text-align:center;font-size:12px;color:#666}'+
+    '.badge{display:inline-block;background:#006B3F;color:white;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700}'+
+    '.footer{text-align:center;margin-top:30px;font-size:11px;color:#999;border-top:1px solid #e2e8f0;padding-top:12px}'+
+    '@media print{.noprint{display:none}}'+
+    '</style></head><body>'+
+    '<button class="noprint" onclick="window.print()" style="margin-bottom:20px;padding:10px 20px;background:#006B3F;color:white;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer">&#128424; Imprimer / Enregistrer PDF</button>'+
+    '<div class="hdr"><div class="logo">2A-CDS</div>'+
+    '<div style="font-size:13px;color:#666;margin-top:4px">Association des Agents Collecteurs de Donn\u00e9es Statistiques</div>'+
+    '<div class="flag"><div style="background:#EF2B2D;flex:1"></div><div style="background:#006B3F;flex:1"></div><div style="background:#FCD116;flex:1"></div></div></div>'+
+    '<h1 style="text-align:center;font-size:20px;margin-bottom:20px">FICHE D\'ENGAGEMENT<br><span style="font-size:13px;color:#666;font-weight:400">Agent Enqu\u00eateur - 2A-CDS</span></h1>'+
+    '<h2>Informations personnelles</h2>'+
+    '<div class="grid">'+
+    '<div class="item"><label>Identifiant</label><p><strong style="color:#006B3F">'+a.id+'</strong></p></div>'+
+    '<div class="item"><label>Date inscription</label><p>'+(a.date||new Date().toLocaleDateString('fr-FR'))+'</p></div>'+
+    '<div class="item"><label>Nom</label><p>'+a.nom+'</p></div>'+
+    '<div class="item"><label>Pr\u00e9nom</label><p>'+a.pre+'</p></div>'+
+    '<div class="item"><label>T\u00e9l\u00e9phone</label><p>'+a.tel+'</p></div>'+
+    '<div class="item"><label>Email</label><p>'+(a.eml||'\u2014')+'</p></div>'+
+    '<div class="item"><label>R\u00e9gion</label><p>'+(typeof rn==='function'?rn(a.reg):a.reg)+'</p></div>'+
+    '<div class="item"><label>Commune</label><p>'+a.com+'</p></div>'+
+    '<div class="item"><label>Niveau d\u2019\u00e9tude</label><p>'+a.niv+'</p></div>'+
+    '<div class="item"><label>Exp\u00e9rience</label><p>'+a.exp+'</p></div>'+
+    '</div>'+
+    '<div class="eng">'+
+    '<strong>JE SOUSSIGN\u00c9(E), '+a.nom+' '+a.pre+'</strong>, m\u2019engage :\u00e0<br>'+
+    '\u2714 Respecter les statuts et r\u00e8glement int\u00e9rieur d\u20192A-CDS<br>'+
+    '\u2714 Exercer mes missions avec rigueur et \u00e9thique<br>'+
+    '\u2714 M\u2019acquitter des frais d\u2019adh\u00e9sion de <strong>5 000 F CFA</strong><br>'+
+    '\u2714 Participer aux formations et activit\u00e9s<br>'+
+    '\u2714 Respecter la confidentialit\u00e9 des donn\u00e9es collect\u00e9es'+
+    '</div>'+
+    '<div class="sign">'+
+    '<div class="sign-box">Signature de l\u2019agent<br><br><br><strong>'+a.nom+' '+a.pre+'</strong></div>'+
+    '<div class="sign-box">Cachet 2A-CDS<br><br><br><strong>BADALOM Etienne</strong></div>'+
+    '</div>'+
+    '<div class="footer"><div class="badge">'+a.id+'</div><br>2A-CDS \u00b7 Ouagadougou, Burkina Faso</div>'+
+    '</body></html>';
+
+  try{
+    // Méthode 1: Blob URL (moderne, fonctionne sur Android WebView)
+    var blob=new Blob([html],{type:'text/html;charset=utf-8'});
+    var url=URL.createObjectURL(blob);
+    var link=document.createElement('a');
+    link.href=url;
+    link.download='Fiche_Engagement_'+a.nom+'_'+a.pre+'.html';
+    link.style.display='none';
+    document.body.appendChild(link);
+    link.click();
+    setTimeout(function(){
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    },1000);
+    toast('\u2705 Fiche t\u00e9l\u00e9charg\u00e9e !');
+  }catch(ex){
+    // Méthode 2: Fallback - ouvrir dans nouvel onglet
+    try{
+      var w=window.open('','_blank');
+      if(w){w.document.write(html);w.document.close();}
+      else{toast('\u26a0 Autorisez les popups pour t\u00e9l\u00e9charger');}
+    }catch(e2){
+      toast('\u26a0 Impossible de g\u00e9n\u00e9rer la fiche');
+    }
+  }
+}
+
+// ═══ WHATSAPP VALIDATION ═══
+function sendWAValidation(ag){
+  const tel=ag.tel.replace(/\D/g,'');
+  const msg=encodeURIComponent(`🇧🇫 *2A-CDS — Confirmation d'inscription*\n\nBonjour *${ag.pre} ${ag.nom}*,\n\nVotre inscription en tant qu'Agent Enquêteur à l'2A-CDS a bien été reçue.\n\n📋 *Votre identifiant :* ${ag.id}\n📍 *Région :* ${rn(ag.reg)}\n\n💳 *Frais d'adhésion :* 5 000 F CFA\nDes instructions de paiement vous seront envoyées après validation de votre dossier par notre équipe.\n\nMerci de votre confiance.\n\n*Le Président, BADALOM Etienne*\n_2A-CDS — Burkina Faso_`);
+  window.open(`https://wa.me/${tel}?text=${msg}`,'_blank');
+}
+
+// ═══ FORMATEUR ═══
+function subFormateur(){
+  const nm=document.getElementById('fmNom').value.trim(),pr=document.getElementById('fmPre').value.trim(),tl=document.getElementById('fmTel').value.trim(),em=document.getElementById('fmEml').value.trim(),sp=document.getElementById('fmSpc').value.trim();
+  if(!nm||!pr||!tl||!em||!sp){toast('⚠ Champs obligatoires manquants');return;}
+  if(!document.getElementById('fmOk').checked){toast('⚠ Veuillez accepter les conditions');return;}
+  var _fm={nom:nm,pre:pr,tel:tl,eml:em,spc:sp,niv:document.getElementById('fmNiv').value,exp:document.getElementById('fmExp').value,dsp:document.getElementById('fmDsp').value,sal:document.getElementById('fmSal').value,mod:document.getElementById('fmMod').value,ref:document.getElementById('fmRef').value,st:'en_attente',date:new Date().toISOString().split('T')[0]};
+  formateurs.push(_fm);
+  if(window.fbSaveFormateur)window.fbSaveFormateur(_fm);
+  toast('✓ Candidature formateur envoyée !');
+  setTimeout(()=>showLogin(),2500);
+}
+
+// ═══ ADMIN NAV ═══
+const PTTL={dash:'Tableau de bord',agents:'Agents Enquêteurs',formateurs:'Formateurs',regions:'Régions & Provinces',formations:'Formations',planning:'Planification',archives:'Archives',notifs:'Notifications',rapports:'Rapports',bureau:'Bureau Exécutif',docs:'Documents publics',admins:'Gestion des Administrateurs',contenu:'Modifier le contenu public',settings:'Paramètres'};
+function nav(pg,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
+  document.getElementById('page-'+pg).classList.add('on');
+  if(el)el.classList.add('on');
+  document.getElementById('topTtl').textContent=PTTL[pg]||pg;
+  if(pg==='agents')renderAg(agents);
+  if(pg==='formateurs')renderFormateurs(formateurs);
+  if(pg==='regions')renderReg();
+  if(pg==='planning')renderPlan();
+  if(pg==='bureau')renderBur();
+  if(pg==='formations')renderFo();
+  if(pg==='archives')renderAcc();
+  if(pg==='notifs')renderNotifHist();
+  if(pg==='admins')renderAdms();
+  if(pg==='docs'){renderDocs();renderPubDocs();}
+  if(pg==='contenu')loadContenu();
+  closeSb();
+}
+function loadContenu(){
+  document.getElementById('editPres').value=pubContenu.pres;
+  document.getElementById('editMission').value=pubContenu.mission;
+  document.getElementById('editDate').value=pubContenu.date;
+  document.getElementById('editSiege').value=pubContenu.siege;
+  document.getElementById('editRecep').value=pubContenu.recep;
+  document.getElementById('editFrais').value=pubContenu.frais;
+  document.getElementById('editStatut').value=pubContenu.statut;
+}
+function toggleSb(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('ovbg').classList.toggle('on')}
+function closeSb(){document.getElementById('sidebar').classList.remove('open');document.getElementById('ovbg').classList.remove('on')}
+function swTab(el,cid){el.closest('.page').querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));el.closest('.page').querySelectorAll('.tbc').forEach(t=>t.classList.remove('on'));el.classList.add('on');document.getElementById(cid).classList.add('on')}
+function openM(id){document.getElementById(id).classList.add('on')}
+function closeM(id){document.getElementById(id).classList.remove('on')}
+document.querySelectorAll('.mo').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('on')}));
+
+// ═══ TOAST ═══
+let _tt;
+function toast(msg,dur=3200){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('on'),dur)}
+
+// ═══ REFRESH ═══
+function appRefresh(btn){
+  btn.classList.add('spinning');
+  setTimeout(()=>{
+    renderAll();
+    btn.classList.remove('spinning');
+    toast('✓ Application actualisée — '+new Date().toLocaleTimeString('fr-FR'));
+  },1200);
+}
+function refreshNotifs(btn){
+  if(btn){btn.classList.add('spinning');setTimeout(()=>{btn.classList.remove('spinning');renderPubNotifs();toast('🔔 Notifications actualisées');},800);}
+  else renderPubNotifs();
+}
+
+// ═══ NOTIFICATION LIVE POLL ═══
+let pollTimer=null;
+function startNotifPoll(){
+  if(pollTimer)return;
+  pollTimer=setInterval(()=>{
+    window.fbGet('notifications',function(err,d){
+      if(!err){
+        notifs=d.map(function(n){return{id:n._id,_id:n._id,tit:n.titre||n.tit||'',msg:n.message||n.msg||'',type:n.type||'info',tgt:n.destinataires||n.tgt||'all',date:n.date||'',sender:n.expediteur||n.sender||'Admin'};});
+        renderPubNotifs();
+      }
+    });
+  },5000); // rafraîchissement toutes les 5 secondes
+}
+
+// ═══ AGENTS ═══
+const SB={actif:'ba',en_attente:'bw',inactif:'bi',suspendu:'bsu'};
+const SL={actif:'Actif',en_attente:'En attente',inactif:'Inactif',suspendu:'Suspendu'};
+function rn(c){const r=REGS.find(r=>r.c===c);return r?r.n:c}
+function renderAg(list){
+  const rf=document.getElementById('agSR');
+  if(rf.options.length===1)REGS.forEach(r=>{const o=document.createElement('option');o.value=r.c;o.textContent=r.n;rf.appendChild(o)});
+  document.getElementById('agCnt').textContent=`${list.length} agent${list.length>1?'s':''}`;
+  document.getElementById('nbA').textContent=agents.length;
+  document.getElementById('agBody').innerHTML=list.map(a=>`
+    <tr>
+      <td><span class="tid">${esc(a.id)}</span></td>
+      <td><strong>${esc(a.nom)}</strong> ${esc(a.pre)}</td>
+      <td>${esc(a.tel)}</td>
+      <td>${esc(rn(a.reg))}</td>
+      <td>${esc(a.niv)}</td>
+      <td><span class="badge ${a.fra==='oui'?'ba':a.fra==='partiel'?'bw':'bi'}">${a.fra==='oui'?'✓ Payé':a.fra==='partiel'?'Partiel':'Non payé'}</span></td>
+      <td><span class="badge ${SB[a.st]||'bi'}">${SL[a.st]||esc(a.st)}</span></td>
+      <td style="white-space:nowrap">
+        <button class="btn bo bsm" onclick="viewAg(${agents.indexOf(a)})" style="margin-right:3px">👁</button>
+        <button class="btn bwa bsm" onclick="sendWAValidation(agents[${agents.indexOf(a)}])" style="margin-right:3px" title="Envoyer WhatsApp">💬</button>
+        <button class="btn bdn bsm" onclick="delAg(${agents.indexOf(a)})">✕</button>
+      </td>
+    </tr>`).join('');
+  updStats();
+}
+function filterAg(){const q=document.getElementById('agSQ').value.toLowerCase(),st=document.getElementById('agSS').value,rg=document.getElementById('agSR').value;renderAg(agents.filter(a=>(!q||`${a.nom} ${a.pre} ${a.id} ${a.reg} ${a.com}`.toLowerCase().includes(q))&&(!st||a.st===st)&&(!rg||a.reg===rg)))}
+function viewAg(i){
+  const a=agents[i];
+  document.getElementById('mDetB').innerHTML=`
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px">
+      <div class="avt">${a.nom[0]}</div>
+      <div><h3 style="font-family:system-ui,sans-serif;font-size:17px;font-weight:800">${a.nom} ${a.pre}</h3>
+      <p style="font-size:12px;color:var(--g400);margin-top:2px">${a.id}</p>
+      <span class="badge ${SB[a.st]}" style="margin-top:5px">${SL[a.st]}</span></div>
+    </div>
+    <div class="detg">
+      <div class="deti"><label>Téléphone WhatsApp</label><p>${a.tel}</p></div>
+      <div class="deti"><label>E-mail</label><p>${a.eml||'—'}</p></div>
+      <div class="deti"><label>Région / Province</label><p>${rn(a.reg)} / ${a.prv}</p></div>
+      <div class="deti"><label>Commune</label><p>${a.com}</p></div>
+      <div class="deti"><label>Niveau</label><p>${a.niv}</p></div>
+      <div class="deti"><label>Expérience</label><p>${a.exp}</p></div>
+      <div class="deti"><label>Frais d'adhésion</label><p><span class="badge ${a.fra==='oui'?'ba':a.fra==='partiel'?'bw':'bi'}">${a.fra==='oui'?'✓ 5 000 FCFA Payé':a.fra==='partiel'?'Partiel':'Non payé'}</span></p></div>
+      <div class="deti"><label>Mode paiement</label><p>${a.pay||'—'}</p></div>
+      <div class="deti"><label>Contrat</label><p>${a.con==='oui'?'✅ Signé':'❌ Non signé'}</p></div>
+      <div class="deti"><label>Date d'inscription</label><p>${a.date||'—'}</p></div>
+      <div class="deti" style="grid-column:1/-1"><label>Notes</label><p>${a.not||'—'}</p></div>
+    </div>`;
+  document.getElementById('btnWA').onclick=()=>sendWAValidation(a);
+  document.getElementById('btnAct').onclick=()=>{agents[i].st='actif';if(window.fbUpdateAgent)window.fbUpdateAgent(agents[i]);closeM('mDetail');renderAg(agents);updStats();toast('✓ Agent activé');sendWAValidation(agents[i]);};
+  document.getElementById('btnSusp').onclick=()=>{agents[i].st='suspendu';if(window.fbUpdateAgent)window.fbUpdateAgent(agents[i]);closeM('mDetail');renderAg(agents);updStats();toast('Agent suspendu');};
+  openM('mDetail');
+}
+function delAg(i){if(confirm('Supprimer '+agents[i].nom+' '+agents[i].pre+' ?')){var a=agents.splice(i,1)[0];if(window.fbDeleteAgent)window.fbDeleteAgent(a);renderAg(agents);updStats();toast('Agent supprimé');}}
+function saveAgent(){
+  const nom=document.getElementById('fNom').value.trim().toUpperCase(),pre=document.getElementById('fPre').value.trim(),tel=document.getElementById('fTel').value.trim(),rg=document.getElementById('fReg').value,pv=document.getElementById('fPrv').value;
+  if(!nom||!pre||!tel||!rg||!pv||pv.includes('—')){toast('⚠ Champs obligatoires manquants');return}
+  const cc=(document.getElementById('fCC').value.trim()||'XXX').toUpperCase().slice(0,3),yr=new Date().getFullYear().toString().slice(-2),sq=String(agents.filter(a=>a.reg===rg&&a.prv===pv).length+1).padStart(3,'0'),id=`${rg}-${pv}-${cc}-${yr}-${sq}`;
+  const ag={id,nom,pre,tel,eml:document.getElementById('fEml').value,dob:document.getElementById('fDob').value,sex:document.getElementById('fSex').value,reg:rg,prv:pv,com:document.getElementById('fCom').value,cc,niv:document.getElementById('fNiv').value,spc:document.getElementById('fSpc').value,exp:document.getElementById('fExp').value,cni:document.getElementById('fCni').value,st:'en_attente',con:document.getElementById('fCon').value,fra:document.getElementById('fFra').value,pay:'Mobile Money',miss:0,eval:null,not:document.getElementById('fNot').value,date:new Date().toISOString().split('T')[0]};
+  agents.push(ag);
+  if(window.fbSaveAgent)window.fbSaveAgent(ag);
+  closeM('mAgent');renderAg(agents);toast(`✓ Agent enregistré — ID : ${id}`);
+}
+function setCF(f,el){cfmt=f;document.querySelectorAll('.cfmt').forEach(b=>b.classList.remove('on'));el.classList.add('on')}
+function copyAg(){
+  const q=document.getElementById('agSQ').value.toLowerCase(),st=document.getElementById('agSS').value,rg=document.getElementById('agSR').value;
+  const list=agents.filter(a=>(!q||`${a.nom} ${a.pre} ${a.id}`.toLowerCase().includes(q))&&(!st||a.st===st)&&(!rg||a.reg===rg));
+  let txt='';
+  if(cfmt==='text'){txt=`AGENTS 2A-CDS\n${'='.repeat(60)}\n`;list.forEach((a,i)=>txt+=`${i+1}. ${a.id} | ${a.nom} ${a.pre} | ${a.tel} | ${rn(a.reg)} | ${SL[a.st]}\n`);txt+=`\nTotal: ${list.length}`}
+  else if(cfmt==='csv'){txt='ID,Nom,Prénom,Téléphone,Région,Province,Commune,Niveau,Frais,Statut,Date\n';list.forEach((a,i)=>txt+=`"${a.id}","${a.nom}","${a.pre}","${a.tel}","${rn(a.reg)}","${a.prv}","${a.com}","${a.niv}","${a.fra}","${SL[a.st]}","${a.date}"\n`)}
+  else{txt='<table border="1" style="border-collapse:collapse;font-family:Arial;font-size:12px"><thead><tr style="background:#006B3F;color:white"><th>ID</th><th>Nom</th><th>Prénom</th><th>Téléphone</th><th>Région</th><th>Statut</th></tr></thead><tbody>';list.forEach(a=>txt+=`<tr><td>${a.id}</td><td>${a.nom}</td><td>${a.pre}</td><td>${a.tel}</td><td>${rn(a.reg)}</td><td>${SL[a.st]}</td></tr>`);txt+='</tbody></table>'}
+  navigator.clipboard.writeText(txt).then(()=>toast(`✓ Liste copiée (${list.length} agents)`)).catch(()=>{const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);toast(`✓ Copié`)})
+}
+function expCSV(){const h='ID,Nom,Prénom,Téléphone,Email,Région,Province,Commune,Niveau,Expérience,Frais,Statut,Date';const r=agents.map(a=>`"${a.id}","${a.nom}","${a.pre}","${a.tel}","${a.eml||''}","${rn(a.reg)}","${a.prv}","${a.com}","${a.niv}","${a.exp}","${a.fra}","${a.st}","${a.date}"`);const b=new Blob(['\ufeff'+[h,...r].join('\n')],{type:'text/csv;charset=utf-8'});const u=URL.createObjectURL(b);const el=document.createElement('a');el.href=u;el.download='2ACDS_Agents.csv';el.click();URL.revokeObjectURL(u);toast('✓ Export CSV')}
+function printAg(){const w=window.open('','_blank');const rows=agents.map((a,i)=>`<tr><td>${i+1}</td><td style="font-family:monospace;font-size:11px">${a.id}</td><td><strong>${a.nom}</strong> ${a.pre}</td><td>${a.tel}</td><td>${rn(a.reg)}</td><td>${a.niv}</td><td>${SL[a.st]}</td></tr>`).join('');w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Agents 2A-CDS</title><style>body{font-family:Arial;padding:20px;font-size:12px}h1{color:#006B3F;font-size:16px}table{width:100%;border-collapse:collapse}th{background:#006B3F;color:white;padding:7px;font-size:11px;text-align:left}td{padding:6px 7px;border-bottom:1px solid #eee}tr:nth-child(even){background:#f9f9f9}</style></head><body><h1>🇧🇫 2A-CDS — Agents</h1><p style="color:#666;margin-bottom:14px">${new Date().toLocaleDateString('fr-FR')} · ${agents.length} agents</p><button onclick="window.print()" style="margin-bottom:14px;padding:8px 16px;background:#006B3F;color:white;border:none;border-radius:6px;cursor:pointer">🖨 Imprimer</button><table><thead><tr><th>N°</th><th>ID</th><th>Nom &amp; Prénom</th><th>Téléphone</th><th>Région</th><th>Niveau</th><th>Statut</th></tr></thead><tbody>${rows}</tbody></table></body></html>`);w.document.close()}
+
+// ═══ FORMATEURS ═══
+function renderFormateurs(list){
+  document.getElementById('nbF').textContent=formateurs.length;
+  document.getElementById('fmBody').innerHTML=(list||formateurs).map((f,i)=>`<tr><td><strong>${f.nom}</strong> ${f.pre}</td><td>${f.tel}</td><td>${f.spc}</td><td>${f.exp||'—'} ans</td><td>${f.dsp}</td><td><span class="badge ${f.st==='actif'?'ba':'bw'}">${f.st==='actif'?'Actif':'En attente'}</span></td><td style="white-space:nowrap"><button class="btn bwa bsm" onclick="window.open('https://wa.me/${(f.tel||'').replace(/\D/g,'')}','_blank')" style="margin-right:3px">💬</button><button class="btn bp bsm" onclick="formateurs[${i}].st='actif';renderFormateurs();toast('✓ Formateur activé')" style="margin-right:3px">✓</button><button class="btn bdn bsm" onclick="var _f=formateurs.splice(${i},1)[0];if(window.fbDeleteFormateur)window.fbDeleteFormateur(_f);renderFormateurs();toast('Formateur supprimé')">✕</button></td></tr>`).join('');
+  if(!document.getElementById('fmBody').innerHTML.trim()||!list||!list.length)document.getElementById('fmBody').innerHTML='<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--g400)">Aucun formateur enregistré</td></tr>';
+}
+function filterFm(){const q=document.getElementById('fmSQ').value.toLowerCase(),st=document.getElementById('fmSS').value;renderFormateurs(formateurs.filter(f=>(!q||`${f.nom} ${f.pre} ${f.spc}`.toLowerCase().includes(q))&&(!st||f.st===st)))}
+function saveFmt(){const nom=document.getElementById('ftNom').value.trim(),pre=document.getElementById('ftPre').value.trim(),tel=document.getElementById('ftTel').value.trim(),eml=document.getElementById('ftEml').value.trim(),spc=document.getElementById('ftSpc').value.trim();if(!nom||!pre||!tel||!eml||!spc){toast('⚠ Champs obligatoires');return}formateurs.push({nom,pre,tel,eml,spc,niv:document.getElementById('ftNiv').value,exp:document.getElementById('ftExp').value,dsp:document.getElementById('ftDsp').value,sal:document.getElementById('ftSal').value,mod:document.getElementById('ftMod').value,ref:document.getElementById('ftRef').value,st:'en_attente',date:new Date().toISOString().split('T')[0]});if(window.fbSaveFormateur)window.fbSaveFormateur({nom:document.getElementById('ftNom').value,pre:document.getElementById('ftPre').value,tel:document.getElementById('ftTel').value,eml:document.getElementById('ftEml').value,spc:document.getElementById('ftSpc').value,st:'en_attente',date:new Date().toISOString().split('T')[0]});
+  closeM('mFmt');renderFormateurs();toast('✓ Formateur ajouté')}
+
+// ═══ STATS ═══
+function updStats(){
+  document.getElementById('stT').textContent=agents.length;
+  const nA=agents.filter(a=>a.st==='actif').length;document.getElementById('stA').textContent=nA;
+  const att=agents.filter(a=>a.st==='en_attente');document.getElementById('stW').textContent=att.length;
+  document.getElementById('stF').textContent=formateurs.length;
+  document.getElementById('stD1').textContent=`↑ ${agents.length} au total`;
+  document.getElementById('stD2').textContent=`↑ ${agents.length?Math.round(nA/agents.length*100):0}% actifs`;
+  document.getElementById('stD4').textContent=formateurs.filter(f=>f.st==='actif').length+' actifs';
+  document.getElementById('ndot').style.display=att.length>0?'block':'none';
+  document.getElementById('nbN').textContent=notifs.length;
+  const TC={formation:'#3B82F6',collecte:'var(--vr)',reunion:'var(--pu)',evaluation:'var(--or2)'};
+  const TL={formation:'FORMATION',collecte:'COLLECTE',reunion:'RÉUNION',evaluation:'ÉVALUATION'};
+  document.getElementById('dashTL').innerHTML=[...agents].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,4).map(a=>`<div class="tli"><div class="tld" style="background:${a.st==='actif'?'var(--vr)':a.st==='en_attente'?'var(--or)':'var(--rr)'}"></div><div class="tldt">${a.date||'—'}</div><div class="tltxt">${a.nom} ${a.pre}</div><span class="tltag">${SL[a.st]}</span></div>`).join('');
+  document.getElementById('dashActs').innerHTML=activities.slice(0,3).map(a=>`<div style="border-left:3px solid ${TC[a.type]};border-radius:0 8px 8px 0;padding:8px 12px;margin-bottom:8px;background:var(--g50);border-top:1px solid var(--g200);border-right:1px solid var(--g200);border-bottom:1px solid var(--g200)"><div style="font-size:10px;font-weight:700;color:${TC[a.type]};margin-bottom:2px">${TL[a.type]}</div><div style="font-size:13px;font-weight:700">${a.tit}</div><div style="font-size:11px;color:var(--g400);margin-top:2px">📅 ${a.dt} · 📍 ${a.lieu}</div></div>`).join('');
+  document.getElementById('dashW').textContent=att.length;
+  document.getElementById('dashPend').innerHTML=att.length?att.map(a=>`<div style="display:flex;align-items:center;gap:10px;padding:10px;border:1.5px solid var(--g200);border-radius:8px;margin-bottom:6px"><div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--or2),var(--or));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;color:var(--nk)">${a.nom[0]}</div><div style="flex:1"><div style="font-weight:700;font-size:13px">${a.nom} ${a.pre}</div><div style="font-size:11px;color:var(--g400)">${rn(a.reg)} · ${a.date}</div></div><button class="btn bwa bsm" onclick="sendWAValidation(agents[${agents.indexOf(a)}])" style="margin-right:4px">💬</button><button class="btn bp bsm" onclick="agents[${agents.indexOf(a)}].st='actif';sendWAValidation(agents[${agents.indexOf(a)}]);updStats();renderAg(agents);toast('✓ Activé + WA envoyé')">✓</button></div>`).join(''):`<div style="text-align:center;padding:18px;color:var(--g400);font-size:13px">Aucun agent en attente ✓</div>`;
+}
+function copyLink(){const l=document.getElementById('lnk').textContent;navigator.clipboard.writeText(l).then(()=>toast('✓ Lien copié')).catch(()=>{const ta=document.createElement('textarea');ta.value=l;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);toast('✓ Copié')})}
+function shareLink(){const l=document.getElementById('lnk').textContent;if(navigator.share)navigator.share({title:'Inscription 2A-CDS',url:l});else copyLink()}
+
+// ═══ REGIONS ═══
+function renderReg(f=''){const list=f?REGS.filter(r=>r.n.toLowerCase().includes(f.toLowerCase())||r.c.toLowerCase().includes(f.toLowerCase())):REGS;document.getElementById('regGrid').innerHTML=list.map(r=>{const cnt=agents.filter(a=>a.reg===r.c).length;return`<div class="rcard" onclick="showPrv('${r.c}')"><div class="rcc">${r.c}</div><div class="rcn">${r.n}</div><div class="rch">🏛 ${r.ch} · ${r.p.length} prov.</div>${cnt>0?`<div class="rcnt">${cnt}</div>`:''}</div>`}).join('')}
+function filterReg(v){renderReg(v)}
+function showPrv(c){const r=REGS.find(r=>r.c===c);if(!r)return;document.getElementById('provTtl').textContent=`${r.n} — Provinces`;document.getElementById('provBody').innerHTML=r.p.map(p=>{const cnt=agents.filter(a=>a.prv===p).length;return`<tr><td class="tid">${p}</td><td>${p}</td><td>${cnt||'—'}</td></tr>`}).join('');document.getElementById('provCard').style.display='block';document.getElementById('provCard').scrollIntoView({behavior:'smooth'})}
+
+// ═══ PLANNING ═══
+const TC2={formation:'#3B82F6',collecte:'var(--vr)',reunion:'var(--pu)',evaluation:'var(--or2)'};
+const TL2={formation:'FORMATION',collecte:'COLLECTE',reunion:'RÉUNION',evaluation:'ÉVALUATION'};
+const PSB={planifie:'bw',en_cours:'ba',termine:'bi'};const PSL={planifie:'Planifié',en_cours:'En cours',termine:'Terminé'};
+function renderPlan(){
+  document.getElementById('planGrid').innerHTML=activities.map(a=>`<div style="border:1.5px solid var(--g200);border-radius:10px;padding:14px;background:var(--wh)"><div style="font-size:10px;font-weight:700;color:${TC2[a.type]};letter-spacing:1px;margin-bottom:4px">${TL2[a.type]}</div><div style="font-size:14px;font-weight:700;margin-bottom:4px">${a.tit}</div><div style="font-size:12px;color:var(--g400)">📅 ${a.dt}${a.fin?' → '+a.fin:''} · 📍 ${a.lieu}</div><div style="margin-top:7px"><span class="badge ${PSB[a.st]}">${PSL[a.st]}</span></div></div>`).join('');
+  document.getElementById('planTbl').innerHTML=activities.map(a=>`<tr><td><span style="font-size:10px;font-weight:700;color:${TC2[a.type]}">${TL2[a.type]}</span></td><td>${a.tit}</td><td>${a.dt}</td><td>${a.lieu}</td><td>${a.resp}</td><td><span class="badge ${PSB[a.st]}">${PSL[a.st]}</span></td></tr>`).join('');
+}
+function saveAct(){const t=document.getElementById('aTit').value.trim();if(!t){toast('⚠ Intitulé requis');return}activities.push({type:document.getElementById('aTyp').value,tit:t,dt:document.getElementById('aDt').value,fin:document.getElementById('aFin').value,lieu:document.getElementById('aLieu').value,resp:document.getElementById('aResp').value,st:'planifie'});closeM('mAct');renderPlan();toast('✓ Activité planifiée')}
+
+// ═══ FORMATIONS ═══
+function renderFo(){document.getElementById('formList').innerHTML=formations.map((f,i)=>`<div style="border:1.5px solid var(--g200);border-radius:10px;padding:14px;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;background:var(--wh)"><div style="flex:1"><div style="font-size:10px;font-weight:700;color:var(--vr);text-transform:uppercase;letter-spacing:1px">Module ${i+1}</div><div style="font-size:14px;font-weight:700;margin:4px 0">${f.t}</div><div style="font-size:12px;color:var(--g400)">📅 ${f.d||'—'} · ⏱ ${f.dr} · 👥 ${f.p} places · 📍 ${f.l||'—'}</div><div style="margin-top:7px"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--g400);margin-bottom:3px"><span>Inscriptions</span><span>${f.ins}/${f.p}</span></div><div class="prog"><div class="prgf" style="width:${Math.round(f.ins/f.p*100)}%"></div></div></div></div><span class="badge ${f.ins>0?'ba':'bw'}">${f.ins>0?'Ouvert':'À venir'}</span></div>`).join('')}
+function saveFo(){const t=document.getElementById('foT').value.trim();if(!t){toast('⚠ Titre requis');return}formations.push({t,d:document.getElementById('foD').value,dr:document.getElementById('foDr').value||'—',l:document.getElementById('foL').value,p:parseInt(document.getElementById('foP').value)||20,ins:0});closeM('mForm');renderFo();toast('✓ Formation créée')}
+
+// ═══ BUREAU ═══
+function renderBur(){document.getElementById('burGrid').innerHTML=bureauM.map((m,i)=>`<div style="border:1.5px solid var(--g200);border-radius:12px;padding:16px;text-align:center;transition:all .2s;background:var(--wh)" onmouseover="this.style.boxShadow='var(--s2)';this.style.borderColor='var(--vr)'" onmouseout="this.style.boxShadow='none';this.style.borderColor='var(--g200)'"><div class="avt" style="margin:0 auto 10px;width:48px;height:48px;font-size:19px">${m.n[0]}</div><div style="font-weight:700;font-size:13px">${m.n} ${m.pr}</div><div style="font-size:12px;color:var(--vr);font-weight:600;margin:4px 0">${m.pst}</div><div style="font-size:11px;color:var(--g400)">${m.eml}</div>${m.tel?`<div style="margin-top:8px"><a href="https://wa.me/${m.tel.replace(/\D/g,'')}" target="_blank" style="display:inline-flex;align-items:center;gap:5px;background:#25D366;color:white;border-radius:20px;padding:4px 11px;font-size:11px;font-weight:700;text-decoration:none">💬 ${m.tel}</a></div>`:''}<div style="margin-top:7px"><span class="badge bgr" style="font-size:10px">${m.acc==='total'?'🔓 Accès complet':m.acc==='lecture'?'👁 Lecture':'🔒 Sans accès'}</span></div>${i>0?`<button class="btn bdn bsm" style="margin-top:7px" onclick="bureauM.splice(${i},1);renderBur();toast('Membre retiré')">Retirer</button>`:''}</div>`).join('')}
+function saveBur(){const n=document.getElementById('bNom').value.trim(),pr=document.getElementById('bPre').value.trim(),pst=document.getElementById('bPst').value.trim(),eml=document.getElementById('bEml').value.trim();if(!n||!pr||!pst||!eml){toast('⚠ Champs obligatoires');return}var _mb={n,pr,pst,eml,tel:document.getElementById('bTel').value,acc:document.getElementById('bAcc').value};bureauM.push(_mb);if(window.fbSaveBureau)window.fbSaveBureau(_mb);closeM('mBur');renderBur();toast('✓ Membre ajouté')}
+
+// ═══ ARCHIVES ═══
+function renderAcc(){document.getElementById('accBody').innerHTML=archAcc.map((a,i)=>`<tr><td><strong>${a.n}</strong></td><td><span class="badge bgr">${a.r}</span></td><td>${a.e}</td><td>${a.a}</td><td>${i>0?`<button class="btn bdn bsm" onclick="archAcc.splice(${i},1);renderAcc();toast('Accès révoqué')">Révoquer</button>`:'—'}</td></tr>`).join('')}
+function saveAcc(){const e=document.getElementById('axE').value.trim();if(!e){toast('⚠ E-mail requis');return}archAcc.push({n:e,r:document.getElementById('axR').value||'Membre',e,a:document.getElementById('axN').value});closeM('mAcc');renderAcc();toast('✓ Accès accordé')}
+
+// ═══ NOTIFICATIONS ═══
+const NICO={info:'ℹ️',urgent:'🚨',formation:'🎓',collecte:'📊',reunion:'📅'};
+const NCC={info:'#3B82F6',urgent:'var(--rr)',formation:'var(--vr)',collecte:'var(--or2)',reunion:'var(--pu)'};
+function setNT(t,el){ntgt=t;document.querySelectorAll('.ntb').forEach(b=>b.classList.remove('on'));el.classList.add('on')}
+function sendNotif(){
+  const tit=document.getElementById('nTit').value.trim();
+  if(!tit){toast('⚠ Titre obligatoire');return}
+  const n={id:Date.now(),tit,msg:document.getElementById('nMsg').value.trim(),type:document.getElementById('nType').value,tgt:ntgt,date:new Date().toLocaleString('fr-FR'),sender:CU?CU.name:'Admin'};
+  notifs.unshift(n);
+  if(window.fbSaveNotif)window.fbSaveNotif(n);
+  document.getElementById('nTit').value='';
+  document.getElementById('nMsg').value='';
+  renderNotifHist();renderPubNotifs();
+  document.getElementById('nbN').textContent=notifs.length;
+  toast(`📤 Notification envoyée — ${ntgt==='all'?'Tous':ntgt==='actif'?'Agents actifs':'Formateurs'}`);
+}
+function renderNotifHist(){
+  document.getElementById('notifCnt').textContent=`${notifs.length} notification${notifs.length>1?'s':''}`;
+  document.getElementById('notifHist').innerHTML=notifs.length?notifs.map(n=>`
+    <div class="nhcard" style="border-left-color:${NCC[n.type]||'var(--pu)'}">
+      <div class="nhico">${NICO[n.type]||'📢'}</div>
+      <div style="flex:1">
+        <div class="nhttl">${n.tit}</div>
+        <div class="nhmsg">${n.msg||'<em style="color:var(--g400)">Pas de contenu additionnel</em>'}</div>
+        <div class="nhmeta"><span>📅 ${n.date}</span><span>👤 ${n.sender}</span><span>🎯 ${n.tgt==='all'?'Tous':n.tgt==='actif'?'Agents actifs':'Formateurs'}</span><span style="color:${NCC[n.type]}">● ${n.type.toUpperCase()}</span></div>
+      </div>
+      <button class="btn bsl bsm" style="flex-shrink:0" onclick="delNotif(${n.id})">✕</button>
+    </div>`).join(''):`<div style="text-align:center;padding:30px;color:var(--g400)"><div style="font-size:32px;margin-bottom:10px">📭</div><p>Aucune notification envoyée</p></div>`;
+}
+function delNotif(id){var n=notifs.find(function(x){return x.id===id;});if(n&&window.fbDeleteNotif)window.fbDeleteNotif(n);notifs=notifs.filter(function(x){return x.id!==id;});renderNotifHist();renderPubNotifs();document.getElementById('nbN').textContent=notifs.length;toast('Notification supprimée');}
+function clearNotifs(){if(confirm('Effacer toutes les notifications ?')){notifs=[];renderNotifHist();renderPubNotifs();document.getElementById('nbN').textContent=0;toast('✓ Effacées')}}
+function renderPubNotifs(){
+  const w=document.getElementById('pubNotifWall');if(!w)return;
+  w.innerHTML=notifs.length?notifs.map(n=>`
+    <div class="npcard" style="border-left-color:${NCC[n.type]||'var(--pu)'}">
+      <div style="display:flex;align-items:flex-start;gap:12px">
+        <div style="font-size:24px;flex-shrink:0">${NICO[n.type]||'📢'}</div>
+        <div style="flex:1">
+          <div style="font-family:system-ui,sans-serif;font-size:14px;font-weight:700;color:var(--wh);margin-bottom:4px">${esc(n.tit)}</div>
+          ${n.msg?`<div style="font-size:13px;color:rgba(255,255,255,.7);line-height:1.6;margin-bottom:6px">${esc(n.msg)}</div>`:''}
+          <div style="font-size:10px;color:rgba(255,255,255,.3)">📅 ${esc(n.date)} · <span style="color:${NCC[n.type]||'var(--pu)'}">● ${esc(n.type.toUpperCase())}</span></div>
+        </div>
+      </div>
+    </div>`).join(''):`<div style="text-align:center;padding:40px 20px"><div style="font-size:40px;opacity:.3;margin-bottom:10px">📭</div><p style="font-size:14px;color:rgba(255,255,255,.3)">Aucune notification</p><p style="font-size:12px;color:rgba(255,255,255,.18);margin-top:6px">Les messages de l'association apparaîtront ici</p></div>`;
+}
+
+// ═══ ADMINS ═══
+function renderAdms(){
+  const el=document.getElementById('admList');
+  const isp=CU&&CU.email===PRINCIPAL;
+  document.getElementById('btnAddAdm').style.display=isp?'inline-flex':'none';
+  el.innerHTML=Object.entries(ADMINS).map(([em,u])=>`
+    <div class="adcard">
+      <div class="adav">${u.init}${u.isPrincipal?' <span style="font-size:11px">👑</span>':''}</div>
+      <div style="flex:1"><div style="font-weight:700;font-size:14px">${u.name}${u.isPrincipal?' <span style="font-size:11px;color:var(--or2)">— Principal</span>':''}</div><div style="font-size:12px;color:var(--g500);margin-top:2px">${em}</div></div>
+      <span class="badge ${u.isPrincipal?'bgr':'ba'}">${u.isPrincipal?'👑 Principal':'Admin'}</span>
+      ${isp&&!u.isPrincipal?`<button class="btn bdn bsm" onclick="rmAdm('${em}')">✕ Retirer</button>`:''}
+    </div>`).join('');
+}
+function saveAdm(){
+  const nm=document.getElementById('adNm').value.trim(),em=document.getElementById('adEm').value.trim().toLowerCase(),pw=document.getElementById('adPw').value,init=(document.getElementById('adIn').value.trim()||nm[0]||'A').toUpperCase();
+  if(!nm||!em||!pw){toast('⚠ Champs obligatoires');return}
+  if(pw.length<8){toast('⚠ Mot de passe trop court (min. 8 car.)');return}
+  if(ADMINS[em]){toast('⚠ Cet e-mail est déjà admin');return}
+  ADMINS[em]={pwd:pw,name:nm,init,isPrincipal:false};
+  closeM('mAdm');renderAdms();toast(`✓ Admin ${nm} créé`);
+  ['adNm','adEm','adPw','adIn'].forEach(id=>document.getElementById(id).value='');
+}
+function rmAdm(em){if(em===PRINCIPAL){toast('⚠ Impossible de supprimer l\'admin principal');return}if(confirm(`Retirer ${ADMINS[em].name} ?`)){delete ADMINS[em];renderAdms();toast('Admin retiré')}}
+
+// ═══ INIT ═══
+function renderAll(){renderAg(agents);renderReg();renderPlan();renderBur();renderFo();renderAcc();renderFormateurs();updStats();renderNotifHist();renderPubNotifs();renderDocs();renderPubDocs();applyContenu()}
+
+(function(){
+  const p=new URLSearchParams(window.location.search);
+  if(p.get('mode')==='inscription')showPublic();
+  else if(p.get('mode')==='formateur')showFormateur();
+})();
+</script>
+
+<script>
+// ══ FONCTIONS AJOUTÉES v8 ══
+
+// Validation âge 18-45
+function valAge(inp){
+  if(!inp.value)return true;
+  var dob=new Date(inp.value),today=new Date();
+  var age=Math.floor((today-dob)/(365.25*24*3600*1000));
+  var err=document.getElementById('ageErr');
+  if(age<18||age>45){
+    if(err)err.style.display='block';
+    inp.style.borderColor='#EF2B2D';
+    return false;
+  }
+  if(err)err.style.display='none';
+  inp.style.borderColor='';
+  return true;
+}
+
+// Communes BF 2025 par région et province
+var COMMUNES={
+  BKU:{
+    BAL:['Bagassi','Boromo','Fara','Oury','Poura','Siby','Pa','Bana','Pompoi'],
+    BNW:['Balave','Kouka','Sami','Sanaba','Solenzo','Tansila'],
+    KOS:['Barani','Bomborokuy','Bourasso','Djibasso','Dokuy','Doumbala','Kombori','Madouba','Nouna','Sono'],
+    MOU:['Bondokuy','Dedougou','Kona','Ouarkoye','Safane','Tcheriba'],
+    NAY:['Gassan','Gossina','Kougny','Toma','Yaba','Ye'],
+  },
+  TAN:{
+    COM:['Banfora','Beregadougou','Mangodara','Moussodougou','Niangoloko','Ouo','Sideradougou','Tiefora'],
+    LER:['Dakoro','Douna','Karangasso-Vigue','Kankalaba','Koloko','Loumana','Niankorodougou','Oueleni','Sindou'],
+  },
+  KDG:{
+    KAD:['Komki-Ipala','Komsilga','Koubri','Ouagadougou','Pabre','Saaba','Tanghin-Dassouri'],
+  },
+  NAK:{
+    BOU:['Bagre','Bane','Bittou','Garango','Komtoèga','Beguedo','Niaogho','Tenkodogo','Zabre','Zoaga','Zonse'],
+    KPL:['Comin-Yanga','Dourtenga','Lalgaye','Ouargaye','Sangha','Soudougui','Yonde','Yargatenga'],
+    KRT:['Amdemtenga','Baskoure','Dialgaye','Gounghin','Kando','Koupela','Pouytenga','Samtoghin','Tensobentenga'],
+  },
+  KLS:{
+    BAM:['Bourzanga','Kongoussi','Guibare','Nassere','Rollo','Sabce','Tikare'],
+    NAM:['Boala','Boulsa','Dargo','Nagbingou','Tougouri','Yalgo','Zeguedeguin'],
+    SBT:['Barsalogho','Dablo','Kaya','Korsimoro','Mane','Namissiguima','Pensa','Pibaore','Ziga'],
+  },
+  NAN:{
+    BLK:['Bingo','Imasgo','Kokologo','Koudougou','Nanoro','Niandiala','Pella','Ramongo','Sabou','Sourgou','Soaw','Thyou'],
+    SNG:['Didyr','Godyr','Kordie','Pouni','Reo','Tenado','Zamo'],
+    SIS:['Bieha','Leo','Boura','Nebielianayou','Niabouri','Silly','To'],
+    ZIR:['Bakata','Bougnounou','Cassou','Dalo','Gao','Sapouy'],
+  },
+  NZN:{
+    BAZ:['Doulougou','Ipelce','Kayao','Kombissiri','Gaongo','Sapone','Toece'],
+    NAH:['Guiaro','Po','Tiebele','Zecco','Ziou'],
+    ZON:['Bere','Binde','Gogo','Gomboussougou','Guiba','Manga','Nobere'],
+  },
+  GLM:{
+    GNA:['Bogande','Colla','Liptougou','Manni','Piela','Thion','Bilanga'],
+    GRM:['Diabo','Fada Ngourma','Tibga','Diapangou','Matiacoali','Yamba'],
+    KMJ:['Bartiebougou','Foutouri','Kompienga','Madjoari','Pama'],
+    KMP:['Diapaga','Kompienga','Madjoari','Pama','Tambaga'],
+  },
+  GRK:{
+    HOU:['Bobo-Dioulasso','Bama','Faramana','Fo','Karangasso-Sambla','Karangasso-Vigue','Konsa','Lena','Padema','Peni','Satiri','Toussiana'],
+    KEN:['Djiguoera','Kayan','Koloko','Orodara','Samoroguan','Samogohiri','Kangala','Kourinion','Kourouma','N-dorola'],
+    TUY:['Bekuy','Berena','Fonzan','Hounde','Koti','Koumbia'],
+  },
+  YDG:{
+    LOR:['Banh','Ouindigui','Solle','Titao'],
+    PAS:['Arbole','Bagare','Gomponsom','Kirsi','La-Todin','Pilimpikou','Samba','Yako'],
+    YAT:['Barga','Koumbri','Namissiguima','Oula','Ouahigouya','Rambo','Seguenega','Tangaye','Thiou'],
+    ZOD:['Bassi','Gourcy','Leba','Tougo'],
+  },
+  OBR:{
+    GAN:['Boudry','Kogho','Meguet','Mogtedo','Salogo','Zam','Zorgho','Zoungou'],
+    KRW:['Bousse','Laye','Niou','Sourgoubila','Toeghin'],
+    BST:['Absouya','Dapelogo','Loumbila','Nagreongo','Ourgou-Manega','Ziniare','Zitenga'],
+  },
+  LPT:{
+    OUD:['Deou','Gorom-Gorom','Markoye','Oursi','Tin-Akoff'],
+    SEN:['Bani','Dori','Falangountou','Gorgadji','Sampelga','Seytenga'],
+    YAG:['Boundore','Mansila','Seba','Solhan','Tankougounadie','Titabe'],
+  },
+  SOM:{
+    DJL:['Arbinda','Djibo','Kelbo','Nassoumbou','Tongomayel','Pobe-mengo'],
+    KRP:['Arbinda','Deou','Falangountou','Tongomayel'],
+  },
+  SRB:{
+    GNG:['Bogande','Comin-Yanga','Liptougou','Manni','Piela','Thion'],
+    DYM:['Kantchari','Partiaga','Petchinga','Tambaga'],
+  },
+  TPO:{
+    TAP:['Botou','Diapaga','Logobou','Namounou','Partiaga','Tambaga','Kantchari','Tansarga'],
+  },
+  DJR:{
+    BGP:['Bondigui','Diebougou','Dolo','Tiankoura','Loropeni','Midebdo','Nako'],
+    IOB:['Dano','Dissin','Nako','Zambo','Koper','Oronkua'],
+    NUM:['Batie','Kpuere','Legmoin','Midebdo'],
+    PON:['Gaoua','Kampti','Loropeni','Malba','Gbomblora','Bouroum-Bouroum','Djigoue','Obire'],
+  },
+  SOU:{
+    SRU:['Lankoue','Di','Gomboro','Kassoum','Lanfiera','Toeni','Tougan'],
+  },
+};
+// ════════════════════════════════════════════════════
+// FIREBASE PROFESSIONNEL — CRUD COMPLET
+// Create, Read, Update, Delete + Sync 10s
+// ════════════════════════════════════════════════════
+var FB_URL='https://firestore.googleapis.com/v1/projects/ancdsbf-app/databases/(default)/documents';
+var _syncTimer=null,_syncing=false;
+
+function _toFS(obj){
+  var f={};
+  var NUM_FIELDS=['miss','eval','exp_years','sal','places','inscrits'];
+  var BOOL_FIELDS=['isPrincipal'];
+  Object.keys(obj).forEach(function(k){
+    if(k==='_id')return;
+    var v=obj[k];
+    if(v===null||v===undefined){f[k]={stringValue:''};return;}
+    if(BOOL_FIELDS.indexOf(k)>=0){f[k]={booleanValue:Boolean(v)};return;}
+    if(NUM_FIELDS.indexOf(k)>=0&&v!==''&&!isNaN(Number(v))){f[k]={doubleValue:Number(v)};return;}
+    f[k]={stringValue:String(v)};
+  });
+  return{fields:f};
+}
+
+function _fromFS(doc){
+  var f=doc.fields||{},o={_id:doc.name.split('/').pop()};
+  Object.keys(f).forEach(function(k){
+    var v=f[k];
+    o[k]=v.stringValue!==undefined?v.stringValue:v.doubleValue!==undefined?v.doubleValue:v.integerValue!==undefined?parseInt(v.integerValue):v.booleanValue!==undefined?v.booleanValue:'';
+  });
+  return o;
+}
+
+window.fbGet=function(col,cb){
+  fetch(FB_URL+'/'+col+'?pageSize=500',{signal:AbortSignal.timeout?AbortSignal.timeout(8000):undefined})
+    .then(function(r){
+      if(!r.ok)throw new Error('HTTP '+r.status);
+      return r.json();
+    })
+    .then(function(d){cb(null,d.documents?d.documents.map(_fromFS):[]);})
+    .catch(function(e){cb(e,[]);});
+};
+
+window.fbPost=function(col,obj,cb){
+  fetch(FB_URL+'/'+col,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(_toFS(obj))})
+    .then(function(r){return r.json();})
+    .then(function(d){if(cb)cb(null,d.name?d.name.split('/').pop():null);})
+    .catch(function(e){if(cb)cb(e,null);});
+};
+
+window.fbDelete=function(col,id,cb){
+  if(!id){if(cb)cb(null);return;}
+  fetch(FB_URL+'/'+col+'/'+id,{method:'DELETE'})
+    .then(function(){if(cb)cb(null);})
+    .catch(function(e){if(cb)cb(e);});
+};
+
+window.fbUpdate=function(col,id,obj,cb){
+  if(!id){if(cb)cb(null);return;}
+  var fields=_toFS(obj).fields;
+  var mask=Object.keys(fields).map(function(k){return'updateMask.fieldPaths='+k;}).join('&');
+  fetch(FB_URL+'/'+col+'/'+id+'?'+mask,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:fields})})
+    .then(function(){if(cb)cb(null);})
+    .catch(function(e){if(cb)cb(e);});
+};
+
+window.fbSaveAgent=function(ag){window.fbPost('agents',ag,function(err,id){if(!err&&id)ag._id=id;});};
+window.fbSaveNotif=function(n){window.fbPost('notifications',{titre:n.tit||'',message:n.msg||'',type:n.type||'info',destinataires:n.tgt||'all',expediteur:n.sender||'Admin',date:n.date||''},function(err,id){if(!err&&id)n._id=id;});};
+window.fbSaveFormateur=function(fm){window.fbPost('formateurs',fm,function(err,id){if(!err&&id)fm._id=id;});};
+window.fbSaveBureau=function(m){window.fbPost('bureau',m,function(err,id){if(!err&&id)m._id=id;});};
+window.fbSaveDoc=function(doc){window.fbPost('documents',doc,function(err,id){if(!err&&id)doc._id=id;});};
+
+window.fbDeleteAgent=function(ag){if(ag&&ag._id)window.fbDelete('agents',ag._id,null);};
+window.fbDeleteNotif=function(n){if(n&&n._id)window.fbDelete('notifications',n._id,null);};
+window.fbDeleteFormateur=function(fm){if(fm&&fm._id)window.fbDelete('formateurs',fm._id,null);};
+window.fbDeleteBureau=function(m){if(m&&m._id)window.fbDelete('bureau',m._id,null);};
+window.fbDeleteDoc=function(d){if(d&&d._id)window.fbDelete('documents',d._id,null);};
+window.fbUpdateAgent=function(ag){if(ag&&ag._id)window.fbUpdate('agents',ag._id,ag,null);};
+
+window.fbLoadAll=function(){
+  if(_syncing)return;
+  _syncing=true;
+  var done=0;
+  function check(){done++;if(done>=5){_syncing=false;try{updStats();}catch(e){}}}
+  window.fbGet('agents',function(err,d){if(!err){agents=d;try{renderAg(agents);}catch(e){}try{updStats();}catch(e){}}check();});
+  window.fbGet('formateurs',function(err,d){if(!err&&d.length>0){formateurs=d;try{if(typeof renderFormateurs==='function')renderFormateurs();}catch(e){}}check();});
+  window.fbGet('bureau',function(err,d){if(!err&&d.length>0){bureauM=d;try{renderBur();}catch(e){}}check();});
+  window.fbGet('notifications',function(err,d){
+    if(!err){
+      notifs=d.map(function(n){return{id:n._id,_id:n._id,tit:n.titre||n.tit||'',msg:n.message||n.msg||'',type:n.type||'info',tgt:n.destinataires||n.tgt||'all',date:n.date||'',sender:n.expediteur||n.sender||'Admin'};});
+      try{renderNotifHist();}catch(e){}
+      try{renderPubNotifs();}catch(e){}
+      var nb=document.getElementById('nbN');if(nb)nb.textContent=notifs.length;
+    }
+    check();
+  });
+  window.fbGet('documents',function(err,d){
+    if(!err){docs=d.map(function(x){return{id:x._id,_id:x._id,tit:x.tit||'',desc:x.desc||'',url:x.url||'',type:x.type||'autre',date:x.date||''};});try{renderDocs();}catch(e){}try{renderPubDocs();}catch(e){}}
+    check();
+  });
+  // Charger contenu public depuis Firebase
+  window.fbGet('contenu',function(err,d){
+    if(!err&&d.length>0){
+      var c=d[0];
+      ['pres','mission','date','siege','recep','frais','statut'].forEach(function(k){
+        if(c[k])pubContenu[k]=c[k];
+      });
+      try{if(typeof applyContenu==='function')applyContenu();}catch(e){}
+    }
+  });
+};
+
+function startSync(){
+  if(_syncTimer)return;
+  window.fbLoadAll();
+  _syncTimer=setInterval(window.fbLoadAll,5000); // Sync toutes les 5 secondes
+}
+
+window._fbNotifs=[];
+document.addEventListener('DOMContentLoaded',function(){
+  // Connexion internet
+  window.addEventListener('online',function(){setConnStatus(true);window.fbLoadAll();});
+  window.addEventListener('offline',function(){setConnStatus(false);});
+  setConnStatus(navigator.onLine);
+  setTimeout(startSync,1500);
+
+  // Bouton retour Android (Capacitor)
+  try{
+    if(window.Capacitor&&window.Capacitor.isNativePlatform()){
+      window.Capacitor.Plugins.App.addListener('backButton',function(e){
+        var mo=document.querySelector('.mo.on');
+        if(mo){mo.classList.remove('on');return;}
+        var cur=document.querySelector('.sc.on');
+        if(cur&&cur.id!=='scLogin'){showLogin();return;}
+        if(e.canGoBack){history.back();}else{window.Capacitor.Plugins.App.exitApp();}
+      });
+    }
+  }catch(e){}
+});
+
+// ═══ STATUT CONNEXION ═══
+function setConnStatus(online){
+  var dot=document.getElementById('connDot');
+  if(!dot){
+    dot=document.createElement('div');
+    dot.id='connDot';
+    dot.style.cssText='position:fixed;bottom:10px;left:10px;z-index:9999;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;transition:all .3s;pointer-events:none';
+    document.body.appendChild(dot);
+  }
+  if(online){
+    dot.textContent='● En ligne';
+    dot.style.background='rgba(0,107,63,.9)';
+    dot.style.color='#fff';
+    setTimeout(function(){dot.style.opacity='0';},3000);
+  } else {
+    dot.style.opacity='1';
+    dot.textContent='● Hors ligne';
+    dot.style.background='rgba(239,43,45,.9)';
+    dot.style.color='#fff';
+    // Cache localStorage hors ligne
+    try{
+      var cached=localStorage.getItem('anc_agents');
+      if(cached){agents=JSON.parse(cached);renderAg(agents);updStats();}
+      var cachedN=localStorage.getItem('anc_notifs');
+      if(cachedN){notifs=JSON.parse(cachedN);renderPubNotifs();}
+    }catch(e){}
+  }
+}
+
+// ═══ CACHE LOCALSTORAGE ═══
+(function patchFbLoadAll(){
+  var orig=window.fbLoadAll;
+  window.fbLoadAll=function(){
+    orig();
+    // Sauvegarde cache après chargement
+    setTimeout(function(){
+      try{
+        localStorage.setItem('anc_agents',JSON.stringify(agents));
+        localStorage.setItem('anc_notifs',JSON.stringify(notifs));
+      }catch(e){}
+    },2000);
+  };
+})();
+
+// ═══ PROTECTION XSS ═══
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+</script>
+</body>
+</html>

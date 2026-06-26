@@ -1,0 +1,19 @@
+{
+  "name": "an-cds-bf",
+  "version": "1.0.7",
+  "description": "Association des Agents Collecteurs de Données Statistiques — Application mobile Burkina Faso",
+  "scripts": {
+    "build": "echo 'No build step required — static HTML app'",
+    "sync": "npx cap sync android",
+    "open:android": "npx cap open android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/app": "^6.0.0",
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/splash-screen": "^6.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.0.0"
+  }
+}
