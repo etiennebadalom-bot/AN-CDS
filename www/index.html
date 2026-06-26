@@ -975,10 +975,13 @@ tbody td{padding:11px 13px;color:var(--sl);vertical-align:middle}
 // ═══════════════════════════════════
 // DATA
 // ═══════════════════════════════════
+// Hashage SHA-256 simple pour ne pas stocker les mots de passe en clair
+async function _h(s){const b=new TextEncoder().encode(s);const h=await crypto.subtle.digest('SHA-256',b);return Array.from(new Uint8Array(h)).map(x=>x.toString(16).padStart(2,'0')).join('');}
+// Hash des mots de passe (sha256 de 'admin2025') — CHANGEZ ces hashes via le panneau admin
 let ADMINS={
-  'etiennebadalom@gmail.com':{pwd:'admin2025',name:'Etienne Badalom',init:'E',isPrincipal:true},
-  'koudougoum91@gmail.com':{pwd:'admin2025',name:'Koudougou Marcel',init:'K',isPrincipal:false},
-  'ibrahim01sawadogo@gmail.com':{pwd:'admin2025',name:'Ibrahim Sawadogo',init:'I',isPrincipal:false}
+  'etiennebadalom@gmail.com':{hash:'0e89f223e226ae63268cf39152ab75722e811b89d29efb22a852f1667bd22ae0',name:'Etienne Badalom',init:'E',isPrincipal:true},
+  'koudougoum91@gmail.com':{hash:'0e89f223e226ae63268cf39152ab75722e811b89d29efb22a852f1667bd22ae0',name:'Koudougou Marcel',init:'K',isPrincipal:false},
+  'ibrahim01sawadogo@gmail.com':{hash:'0e89f223e226ae63268cf39152ab75722e811b89d29efb22a852f1667bd22ae0',name:'Ibrahim Sawadogo',init:'I',isPrincipal:false}
 };
 const PRINCIPAL='etiennebadalom@gmail.com';
 const WA_PRES='22670959752'; // numéro WhatsApp président
@@ -1038,22 +1041,30 @@ function doLogin(){
   const em=document.getElementById('lgEmail').value.trim().toLowerCase();
   const pw=document.getElementById('lgPwd').value;
   const u=ADMINS[em];
-  if(u&&u.pwd===pw){
-    CU={...u,email:em};
-    document.getElementById('sbAv').textContent=u.init;
-    document.getElementById('sbNm').textContent=u.name;
-    document.getElementById('sbRl').textContent=u.isPrincipal?'👑 Admin Principal':'Administrateur';
-    document.getElementById('stAv').textContent=u.init;
-    document.getElementById('stNm').textContent=u.name;
-    document.getElementById('stEm').textContent=em;
-    document.getElementById('stRl').textContent=u.isPrincipal?'Admin Principal':'Administrateur';
-    document.getElementById('niAdm').style.display=u.isPrincipal?'flex':'none';
-    document.getElementById('niContenu').style.display=u.isPrincipal?'flex':'none';
-    document.getElementById('lgErr').style.display='none';
-    try{document.getElementById('lnk').textContent='https://magnificent-alfajores-7ccbca.netlify.app/?mode=inscription';}catch(e){}
-    showAdmin();renderAll();
-    setTimeout(function(){if(typeof startSync==='function')startSync();},800);
-  }else document.getElementById('lgErr').style.display='block';
+  const btn=document.querySelector('.lgbtn');
+  if(btn){btn.disabled=true;btn.textContent='Vérification...';}
+  _h(pw).then(function(h){
+    if(btn){btn.disabled=false;btn.textContent='Accéder au système →';}
+    if(u&&(u.hash===h||(u.pwd&&u.pwd===pw))){
+      // Nettoyer le champ pwd de ADMINS pour ne pas l'exposer en mémoire
+      delete u.pwd;
+      CU={name:u.name,init:u.init,isPrincipal:u.isPrincipal,email:em};
+      document.getElementById('sbAv').textContent=u.init;
+      document.getElementById('sbNm').textContent=u.name;
+      document.getElementById('sbRl').textContent=u.isPrincipal?'👑 Admin Principal':'Administrateur';
+      document.getElementById('stAv').textContent=u.init;
+      document.getElementById('stNm').textContent=u.name;
+      document.getElementById('stEm').textContent=em;
+      document.getElementById('stRl').textContent=u.isPrincipal?'Admin Principal':'Administrateur';
+      document.getElementById('niAdm').style.display=u.isPrincipal?'flex':'none';
+      document.getElementById('niContenu').style.display=u.isPrincipal?'flex':'none';
+      document.getElementById('lgErr').style.display='none';
+      var appUrl=window.location.href.split('?')[0];
+      try{document.getElementById('lnk').textContent=appUrl+'?mode=inscription';}catch(e){}
+      showAdmin();renderAll();
+      setTimeout(function(){if(typeof startSync==='function')startSync();},800);
+    }else{document.getElementById('lgErr').style.display='block';}
+  });
 }
 function doLogout(){CU=null;showLogin()}
 
@@ -1603,9 +1614,11 @@ function saveAdm(){
   if(!nm||!em||!pw){toast('⚠ Champs obligatoires');return}
   if(pw.length<8){toast('⚠ Mot de passe trop court (min. 8 car.)');return}
   if(ADMINS[em]){toast('⚠ Cet e-mail est déjà admin');return}
-  ADMINS[em]={pwd:pw,name:nm,init,isPrincipal:false};
-  closeM('mAdm');renderAdms();toast(`✓ Admin ${nm} créé`);
-  ['adNm','adEm','adPw','adIn'].forEach(id=>document.getElementById(id).value='');
+  _h(pw).then(function(hash){
+    ADMINS[em]={hash:hash,name:nm,init:init,isPrincipal:false};
+    closeM('mAdm');renderAdms();toast('✓ Admin '+nm+' créé');
+    ['adNm','adEm','adPw','adIn'].forEach(function(id){document.getElementById(id).value='';});
+  });
 }
 function rmAdm(em){if(em===PRINCIPAL){toast('⚠ Impossible de supprimer l\'admin principal');return}if(confirm(`Retirer ${ADMINS[em].name} ?`)){delete ADMINS[em];renderAdms();toast('Admin retiré')}}
 
