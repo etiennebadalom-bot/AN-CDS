@@ -1,5 +1,5 @@
-import { useState, useMemo } from 'react';
-import { Plus, Package, Trash2, Settings, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState, useMemo, useEffect, useRef } from 'react';
+import { Plus, Package, Trash2, Settings, ChevronLeft, ChevronRight, Printer } from 'lucide-react';
 import { useApp } from '../contexts/AppContext';
 import Modal from '../components/Modal';
 import { formatDate, formatCurrency, MOIS, getWeekNumber, getMondayOfWeek } from '../utils/storage';
@@ -37,10 +37,16 @@ const COLORS = {
   amber: { bg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-200', active: 'bg-amber-50 text-amber-700 border-amber-200' },
 };
 
+const PRINT_OPTIONS = [
+  { key: 'ENTREE', label: 'État des Entrées en Stock', icon: '↑' },
+  { key: 'SORTIE', label: 'État des Ventes / Sorties', icon: '↓' },
+  { key: 'TOUT', label: 'Tous les Mouvements', icon: '⇅' },
+];
+
 const todayStr = new Date().toISOString().split('T')[0];
 
 export default function Stocks() {
-  const { stocks, addMouvementStock, deleteMouvementStock, prixStock, updatePrixStock } = useApp();
+  const { stocks, addMouvementStock, deleteMouvementStock, prixStock, updatePrixStock, settings } = useApp();
 
   const [magasin, setMagasin] = useState('eau');
   const [produitKey, setProduitKey] = useState('sachet');
@@ -56,12 +62,31 @@ export default function Stocks() {
   const [form, setForm] = useState({ type: 'ENTREE', quantite: '', prixUnitaire: '', date: todayStr, note: '' });
   const [prixForm, setPrixForm] = useState({});
 
+  const [showPrintMenu, setShowPrintMenu] = useState(false);
+  const [printFilter, setPrintFilter] = useState('TOUT');
+  const [printTrigger, setPrintTrigger] = useState(0);
+  const printMenuRef = useRef(null);
+
   const mag = MAGASINS_STOCK.find(m => m.key === magasin);
   const prod = mag.produits.find(p => p.key === produitKey);
   const prixKey = `${magasin}_${produitKey}`;
   const prixActuel = prixStock[prixKey] || 0;
   const c = COLORS[mag.color];
   const hasTonne = !!prod.parTonne;
+
+  useEffect(() => {
+    if (printTrigger > 0) window.print();
+  }, [printTrigger]);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (printMenuRef.current && !printMenuRef.current.contains(e.target)) {
+        setShowPrintMenu(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleMagasin = (key) => {
     setMagasin(key);
@@ -91,6 +116,15 @@ export default function Stocks() {
   const entrees = filteredMouvements.filter(m => m.type === 'ENTREE').reduce((s, m) => s + m.quantite, 0);
   const sorties = filteredMouvements.filter(m => m.type === 'SORTIE').reduce((s, m) => s + m.quantite, 0);
   const chiffreAffaires = filteredMouvements.filter(m => m.type === 'SORTIE').reduce((s, m) => s + (m.montant || 0), 0);
+
+  const printRows = useMemo(() =>
+    filteredMouvements.filter(m => printFilter === 'TOUT' || m.type === printFilter),
+    [filteredMouvements, printFilter]
+  );
+  const printEntrees = printRows.filter(m => m.type === 'ENTREE').reduce((s, m) => s + m.quantite, 0);
+  const printSorties = printRows.filter(m => m.type === 'SORTIE').reduce((s, m) => s + m.quantite, 0);
+  const printCA = printRows.filter(m => m.type === 'SORTIE').reduce((s, m) => s + (m.montant || 0), 0);
+  const printLabel = PRINT_OPTIONS.find(o => o.key === printFilter)?.label || '';
 
   const navigatePrev = () => {
     if (periode === 'semaine') {
@@ -122,6 +156,12 @@ export default function Stocks() {
     if (periode === 'mois') return `${MOIS[navMois - 1]} ${navAnnee}`;
     if (periode === 'annee') return `Année ${navAnnee}`;
     return 'Toutes les périodes';
+  };
+
+  const handlePrint = (filter) => {
+    setPrintFilter(filter);
+    setShowPrintMenu(false);
+    setPrintTrigger(t => t + 1);
   };
 
   const openAddModal = () => {
@@ -167,7 +207,7 @@ export default function Stocks() {
   return (
     <div className="space-y-4">
       {/* Controls */}
-      <div className="card p-4 flex flex-wrap items-center gap-3">
+      <div className="card p-4 flex flex-wrap items-center gap-3 no-print">
         <div className="flex gap-2 flex-wrap">
           {MAGASINS_STOCK.map(m => {
             const mc = COLORS[m.color];
@@ -188,6 +228,31 @@ export default function Stocks() {
         <button onClick={openPrixModal} className="btn-secondary gap-1.5 text-xs">
           <Settings size={14} /> Configurer les prix
         </button>
+
+        {/* Print button with dropdown */}
+        <div className="relative" ref={printMenuRef}>
+          <button
+            onClick={() => setShowPrintMenu(v => !v)}
+            className="btn-secondary gap-1.5"
+          >
+            <Printer size={16} /> Imprimer ▾
+          </button>
+          {showPrintMenu && (
+            <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg z-20 w-56 py-1 overflow-hidden">
+              {PRINT_OPTIONS.map(opt => (
+                <button
+                  key={opt.key}
+                  onClick={() => handlePrint(opt.key)}
+                  className="w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 flex items-center gap-2 text-gray-700"
+                >
+                  <span className={`text-base font-bold ${opt.key === 'ENTREE' ? 'text-green-600' : opt.key === 'SORTIE' ? 'text-red-600' : 'text-blue-600'}`}>{opt.icon}</span>
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
         <button onClick={openAddModal} className="btn-primary">
           <Plus size={16} /> Nouveau mouvement
         </button>
@@ -195,7 +260,7 @@ export default function Stocks() {
 
       {/* Product sub-tabs */}
       {mag.produits.length > 1 && (
-        <div className="flex gap-2">
+        <div className="flex gap-2 no-print">
           {mag.produits.map(p => (
             <button
               key={p.key}
@@ -211,7 +276,7 @@ export default function Stocks() {
       )}
 
       {/* KPI cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 no-print">
         <div className="card p-4">
           <div className={`text-xl font-bold ${stockTotal < 0 ? 'text-red-600' : 'text-blue-600'}`}>
             {stockTotal.toLocaleString('fr-FR')} {prod.unite}s
@@ -236,7 +301,7 @@ export default function Stocks() {
       </div>
 
       {/* Period filter */}
-      <div className="card p-3 flex flex-wrap items-center gap-3">
+      <div className="card p-3 flex flex-wrap items-center gap-3 no-print">
         <div className="flex gap-1 bg-gray-100 rounded-xl p-1">
           {PERIODES.map(p => (
             <button
@@ -270,7 +335,7 @@ export default function Stocks() {
       </div>
 
       {/* Movements table */}
-      <div className="card overflow-hidden">
+      <div className="card overflow-hidden no-print">
         <div className={`px-4 py-3 ${c.bg} border-b ${c.border} flex items-center justify-between`}>
           <h3 className={`font-semibold ${c.text}`}>{prod.label} — {getPeriodeLabel()}</h3>
           <span className="text-xs text-gray-500">{filteredMouvements.length} mouvement{filteredMouvements.length !== 1 ? 's' : ''}</span>
@@ -353,6 +418,169 @@ export default function Stocks() {
           </div>
         )}
       </div>
+
+      {/* ===================== PRINT LAYOUT (hidden on screen) ===================== */}
+      <div className="print-only hidden">
+        {/* En-tête */}
+        <div style={{ borderBottom: '2px solid #000', paddingBottom: '12px', marginBottom: '16px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <div>
+              <div style={{ fontSize: '11px', color: '#666', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                {settings?.companyName || 'GESTION GOMME ARABIQUE'}
+              </div>
+              <div style={{ fontSize: '18px', fontWeight: 'bold', marginTop: '4px', textTransform: 'uppercase' }}>
+                {printLabel}
+              </div>
+              <div style={{ fontSize: '13px', marginTop: '4px', color: '#333' }}>
+                {mag.label} — {prod.label}
+              </div>
+              <div style={{ fontSize: '12px', color: '#555', marginTop: '2px' }}>
+                Période : {getPeriodeLabel()}
+              </div>
+            </div>
+            <div style={{ textAlign: 'right' }}>
+              {printFilter !== 'ENTREE' && (
+                <div>
+                  <div style={{ fontSize: '22px', fontWeight: 'bold' }}>{formatCurrency(printCA)}</div>
+                  <div style={{ fontSize: '11px', color: '#666' }}>Chiffre d'Affaires</div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Récapitulatif */}
+        <div style={{ display: 'flex', gap: '24px', marginBottom: '16px', fontSize: '12px' }}>
+          {(printFilter === 'TOUT' || printFilter === 'ENTREE') && (
+            <div style={{ border: '1px solid #ccc', borderRadius: '6px', padding: '8px 16px', textAlign: 'center' }}>
+              <div style={{ fontWeight: 'bold', fontSize: '16px', color: '#16a34a' }}>
+                {printEntrees.toLocaleString('fr-FR')} {prod.unite}s
+              </div>
+              {hasTonne && <div style={{ fontSize: '11px', color: '#666' }}>≈ {(printEntrees / prod.parTonne).toFixed(2)} t</div>}
+              <div style={{ color: '#666' }}>Total Entrées</div>
+            </div>
+          )}
+          {(printFilter === 'TOUT' || printFilter === 'SORTIE') && (
+            <div style={{ border: '1px solid #ccc', borderRadius: '6px', padding: '8px 16px', textAlign: 'center' }}>
+              <div style={{ fontWeight: 'bold', fontSize: '16px', color: '#dc2626' }}>
+                {printSorties.toLocaleString('fr-FR')} {prod.unite}s
+              </div>
+              {hasTonne && <div style={{ fontSize: '11px', color: '#666' }}>≈ {(printSorties / prod.parTonne).toFixed(2)} t</div>}
+              <div style={{ color: '#666' }}>Total Sorties</div>
+            </div>
+          )}
+          <div style={{ border: '1px solid #ccc', borderRadius: '6px', padding: '8px 16px', textAlign: 'center' }}>
+            <div style={{ fontWeight: 'bold', fontSize: '16px' }}>{printRows.length}</div>
+            <div style={{ color: '#666' }}>Mouvements</div>
+          </div>
+          <div style={{ border: '1px solid #ccc', borderRadius: '6px', padding: '8px 16px', textAlign: 'center' }}>
+            <div style={{ fontWeight: 'bold', fontSize: '16px', color: printSorties - printEntrees > stockTotal ? '#dc2626' : '#2563eb' }}>
+              {stockTotal.toLocaleString('fr-FR')} {prod.unite}s
+            </div>
+            {hasTonne && <div style={{ fontSize: '11px', color: '#666' }}>≈ {(stockTotal / prod.parTonne).toFixed(2)} t</div>}
+            <div style={{ color: '#666' }}>Stock Actuel</div>
+          </div>
+        </div>
+
+        {/* Table */}
+        {printRows.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '32px', color: '#999', border: '1px dashed #ccc', borderRadius: '6px' }}>
+            Aucun mouvement pour cette période
+          </div>
+        ) : (
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
+            <thead>
+              <tr style={{ backgroundColor: '#f3f4f6' }}>
+                <th style={{ border: '1px solid #d1d5db', padding: '6px 10px', textAlign: 'left', fontWeight: '600' }}>#</th>
+                <th style={{ border: '1px solid #d1d5db', padding: '6px 10px', textAlign: 'left', fontWeight: '600' }}>Date</th>
+                {printFilter === 'TOUT' && (
+                  <th style={{ border: '1px solid #d1d5db', padding: '6px 10px', textAlign: 'left', fontWeight: '600' }}>Type</th>
+                )}
+                <th style={{ border: '1px solid #d1d5db', padding: '6px 10px', textAlign: 'right', fontWeight: '600' }}>Quantité</th>
+                {hasTonne && <th style={{ border: '1px solid #d1d5db', padding: '6px 10px', textAlign: 'right', fontWeight: '600' }}>Tonnes</th>}
+                <th style={{ border: '1px solid #d1d5db', padding: '6px 10px', textAlign: 'right', fontWeight: '600' }}>Prix Unit.</th>
+                <th style={{ border: '1px solid #d1d5db', padding: '6px 10px', textAlign: 'right', fontWeight: '600' }}>Montant (FCFA)</th>
+                <th style={{ border: '1px solid #d1d5db', padding: '6px 10px', textAlign: 'left', fontWeight: '600' }}>Note</th>
+              </tr>
+            </thead>
+            <tbody>
+              {printRows.map((m, idx) => (
+                <tr key={m.id} style={{ backgroundColor: idx % 2 === 0 ? '#fff' : '#f9fafb' }}>
+                  <td style={{ border: '1px solid #e5e7eb', padding: '5px 10px', color: '#9ca3af' }}>{idx + 1}</td>
+                  <td style={{ border: '1px solid #e5e7eb', padding: '5px 10px' }}>{formatDate(m.date)}</td>
+                  {printFilter === 'TOUT' && (
+                    <td style={{ border: '1px solid #e5e7eb', padding: '5px 10px', fontWeight: '600', color: m.type === 'ENTREE' ? '#16a34a' : '#dc2626' }}>
+                      {m.type === 'ENTREE' ? '↑ Entrée' : '↓ Sortie'}
+                    </td>
+                  )}
+                  <td style={{ border: '1px solid #e5e7eb', padding: '5px 10px', textAlign: 'right', fontWeight: '600' }}>
+                    {m.quantite.toLocaleString('fr-FR')} {prod.unite}{m.quantite > 1 ? 's' : ''}
+                  </td>
+                  {hasTonne && (
+                    <td style={{ border: '1px solid #e5e7eb', padding: '5px 10px', textAlign: 'right', color: '#6b7280' }}>
+                      {(m.quantite / prod.parTonne).toFixed(2)} t
+                    </td>
+                  )}
+                  <td style={{ border: '1px solid #e5e7eb', padding: '5px 10px', textAlign: 'right', color: '#6b7280' }}>
+                    {m.prixUnitaire ? m.prixUnitaire.toLocaleString('fr-FR') + ' F' : '—'}
+                  </td>
+                  <td style={{ border: '1px solid #e5e7eb', padding: '5px 10px', textAlign: 'right', fontWeight: '600' }}>
+                    {m.montant ? m.montant.toLocaleString('fr-FR') : '—'}
+                  </td>
+                  <td style={{ border: '1px solid #e5e7eb', padding: '5px 10px', color: '#6b7280' }}>{m.note || '—'}</td>
+                </tr>
+              ))}
+            </tbody>
+            <tfoot>
+              <tr style={{ backgroundColor: '#e5e7eb', fontWeight: 'bold' }}>
+                <td colSpan={printFilter === 'TOUT' ? 3 : 2} style={{ border: '1px solid #d1d5db', padding: '6px 10px' }}>
+                  TOTAUX
+                </td>
+                <td style={{ border: '1px solid #d1d5db', padding: '6px 10px', textAlign: 'right' }}>
+                  {printFilter === 'TOUT' && (
+                    <>
+                      <span style={{ color: '#16a34a' }}>+{printEntrees.toLocaleString('fr-FR')}</span>
+                      {' / '}
+                      <span style={{ color: '#dc2626' }}>-{printSorties.toLocaleString('fr-FR')}</span>
+                    </>
+                  )}
+                  {printFilter === 'ENTREE' && (
+                    <span style={{ color: '#16a34a' }}>{printEntrees.toLocaleString('fr-FR')} {prod.unite}s</span>
+                  )}
+                  {printFilter === 'SORTIE' && (
+                    <span style={{ color: '#dc2626' }}>{printSorties.toLocaleString('fr-FR')} {prod.unite}s</span>
+                  )}
+                </td>
+                {hasTonne && (
+                  <td style={{ border: '1px solid #d1d5db', padding: '6px 10px', textAlign: 'right', color: '#6b7280' }}>
+                    {printFilter !== 'SORTIE' && `+${(printEntrees / prod.parTonne).toFixed(2)}`}
+                    {printFilter === 'TOUT' && ' / '}
+                    {printFilter !== 'ENTREE' && `-${(printSorties / prod.parTonne).toFixed(2)}`} t
+                  </td>
+                )}
+                <td style={{ border: '1px solid #d1d5db', padding: '6px 10px' }}></td>
+                <td style={{ border: '1px solid #d1d5db', padding: '6px 10px', textAlign: 'right', color: '#7c3aed', fontSize: '13px' }}>
+                  {printCA > 0 ? printCA.toLocaleString('fr-FR') + ' FCFA' : '—'}
+                </td>
+                <td style={{ border: '1px solid #d1d5db', padding: '6px 10px' }}></td>
+              </tr>
+            </tfoot>
+          </table>
+        )}
+
+        {/* Signature + footer */}
+        <div style={{ marginTop: '32px', display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
+          <div>
+            <div style={{ color: '#666' }}>Imprimé le {formatDate(new Date())}</div>
+            <div style={{ color: '#666', marginTop: '2px' }}>{settings?.companyName}</div>
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <div style={{ marginBottom: '24px', color: '#666' }}>Signature & Cachet :</div>
+            <div style={{ borderBottom: '1px solid #333', width: '160px', marginLeft: 'auto' }}></div>
+          </div>
+        </div>
+      </div>
+      {/* ===================== END PRINT LAYOUT ===================== */}
 
       {/* Modal: Add movement */}
       <Modal open={showMouvModal} onClose={() => setShowMouvModal(false)} title={`Nouveau mouvement — ${prod.label}`} size="sm">
