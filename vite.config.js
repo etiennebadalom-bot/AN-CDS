@@ -6,5 +6,12 @@ export default defineConfig({
   base: './',
   build: {
     chunkSizeWarningLimit: 1600,
+    rollupOptions: {
+      output: {
+        inlineDynamicImports: true,
+        format: 'iife',
+        name: 'GGA2026',
+      },
+    },
   },
 })
