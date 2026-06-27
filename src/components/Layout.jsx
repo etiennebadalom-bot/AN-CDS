@@ -3,7 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, Users, CalendarCheck, CreditCard,
   Package, Receipt, BarChart3, Settings, Menu, X,
-  Leaf, LogOut, ChevronRight
+  Leaf, ChevronRight, Store
 } from 'lucide-react';
 import Notification from './Notification';
 
@@ -14,6 +14,7 @@ const NAV_ITEMS = [
   { to: '/paiement', icon: CreditCard, label: 'Paiement', color: 'text-emerald-600' },
   { to: '/collecteurs', icon: Package, label: 'Collecteurs & Stock', color: 'text-orange-600' },
   { to: '/depenses', icon: Receipt, label: 'Dépenses', color: 'text-red-600' },
+  { to: '/stocks', icon: Store, label: 'Magasins', color: 'text-cyan-600' },
   { to: '/rapports', icon: BarChart3, label: 'Rapports', color: 'text-indigo-600' },
   { to: '/parametres', icon: Settings, label: 'Paramètres', color: 'text-gray-600' },
 ];

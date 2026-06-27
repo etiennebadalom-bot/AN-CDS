@@ -13,6 +13,8 @@ export function AppProvider({ children }) {
   const [avances, setAvances] = useState(() => storage.get('avances', {}));
   const [livraisons, setLivraisons] = useState(() => storage.get('livraisons', []));
   const [depenses, setDepenses] = useState(() => storage.get('depenses', []));
+  const [stocks, setStocks] = useState(() => storage.get('stocks', []));
+  const [prixStock, setPrixStock] = useState(() => storage.get('prixStock', {}));
   const [notification, setNotification] = useState(null);
 
   const save = useCallback((key, val) => storage.set(key, val), []);
@@ -24,6 +26,8 @@ export function AppProvider({ children }) {
   useEffect(() => { save('avances', avances); }, [avances, save]);
   useEffect(() => { save('livraisons', livraisons); }, [livraisons, save]);
   useEffect(() => { save('depenses', depenses); }, [depenses, save]);
+  useEffect(() => { save('stocks', stocks); }, [stocks, save]);
+  useEffect(() => { save('prixStock', prixStock); }, [prixStock, save]);
 
   const showNotif = useCallback((message, type = 'success') => {
     setNotification({ message, type });
@@ -131,6 +135,21 @@ export function AppProvider({ children }) {
     return { joursPresent, salaireBrut, avance, netAPayer };
   }, [presences, avances]);
 
+  const addMouvementStock = useCallback((mouvement) => {
+    setStocks(prev => [{ ...mouvement, id: Date.now().toString(), createdAt: new Date().toISOString() }, ...prev]);
+    showNotif('Mouvement enregistré');
+  }, [showNotif]);
+
+  const deleteMouvementStock = useCallback((id) => {
+    setStocks(prev => prev.filter(m => m.id !== id));
+    showNotif('Mouvement supprimé', 'warning');
+  }, [showNotif]);
+
+  const updatePrixStock = useCallback((key, prix) => {
+    setPrixStock(prev => ({ ...prev, [key]: prix }));
+    showNotif('Prix mis à jour');
+  }, [showNotif]);
+
   const getStatsGlobales = useCallback(() => {
     const totalDelivres = livraisons.reduce((s, l) => s + (l.quantite || 0), 0);
     const totalFriable = livraisons.filter(l => l.typeGomme === 'Friable').reduce((s, l) => s + (l.quantite || 0), 0);
@@ -151,6 +170,8 @@ export function AppProvider({ children }) {
       avances, addAvance,
       livraisons, addLivraison, updateLivraison, deleteLivraison,
       depenses, addDepense, updateDepense, deleteDepense,
+      stocks, addMouvementStock, deleteMouvementStock,
+      prixStock, updatePrixStock,
       calcSalaireEmployee, getStatsGlobales,
       notification, showNotif,
     }}>

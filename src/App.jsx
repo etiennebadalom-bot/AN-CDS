@@ -7,6 +7,7 @@ import Presence from './pages/Presence';
 import Paiement from './pages/Paiement';
 import Collecteurs from './pages/Collecteurs';
 import Depenses from './pages/Depenses';
+import Stocks from './pages/Stocks';
 import Rapports from './pages/Rapports';
 import Parametres from './pages/Parametres';
 
@@ -22,6 +23,7 @@ export default function App() {
             <Route path="/paiement" element={<Paiement />} />
             <Route path="/collecteurs" element={<Collecteurs />} />
             <Route path="/depenses" element={<Depenses />} />
+            <Route path="/stocks" element={<Stocks />} />
             <Route path="/rapports" element={<Rapports />} />
             <Route path="/parametres" element={<Parametres />} />
           </Routes>
