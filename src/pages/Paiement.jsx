@@ -8,7 +8,7 @@ const MAGASINS = [
   { key: 'friable', label: 'Magasin Friable', color: 'green', sections: ['friable_femmes', 'friable_garcons'] },
   { key: 'karaya', label: 'Magasin Karaya', color: 'orange', sections: ['karaya_femmes', 'karaya_garcons'] },
 ];
-const JOURS_KEYS = ['lundi', 'mardi', 'mercredi', 'jeudi', 'samedi'];
+const JOURS_KEYS = ['lundi', 'mardi', 'mercredi', 'jeudi', 'samedi', 'dimanche'];
 
 export default function Paiement() {
   const { employes, presences, avances, addAvance, settings } = useApp();

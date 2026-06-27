@@ -68,7 +68,7 @@ export function AppProvider({ children }) {
   }, []);
 
   const setPresenceMasse = useCallback((semaine, magasin, employeId, present) => {
-    const jours = ['lundi', 'mardi', 'mercredi', 'jeudi', 'samedi'];
+    const jours = ['lundi', 'mardi', 'mercredi', 'jeudi', 'samedi', 'dimanche'];
     setPresences(prev => ({
       ...prev,
       [`${semaine}_${magasin}`]: {
@@ -123,7 +123,7 @@ export function AppProvider({ children }) {
 
   const calcSalaireEmployee = useCallback((employe, semaine, magasin) => {
     const pres = presences[`${semaine}_${magasin}`]?.[employe.id] || {};
-    const jours = ['lundi', 'mardi', 'mercredi', 'jeudi', 'samedi'];
+    const jours = ['lundi', 'mardi', 'mercredi', 'jeudi', 'samedi', 'dimanche'];
     const joursPresent = jours.filter(j => pres[j] === 'PRÉSENT').length;
     const salaireBrut = (employe.salaireJour || 0) * joursPresent;
     const avance = avances[`${employe.id}_${semaine}`] || 0;

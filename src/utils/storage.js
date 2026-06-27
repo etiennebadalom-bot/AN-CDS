@@ -50,8 +50,8 @@ export const DEFAULT_SETTINGS = {
   weekStart: 1,
 };
 
-export const JOURS = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Samedi'];
-export const JOURS_SHORT = ['Lu', 'Ma', 'Me', 'Je', 'Sa'];
+export const JOURS = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Samedi', 'Dimanche'];
+export const JOURS_SHORT = ['Lu', 'Ma', 'Me', 'Je', 'Sa', 'Di'];
 
 export const MOIS = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
 

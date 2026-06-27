@@ -8,7 +8,7 @@ const MAGASINS = [
   { key: 'karaya', label: 'Magasin Karaya', color: 'text-orange-700', bg: 'bg-orange-50', border: 'border-orange-200', sections: ['karaya_femmes', 'karaya_garcons'] },
 ];
 
-const JOURS_KEYS = ['lundi', 'mardi', 'mercredi', 'jeudi', 'samedi'];
+const JOURS_KEYS = ['lundi', 'mardi', 'mercredi', 'jeudi', 'samedi', 'dimanche'];
 
 export default function Presence() {
   const { employes, presences, setPresence, setPresenceMasse, calcSalaireEmployee } = useApp();
