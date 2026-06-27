@@ -12,6 +12,7 @@ const EMPTY_FORM = {
   quantite: '',
   prixKg: '',
   acomptePaye: '',
+  numeroCheque: '',
   datePaiement: '',
   statut: 'À PAYER',
   observations: '',
@@ -69,7 +70,7 @@ export default function Collecteurs() {
 
   const openEdit = (l) => {
     setEditingId(l.id);
-    setForm({ date: l.date || '', semaine: l.semaine || '', collecteur: l.collecteur || '', typeGomme: l.typeGomme || 'Friable', quantite: l.quantite || '', prixKg: l.prixKg || '', acomptePaye: l.acomptePaye || '', datePaiement: l.datePaiement || '', statut: l.statut || 'À PAYER', observations: l.observations || '' });
+    setForm({ date: l.date || '', semaine: l.semaine || '', collecteur: l.collecteur || '', typeGomme: l.typeGomme || 'Friable', quantite: l.quantite || '', prixKg: l.prixKg || '', acomptePaye: l.acomptePaye || '', numeroCheque: l.numeroCheque || '', datePaiement: l.datePaiement || '', statut: l.statut || 'À PAYER', observations: l.observations || '' });
     setModalOpen(true);
   };
 
@@ -161,6 +162,7 @@ export default function Collecteurs() {
                     <th>Prix/kg</th>
                     <th>Total</th>
                     <th>Acompte</th>
+                    <th>N° Chèque</th>
                     <th>Reste</th>
                     <th>Statut</th>
                     <th>Actions</th>
@@ -168,7 +170,7 @@ export default function Collecteurs() {
                 </thead>
                 <tbody>
                   {filtered.length === 0 ? (
-                    <tr><td colSpan={12} className="py-12 text-center text-gray-400">Aucune livraison trouvée</td></tr>
+                    <tr><td colSpan={13} className="py-12 text-center text-gray-400">Aucune livraison trouvée</td></tr>
                   ) : filtered.map((l, idx) => (
                     <tr key={l.id}>
                       <td className="text-gray-400 text-xs">{idx + 1}</td>
@@ -184,6 +186,7 @@ export default function Collecteurs() {
                       <td className="text-xs">{formatCurrency(l.prixKg)}</td>
                       <td className="font-semibold">{formatCurrency(l.montantTotal)}</td>
                       <td className="text-green-600">{l.acomptePaye > 0 ? formatCurrency(l.acomptePaye) : '—'}</td>
+                      <td className="text-xs font-mono text-blue-700">{l.numeroCheque || '—'}</td>
                       <td className={`font-semibold ${l.resteAPayer > 0 ? 'text-red-600' : 'text-gray-400'}`}>
                         {formatCurrency(l.resteAPayer)}
                       </td>
@@ -292,6 +295,10 @@ export default function Collecteurs() {
             <div>
               <label className="form-label">Acompte Payé (FCFA)</label>
               <input type="number" min={0} value={form.acomptePaye} onChange={e => setForm(f => ({ ...f, acomptePaye: e.target.value }))} className="form-input" placeholder="Ex: 25000" />
+            </div>
+            <div>
+              <label className="form-label">N° Chèque (optionnel)</label>
+              <input type="text" value={form.numeroCheque} onChange={e => setForm(f => ({ ...f, numeroCheque: e.target.value }))} className="form-input font-mono" placeholder="Ex: CHQ-001234" />
             </div>
             <div>
               <label className="form-label">Statut Paiement</label>

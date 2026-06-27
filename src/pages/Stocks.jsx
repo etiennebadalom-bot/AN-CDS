@@ -59,7 +59,7 @@ export default function Stocks() {
   const [showMouvModal, setShowMouvModal] = useState(false);
   const [showPrixModal, setShowPrixModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
-  const [form, setForm] = useState({ type: 'ENTREE', quantite: '', prixUnitaire: '', date: todayStr, note: '' });
+  const [form, setForm] = useState({ type: 'ENTREE', quantite: '', prixUnitaire: '', date: todayStr, note: '', numeroCheque: '' });
   const [prixForm, setPrixForm] = useState({});
 
   const [showPrintMenu, setShowPrintMenu] = useState(false);
@@ -165,7 +165,7 @@ export default function Stocks() {
   };
 
   const openAddModal = () => {
-    setForm({ type: 'ENTREE', quantite: '', prixUnitaire: prixActuel || '', date: todayStr, note: '' });
+    setForm({ type: 'ENTREE', quantite: '', prixUnitaire: prixActuel || '', date: todayStr, note: '', numeroCheque: '' });
     setShowMouvModal(true);
   };
 
@@ -184,6 +184,7 @@ export default function Stocks() {
       semaine: getWeekNumber(d),
       annee: d.getFullYear(),
       note: form.note,
+      numeroCheque: form.type === 'ENTREE' ? (form.numeroCheque || '') : '',
     });
     setShowMouvModal(false);
   };
@@ -359,6 +360,7 @@ export default function Stocks() {
                   <th className="text-right">Prix Unit.</th>
                   <th className="text-right">Montant</th>
                   <th>Note</th>
+                  <th>N° Chèque</th>
                   <th></th>
                 </tr>
               </thead>
@@ -388,6 +390,7 @@ export default function Stocks() {
                       {m.montant ? formatCurrency(m.montant) : '—'}
                     </td>
                     <td className="text-gray-500 text-sm max-w-xs truncate">{m.note || '—'}</td>
+                    <td className="text-xs font-mono text-blue-700">{m.numeroCheque || '—'}</td>
                     <td>
                       <button onClick={() => setDeleteId(m.id)} className="text-red-400 hover:text-red-600 p-1">
                         <Trash2 size={14} />
@@ -411,7 +414,7 @@ export default function Stocks() {
                   )}
                   <td></td>
                   <td className="px-3 py-3 text-right text-purple-700">{formatCurrency(chiffreAffaires)}</td>
-                  <td colSpan={2}></td>
+                  <td colSpan={3}></td>
                 </tr>
               </tfoot>
             </table>
@@ -501,6 +504,9 @@ export default function Stocks() {
                 <th style={{ border: '1px solid #d1d5db', padding: '6px 10px', textAlign: 'right', fontWeight: '600' }}>Prix Unit.</th>
                 <th style={{ border: '1px solid #d1d5db', padding: '6px 10px', textAlign: 'right', fontWeight: '600' }}>Montant (FCFA)</th>
                 <th style={{ border: '1px solid #d1d5db', padding: '6px 10px', textAlign: 'left', fontWeight: '600' }}>Note</th>
+                {(printFilter === 'TOUT' || printFilter === 'ENTREE') && (
+                  <th style={{ border: '1px solid #d1d5db', padding: '6px 10px', textAlign: 'left', fontWeight: '600' }}>N° Chèque</th>
+                )}
               </tr>
             </thead>
             <tbody>
@@ -528,6 +534,11 @@ export default function Stocks() {
                     {m.montant ? m.montant.toLocaleString('fr-FR') : '—'}
                   </td>
                   <td style={{ border: '1px solid #e5e7eb', padding: '5px 10px', color: '#6b7280' }}>{m.note || '—'}</td>
+                  {(printFilter === 'TOUT' || printFilter === 'ENTREE') && (
+                    <td style={{ border: '1px solid #e5e7eb', padding: '5px 10px', fontFamily: 'monospace', color: '#1d4ed8', fontWeight: m.numeroCheque ? '600' : 'normal' }}>
+                      {m.numeroCheque || '—'}
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>
@@ -563,6 +574,9 @@ export default function Stocks() {
                   {printCA > 0 ? printCA.toLocaleString('fr-FR') + ' FCFA' : '—'}
                 </td>
                 <td style={{ border: '1px solid #d1d5db', padding: '6px 10px' }}></td>
+                {(printFilter === 'TOUT' || printFilter === 'ENTREE') && (
+                  <td style={{ border: '1px solid #d1d5db', padding: '6px 10px' }}></td>
+                )}
               </tr>
             </tfoot>
           </table>
@@ -656,6 +670,17 @@ export default function Stocks() {
               className="form-input" placeholder="Fournisseur, référence, client..."
             />
           </div>
+
+          {form.type === 'ENTREE' && (
+            <div>
+              <label className="form-label">N° Chèque fournisseur (optionnel)</label>
+              <input
+                type="text" value={form.numeroCheque}
+                onChange={e => setForm(f => ({ ...f, numeroCheque: e.target.value }))}
+                className="form-input font-mono" placeholder="Ex: CHQ-001234"
+              />
+            </div>
+          )}
 
           <div className="flex justify-end gap-3">
             <button onClick={() => setShowMouvModal(false)} className="btn-secondary">Annuler</button>
